@@ -1,0 +1,1995 @@
+\textcolor{chapterTitleBlue}{\chapter{Was sind finite Elemente?}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Dem Tragwerksplaner, der mit finiten Elementen eine Struktur nachbildet, geht es zun\"{a}chst darum, die unendlich vielen Details der Struktur m\"{o}glichst getreu nachzubilden, sein Augenmerk ist daher auf die Geometrie, auf die Form gerichtet. Aber die Abmessungen eines Elementes und der E-Modul bestimmen auch die Steifigkeiten eines Elementes, und die Steifigkeiten -- neben der Kinematik des Elements (den Ansatzfunktionen) --  sind entscheidend, wenn es darum geht die Gleichgewichtslage der Struktur zu finden.
+
+{\textcolor{sectionTitleBlue}{\section{Finite Elemente in drei Zeilen}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Mit der Unterteilung eines Tragwerks in finite Elemente generiert man eine Serie von Lastf\"{a}llen $p_i$, die man so kombiniert,
+\begin{align}
+p_h = u_1\,p_1 + u_2\,p_2 + \ldots + u_n\,p_n
+\end{align}
+dass $p_h$ \glq wackel\"{a}quivalent\grq\ zu dem Original-Lastfall $p$ ist, {\em Clough\/} 1956 \cite{Turner}.}}\\
+
+{\textcolor{sectionTitleBlue}{\section{F\"{u}nf Thesen}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%. \\
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+%\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/HOCHHAUS}
+\caption{Unterteilung eines Geb\"{a}udes in finite Elemente} \label{Hochhaus}
+\end{figure}%%
+%-----------------------------------------------------------------
+
+\vspace{-0.5cm}
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = Computer generierte Bewegungen }}}
+
+Ein in finite Elemente unterteiltes Tragwerk kann nur noch Bewegungen ausf\"{u}hren, die sich mit den Einheitsverformungen $\Np_i$ der Knoten darstellen lassen, s. Abb. \ref{Hochhaus}, also den Bewegungen, bei denen man einen Knoten um 1 Meter auslenkt und gleichzeitig alle anderen Knoten festh\"{a}lt. Dem FE-Modell fehlt es also an Flexibilit\"{a}t und das ist das Problem, denn die Kinematik eines Tragwerks (Thema Einflussfunktionen) ist der Schl\"{u}ssel zu allem. Das war schon in der \glq alten Statik\grq{} so, aber es gilt erst recht f\"{u}r die finiten Elemente.
+
+Das Tragwerk in der Skizze des Architekten mag zwar h\"{u}bsch aussehen, aber es lebt nicht. Das schaffen erst Ingenieure mit ihren finiten Elemente.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Finite Elemente hei{\ss}t leben, hei{\ss}t Bewegung.}}\\
+
+Mit Platten- und Scheibenelementen versetzt man das Geb\"{a}ude in Abb. \ref{Hochhaus} in die Lage \glq computer-generierte\grq\ Bewegungen auszuf\"{u}hren und damit auf die Belastung zu reagieren. Aber selbst ein sehr feines Netz wird in der Regel noch zu grob sein, um genau die zu der Belastung geh\"{o}rige Gleichgewichtslage des Geb\"{a}udes darzustellen. Der Ausweg ist radikal aber simpel: Das FE-Programm ersetzt den Originallastfall $p$ durch einen \glq wackel\"{a}quivalenten\grq\ Lastfall $p_h$, einen Lastfall, den es auf dem Netz exakt l\"{o}sen kann, was hei{\ss}t, dass die zugeh\"{o}rige Gleichgewichtslage durch die Einheitsverformungen der Knoten {\em exakt\/} dargestellt werden kann. Wie das geht, wollen wir im folgenden skizzieren.
+
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = Ersatzlastverfahren}}}
+
+Zum Verst\"{a}ndnis sei vorausgeschickt, dass eine FE-Programm in Arbeit und Energie denkt, es klassifiziert Lasten nach der Arbeit, die diese bei einer virtuellen Verr\"{u}ckung leisten, so wie wir einen Ball in die Luft werfen, um sein Gewicht zu ermitteln.
+
+
+An dem FE-Modell ermittelt das Programm zun\"{a}chst die \"{a}quivalenten Knotenkr\"{a}fte $f_i$\index{$f_i$} aus der Verkehrslast $p$. Das $f_i$ in einem Knoten ist die Arbeit, die die Verkehrslast leistet, wenn man den Knoten um einen Meter auslenkt, $u_i = 1$,\index{$u_i$} und gleichzeitig alle anderen Knoten festh\"{a}lt, $u_j = 0$ sonst, dem Tragwerk also die Einheitsverformung $\Np_i$\index{Einheitsverformung} erteilt.
+
+Das ergibt insgesamt einen Vektor $\vek f $ mit $n$ Komponenten
+\begin{align}
+f_i = \delta A_a(p,\Np_i) = \text{{\em Arbeit der Last $p$ auf den Wegen $\Np_i$\/}}\,,
+\end{align}
+wenn das FE-Modell $n$ Freiheitsgrade $u_i$ hat. Dieser Vektor ist die Messlatte, an dem sich das FE-Programm orientiert, denn das FE-Programm stellt die Verschiebungen $u_i$ der Knoten so ein, dass die \"{a}quivalenten Knotenkr\"{a}fte $f_{hi}$ der {\em shape forces\/} mit diesem Vektor \"{u}bereinstimmen, $\vek f_h = \vek f$. {\em Das ist die Grundgleichung der finiten Elemente\/}.
+
+Was sind die {\em shape forces\/}? Um eine Einheitsverformung $\Np_i$ zu erzeugen, sind Kr\"{a}fte n\"{o}tig, die wir die {\em shape forces\/} $p_i$ nennen, die zu der Einheitsverformung $\Np_i$ geh\"{o}ren. Jedes $p_i$ ist ein eigenst\"{a}ndiger Lastfall, ein Ensemble von Kr\"{a}ften, die um den ausgelenkten Knoten herum verteilt sind. Lenkt man alle $n$ Knoten gleichzeitig aus, dr\"{u}ckt das Tragwerk also in eine Form $\vek u = \{u_1, u_2, \ldots, u_n\}^T$, dann muss man diese Lastf\"{a}lle \"{u}berlagern
+\begin{align}
+p_h = u_1\,p_1 + u_2\,p_2 + \ldots + u_n\,p_n\,,
+\end{align}
+und das Ergebnis ist der FE-Lastfall $p_h$ zum Vektor $\vek u$ -- zur Form $\vek u$.
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/U523}
+\caption{Balken \textbf{ a)} System und Belastung, \textbf{ b)} {\em shape functions\/}, \textbf{ c)} die Knotenkr\"{a}fte wer\-den so eingestellt, dass sie arbeits\"{a}quivalent zur
+Originalbelastung sind, $f_i \cdot 1 = (p,\Np_i)$}
+\label{U523}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Nun stelle man sich einmal das Tragwerk mit der urspr\"{u}nglichen Verkehrslast $p$ vor und daneben, in einer zweiten Figur, das Tragwerk in einer irgendwie verschobenen Lage $\vek u $, in die das Tragwerk durch die Wirkung der noch zu bestimmenden Kr\"{a}fte $p_h $ gedr\"{u}ckt worden ist.
+
+Damit sind wir bei der  Analogie zur Waage: Wir stellen den FE-Lastfall $p_h $ so ein -- durch geeignete Wahl der $u_i$ -- dass er \glq wackel\"{a}quivalent\grq{} zur Verkehrslast ist, dass bei jedem Wackeln an dem Tragwerk mit einer der $n$ Einheitsverformungen $\Np_i$ die virtuellen \"{a}u{\ss}eren Arbeiten in den beiden Lastf\"{a}llen $p$ und $p_h$ gleich sind
+\begin{align}
+f_{hi} =\delta A_a(LF\,p_h,\Np_i) = \delta A_a(LF\,p,\Np_i) = f_i\,.
+\end{align}
+oder mit $p_h = \sum_j u_j\,p_j$
+\begin{align}
+f_{hi} =\delta A_a(p_h,\Np_i) = \delta A_a(\sum_{j = 1}^n u_j\,p_j,\Np_i) = \sum_{j = 1}^n \delta A_a(p_j,\Np_i),u_j = f_i\,.
+\end{align}
+Nun gilt f\"{u}r jeden LF $p_j$
+\begin{align}
+\delta A_a(p_j, \Np_i) = \delta A_i(\Np_j,\Np_i)\,,
+\end{align}
+ist die virtuelle {\em \"{a}u{\ss}ere\/} Arbeit $\delta A_a$ der {\em shape forces\/} $p_j$ auf den Wegen $\Np_i$ (linke Seite) gleich der  virtuellen {\em inneren\/} Arbeit $\delta A_i$ zwischen $\Np_j$ und $\Np_i$ (rechte Seite), ($\Np_j$ ist die Verformung im Lastfall $p_j$) gilt also
+\begin{align}
+f_{hi} =\sum_{j = 1}^n \delta A_i(\Np_j,\Np_i)\,u_j = \sum_{j = 1}^n k_{ij}\,u_j = f_i\,,
+\end{align}
+und hier sind wir pl\"{o}tzlich bei der Steifigkeitsmatrix, denn die innere Arbeit $\delta A_i(\Np_i,\Np_j)$
+ist gleich dem Element $k_{ij} $ in der Steifigkeitsmatrix $\vek K $.
+
+Die Forderung {\em gleiche Arbeit auf gleichen Wegen\/} $\Np_i$, also $f_{hi} = f_i$ f\"{u}r alle $i$, ist daher genau dann erf\"{u}llt, wenn der Vektor $\vek u $ dem Gleichungssystem
+\begin{align}
+\vek K\,\vek u = \vek f
+\end{align}
+gen\"{u}gt. Bei jeder Drehung des Waagebalkens leisten die Gewichte auf den beiden Seiten einer Waage dieselbe Arbeit, $\vek f_h = \vek f$. Das ist sinngem\"{a}{\ss} die Bedeutung dieser Gleichung.
+
+Nun wollen wir ja eigentlich nicht einen Lastfall approximieren, $p_h \sim p$, sondern m\"{o}glichst nahe an die wahren Spannungen kommen, was hat das $f_{hi} = f_i $ damit zu tun?
+
+Nun das $f_{hi} = f_i$ kann auch als Orthogonalit\"{a}t in den inneren Arbeiten gelesen werden, Stichwort: {\em Galerkin-Orthogonalit\"{a}t\/}, denn $f_{hi} = f_i$ bedeutet
+\begin{align}
+f_{hi} - f_i &= \delta A_{\underset{\uparrow}{a}}(p_h,\Np_i) - \delta A_{\underset{\uparrow}{a}}(p,\Np_i) = \delta A_{\underset{\uparrow}{i}}(u_h,\Np_i) - \delta A_{\underset{\uparrow}{i}}(u,\Np_i) \nn \\
+&= \delta A_i(u_h - u,\Np_i) = 0 \,.
+\end{align}
+Und das ist die Orthogonalit\"{a}t im Innern, in den virtuellen inneren Arbeiten, in den Schnittkr\"{a}ften sozusagen. Bei einem Balken w\"{u}rde das bedeuten
+\begin{align}
+f_{hi} - f_i =\delta A_i(w_h - w,\Np_i) = \int_{0}^{l} \frac{(M_h - M)\,M_i}{EI}\,dx = 0\,,
+\end{align}
+d.h. die Abweichung zwischen dem Moment $M_h $ der FE-L\"{o}sung und dem exakten Moment $M$ ist so austariert, dass er orthogonal ist zu den Momenten $M_i = - EI\,\Np_i''$ der {\em shape functions\/}. Besser bekommt man es mit finiten Elementen nicht hin.
+
+Das Ziel es also schon, den Fehler in den Spannungen zu minimieren, aber weil wir die wahren Spannungen nicht kennen, hier das Moment, m\"{u}ssen wir den Umweg \"{u}ber die \"{a}u{\ss}eren Kr\"{a}fte gehen.
+
+Das Prinzip Waage, die \glq Wackel\"{a}quivalenz\grq{} $\vek f_h = \vek f$ war auch genau der Ansatz von {\em Clough\/}, \cite{Turner}, dem \glq Sch\"{o}pfer\grq\ der finiten Elemente\footnote{Detaillierter ist das in \cite{HaJa2} im Kapitel \glq Wie die Lawine ins Rollen kam\grq{} dargestellt.}.
+
+Die FEM bringt also ihr \glq eigenes Personal\grq\, ihre eigenen Lastf\"{a}lle $p_i$ mit. Der FE-Lastfall, das ist der Lastfall, den das Programm eigentlich l\"{o}st -- und exakt l\"{o}st -- ist eine \"{U}berlagerung dieser Lastf\"{a}lle, der {\em shape forces\/}
+\begin{align}
+p_h = \sum_{i = 1}^n\,u_i\,p_{i} \qquad \text{der FE-Lastfall}\,.
+\end{align}
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/U524}
+\caption{LF $g$ bei einer Kragscheibe. Die FE-Belastung besteht aus Linienlasten und Fl\"{a}chenlasten. F\"{u}r diesen Lastfall bemessen wir streng genommen die Scheibe}
+\label{U524}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Bei Stabtragwerken sind die {\em shape forces\/} (in der Regel) wirklich Knotenkr\"{a}fte, \"{a}hnlich wie in Abb. \ref{U523}, aber bei Fl\"{a}chentragwerken muss man sich von dem Gedanken l\"{o}sen. Dann sind es  vielmehr Linienlasten und Fl\"{a}chenlasten, die die Scheibe  in die Form $\vek u$ dr\"{u}cken, s. Abb. \ref{U524}, und die Arbeiten dieser Kr\"{a}fte $p_h$ auf den Wegen $\Np_i$ nennen wir $f_{hi} = \delta A_a(p_h,\Np_i$) und wir behandeln die $f_{hi}$ wie \glq Knotenkr\"{a}fte\grq, aber es sind keine echten Knotenkr\"{a}fte -- die w\"{u}rden das Material zum Flie{\ss}en bringen -- sondern vielmehr \glq Rechenpfennige\grq\ wie Eins im Sinn, s. das einleitende Beispiel in Kapitel 4.
+
+So wie die {\em shape functions\/} $\Np_i$, $i = 1,2,\ldots, n$ den Raum $\mathcal{V}_h$ aufspannen, also alle Verformungen $u_h(x) = \sum_i u_i\,\Np_i(x)$, so spannen -- spiegelbildlich hierzu -- die {\em shape forces\/} $p_i$ einen Raum $\mathcal{P}_h$ von Kr\"{a}ften auf, in dem die Lastf\"{a}lle
+\begin{align}
+p_h = \sum_{i = 1}^n u_i\,p_i
+\end{align}
+liegen. Zu jedem $u_h $ in $\mathcal{V}_h $ gibt es einen korrespondierenden Lastfall $p_h $ in $\mathcal{P}_h $, der die Kr\"{a}fte repr\"{a}sentiert, die die Verformung $u_h $ erzeugen.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = Projektionsverfahren}}}
+
+Man kann die FEM auch als ein Projektionsverfahren lesen. Die \glq Ebene\grq\, auf die projiziert wird,  ist der Ansatzraum $\mathcal{V}_{h}$ -- das sind alle die Verformungen, die das diskretisierte Tragwerk ausf\"{u}hren kann -- und die FE-L\"{o}sung ist der Schatten der exakten L\"{o}sung. Die Metrik, die dem ganzen zugrunde liegt, ist die Verzerrungsenergie und das bedeutet, dass der {\em Abstand zwischen der exakten L\"{o}sung und der FE-L\"{o}sung gemessen in der Verzerrungsenergie} der kleinstm\"{o}gliche ist. Dies garantiert, dass das Fehlerquadrat der Spannungen den kleinstm\"{o}glichen Wert hat.
+
+Wir k\"{o}nnen uns das so vorstellen: K\"{o}nnte man eine Scheibe exakt berechnen, dann w\"{u}rde sie die Lage $\vek u$ annehmen. Berechnet man sie mit finiten Elementen, dann nimmt sie statt dessen die Lage $\vek u_{h} $ an. Um nun die Scheibe aus der Lage $\vek u_{h} $ in die korrekte Lage $\vek u$ zu dr\"{u}cken, muss man zum Verschiebungsfeld $\vek u_{h} $ einen Korrekturterm $\vek e = \vek u - \vek u_h$ addieren.
+
+Sind $\sigma_{\,ij}^{\,e}$ und $\varepsilon_{\,ij}^{\,e}$ die Spannungen und die Verzerrungen, die zu der Korrektur $\vek e$ geh\"{o}ren, so w\"{a}hlt das FE-Programm die FE-L\"{o}sung $\vek u_{h} $ so aus, dass die Verzerrungsenergie des Korrekturterms
+\begin{align}
+a(\vek e,\vek e) = \int (\sigma_{xx}^e \, \,\varepsilon_{xx}^e + \,\tau_{xy}^e \,
+\,\gamma_{xy}^e + \sigma_{yy}^e \, \,\varepsilon_{yy}^e)\,d\Omega \quad \rightarrow
+\quad \mbox{Minimum}
+\end{align}
+so klein wie m\"{o}glich ist. Dies ist gleichbedeutend damit\footnote{Mit $\vek u = \vek u_h + \vek e$ folgt $a(\vek u ,\vek u) = a(\vek u_h,\vek u_h) + 2\,a(\vek u_h,\vek e) + a(\vek e,\vek e)$ und $a(\vek u_h,\vek e) = 0$ bei homogenen Randbedingungen}, dass die Arbeit, die n\"{o}tig ist, um die Scheibe zurechtzur\"{u}cken, also aus der FE-Lage $\vek u_{h} $ in die richtige Lage $\vek u$ zu dr\"{u}cken, ein Minimum ist. Kleiner kann man die Arbeit, die zur Korrektur n\"{o}tig ist, nicht machen.
+
+Weil ein Schatten (bei senkrechter Projektion) immer k\"{u}rzer als das Original ist, ist die Verzerrungsenergie der FE-L\"{o}sung immer kleiner als die Verzerrungsenergie der exakten L\"{o}sung. Wir sagen dazu, dass die Steifigkeit des Tragwerks von einer FE-L\"{o}sung \"{u}bersch\"{a}tzt wird.
+
+Allerdings gilt das nur, solange keine Lager verschoben werden, denn dann handelt es sich um eine \glq schiefe\grq\ Projektion, bei der der Schatten l\"{a}nger als das Original ist. Es macht mehr M\"{u}he, der steifen FE-Struktur eine Lagerverformung aufzuzwingen, als dem Original, \cite{Ha8}.
+
+Weil die FE-L\"{o}sung \glq der Schatten\grq\ der wahren L\"{o}sung ist, l\"{a}sst sich eine FE-L\"{o}sung auf demselben Netz auch nicht verbessern. Deswegen gibt es auf jedem Netz Lastf\"{a}lle, bei denen sich die Knoten nicht bewegen, $\vek u = \vek 0$. Sie erkennt man daran, dass alle Knotenkr\"{a}fte $f_i$ null sind, obwohl die Belastung nicht null ist. {\em Jedes Projektionsverfahren hat einen blinden Fleck\/}.\\
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = Energieverfahren}}}
+
+Ein FE-Programm denkt und rechnet in Arbeit und Energie. Kr\"{a}fte, die keine Arbeit leisten, existieren f\"{u}r ein FE-Programm nicht. Knotenkr\"{a}fte repr\"{a}sentieren {\em \"{A}quivalenzklassen\/} von Kr\"{a}ften. Lasten, die dieselbe Arbeit leisten, sind f\"{u}r ein FE-Programm identisch.
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/U522}
+\caption{Br\"{u}ckenplatte mit zentrischer St\"{u}tze \textbf{ a)} Einflussfl\"{a}che $G$ f\"{u}r die St\"{u}tzenkraft $S$, \textbf{ b)} die FEM benutzt eine gen\"{a}herte Einflussfl\"{a}che $G_h$ und deswegen ist $S_h \neq S$} \label{U522}
+\end{figure}%%
+%-----------------------------------------------------------------
+
+Die moderne Statik ersetzt sozusagen die Null durch null Arbeit. Nach klassischem Verst\"{a}ndnis ist eine Streckenlast $p(x)$ mit einer zweiten Streckenlast $p_h(x)$ identisch, wenn in jedem Punkt $0 \leq x \leq l$ des Tr\"{a}gers die Differenz null ist,
+\begin{align}
+p(x) - p_h(x) = 0 \qquad 0 \leq x \leq l \qquad \mbox{starkes Gleichheitszeichen}\,.
+\end{align}
+In der modernen Statik verlangen wir nur, dass die beiden Streckenlasten bei jeder virtuellen Verr\"{u}ckung
+dieselbe Arbeit leisten, also
+\begin{align}
+\int_0^{\,l} p(x) \,\delta w(x)\,dx = \int_0^{\,l} p_h(x) \,\delta w(x)\,dx   \qquad
+\mbox{f\"{u}r alle $\delta w(x)$}\,.
+\end{align}
+Das ist das {\em schwache Gleichheitszeichen\/}\index{schwaches Gleichheitszeichen}. Wenn {\em alle\/} wirklich alle bedeutet, dann ist das schwache Gleichheitszeichen nat\"{u}rlich identisch mit dem starken Gleichheitszeichen. In allen anderen F\"{a}llen, wenn wir die Gleichheit nur gegen\"{u}ber endlich vielen virtuellen Verr\"{u}ckungen $\delta w$ garantieren, bleibt eine Differenz.\\
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = Rechnen mit gen\"{a}herten Einflussfunktionen}}}
+
+Die St\"{u}tzenkraft $S$ in Abb. \ref{U522} ermittelt der Statiker, indem er den SLW auf die Einflussfl\"{a}che $G$ setzt und  $S$ mit den Radlasten $p$ \"{u}berlagert
+\begin{align}\label{Eq2}
+S = \int_{\Omega} G\,p\,d\Omega \qquad p = \text{Radlasten des SLW}\,.
+\end{align}
+Genauso macht es das FE-Programm. Es berechnet sich die Einflussfl\"{a}che und \"{u}berlagert. Weil aber die FE-Einflussfl\"{a}che $G_h$ nicht mit der exakten Einflussfl\"{a}che deckungsgleich ist, ist das Ergebnis $S_h$ nur eine N\"{a}herung. Das ist der Grund, warum FE-Ergebnisse von den exakten Werten abweichen: {\em Die FE-Einflussfunktionen sind nur N\"{a}herungen\/}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Finite Elemente am Seil}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Wir wollen die obigen Thesen nun an einem quer gespannten Seil erl\"{a}utern, s. Abb. \ref{Seil1}, und -- anders als in der Einleitung -- das {\em Prinzip vom Minimum der potentiellen Energie\/} zur Herleitung der Gleichung $\vek K\,\vek w = \vek f$ benutzen. Wir tun das, um zu demonstrieren, dass es verschiedene Wege gibt, die Grundgleichung der FEM herzuleiten.
+
+Das Seil\index{Seil} sei mit einer Kraft $H$ vorgespannt und es trage eine Streckenlast $p$. Gesucht ist der Verlauf der Vertikalkraft $V(x)$ und  die Biegelinie $w(x)$ des Seils, die die L\"{o}sung des Randwertproblems
+\begin{align}
+- H w''(x) = p(x) \qquad 0 < x < l\qquad w(0)= w(l) = 0 \,,
+\end{align}
+ist. Die Vertikalkraft $V(x)$ in dem Seil, sie ist proportional zur Seilneigung $w'(x)$
+\begin{align}
+V(x) = H w'(x) \,,
+\end{align}
+bildet zusammen mit der konstanten Horizontalkraft $H$ die \index{Seilkraft} Seilkraft
+\begin{align}
+S(x) = \sqrt{H^2 + V^2}.
+\end{align}
+Was beim Balken die Biegesteifigkeit $EI$ ist, ist beim Seil die Vorspannung\footnote{Beim Stimmen einer Gitarre \"{a}ndert man $H$}
+\begin{align}
+w(x) = \frac{1}{EI} (\ldots \,\,\ldots)  \quad \text{Balken}  \qquad w(x) = \frac{1}{H} (\ldots \,\,\ldots)\quad \text{Seil}\,.
+\end{align}
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/SEILD}
+\caption{Seil unter Belastung und Unterteilung des Seils in vier Elemente} \label{Seil1}
+\end{figure}%%
+%-----------------------------------------------------------------
+Statisch spielt die Vertikalkraft $V$ beim Seil dieselbe Rolle wie die Querkraft $V$ beim Balken. Energetisch ist sie jedoch mit dem Moment $M$ des Balkens verwandt: Die potentielle Energie eines Balkens ist bekanntlich der Ausdruck
+\begin{align}
+\Pi(w) = \frac{1}{2} \int_0^{\,l} EI (w'')^2 dx - \int_0^{\,l} p \, w\, dx = \frac{1}{2}
+\int_0^{\,l} \frac{M^2}{EI} \,dx - \int_0^{\,l} p \, w\, dx\,,
+\end{align}
+und die potentielle Energie eines Seils ist der Ausdruck
+\begin{align}
+\Pi(w) = \frac{1}{2} \int_0^{\,l} H (w')^2 \,dx - \int_0^{\,l} p \, w\, dx = \frac{1}{2}
+\int_0^{\,l}\frac{V^2}{H}- \int_0^{\,l} p \, w\, dx\,.
+\end{align}
+Energetisch besteht also eine formale Verwandtschaft
+\begin{align}
+\frac{1}{2} \int_0^{\,l} \frac{M^2}{EI} \,dx \equiv \frac{1}{2} \int_0^{\,l}
+\frac{V^2}{H}\,dx\,,
+\end{align}
+dies zum Verst\"{a}ndnis.
+
+Um nun den Durchhang des Seils unter Last und die Vertikalkraft $V$ zu berechnen, unterteilen wir das Seil in vier lineare finite Elemente, s. Abb. \ref{Seil1}. Linear bedeutet, dass die Durchbiegung zwischen den Knoten linear verl\"{a}uft. Wir erlauben dem Seil also nur noch die Verformungen, die sich durch die drei Einheitsverformungen $\Np_i(x)$, die drei Seilecke in Abb. \ref{Seil1}, darstellen lassen,
+\begin{align}
+ w_{h}(x) = w_1 \Np_1(x) + w_2 \Np_2(x) + w_3 \Np_3(x) \qquad
+\mbox{(FE-Ansatz)} \,.
+\end{align}
+Die Durchbiegungen $w_1, w_2, w_3$ in den drei Knoten sind praktisch Gewichte an den Einheitsverformungen. Sie verraten, wieviel von jeder Einheitsverformung das Seileck\index{Seileck} $w_{h}$ enth\"{a}lt.
+
+Alle Seilecke, die sich mit diesem Ansatz darstellen lassen,  bilden den sogenannten \index{Ansatzraum}\index{$\mathcal{V}_h$}Ansatzraum $\mathcal{V}_{h}$\index{$\mathcal{V}$}.
+
+Bleiben wir bei diesem Bild, so k\"{o}nnen wir uns $\mathcal{V}_h$ als Teil des \index{Verformungsraum}{\em Verformungsraums} $\mathcal{V}$\footnote{,oder $\mathcal{V}$ wie Vorrat'} des Seils denken\index{Verformungsraum}. In $\mathcal{V}$ liegen alle die Biegelinien, die das Seil theoretisch annehmen kann und daher ist anschaulich klar, dass die Seilecke in $\mathcal{V}_h$ wirklich nur einen kleinen Ausschnitt aus $\mathcal{V}$ darstellen.
+
+Wie sollen wir nun die drei  Zahlen $w_1, w_2,w_3$ in dem FE-Ansatz w\"{a}hlen? Mit welchen Werten $w_i$ erhalten wir die beste N\"{a}herung?
+
+Hier hilft das \index{Prinzip vom Minimum der potentiellen Energie}{\em Prinzip vom Minimum der potentiellen Energie} weiter. Dieses besagt: Die Durchbiegung $w$ des Seils macht die potentielle Energie auf $\mathcal{V}$ zum Minimum, d.h. diejenige Biegelinie in $\mathcal{V}$, deren potentielle Energie
+\begin{align}\label{Pot} \Pi(w) = \frac{1}{2}
+\int_0^{\,l} H (w')^2 dx - \int_0^{\,l} p \, w\, dx
+\end{align}
+am kleinsten ist, ist auch die Gleichgewichtslage des Seils.
+
+Unsere Idee ist es, diese Eigenschaft zur Bestimmung der FE-L\"{o}sung zu nutzen: Wenn die exakte Biegelinie $w$ die Konkurrenz auf ganz $\mathcal{V}$ gewinnt, dann w\"{a}hlen wir die Durchbiegungen
+$w_i$ der drei Knoten so, dass die FE-L\"{o}sung
+\begin{align}\label{Ansatz}
+w_{h}(x) = \sum_{i=1}^3 w_i \, \Np_i(x)
+\end{align}
+wenigstens auf der {\em Teilmenge} $\mathcal{V}_{h} \subset \mathcal{V}$ die Konkurrenz gewinnt, also unter allen Biegelinien, die in $\mathcal{V}_{h}$ liegen, den kleinsten Wert f\"{u}r die potentielle Energie (\ref{Pot}) liefert.
+
+Auf Grund des Ansatzes (\ref{Ansatz}) ist jedes Seileck in $\mathcal{V}_{h}$ an den drei Knotenverschiebungen $w_i$, dem Vektor $\vek w = \{w_1,w_2,w_3\}^T$, (das ist seine \glq Adresse\grq\ in $\mathcal{V}_h$), erkennbar und daher ist die potentielle Energie eines Seilecks in $ \mathcal{V}_h$ durch diese drei Zahlen markiert
+\begin{align}
+\Pi(w_h) &= \Pi(\vek w) = \frac{1}{2} \,\vek w^T \vek K \vek w - \vek f^T \vek w \nn \\
+&= \frac{1}{2}\,\left[w_1,w_2,w_3\right]\,\frac{4\,H}{l}\,\left[\barr{r r r} 2 & - 1 & 0 \\ - 1 & 2 & -1 \\ 0 & -1 & 2 \earr\right]
+\,\left[\barr{c} w_1 \\w_2 \\ w_3 \earr \right] - \left[ f_1, f_2, f_3\right]\,\left[\barr{c} w_1 \\ w_2 \\w_3\earr\right] \nn \\
+&= \frac{4\,H}{l}(w_1^2 - w_1\,w_2 + w_2^2 - w_2\,w_3 + w_3^2) - f_1\,w_1 - f_2\,w_2 - f_3\,w_3\,,
+\end{align}
+wobei die Matrix $\vek K$ und der Vektor $\vek f$ die Elemente
+\begin{align}
+k_{\,ij} = \int_0^{\,l} H \Np_i' \, \Np_j' \, dx \qquad \mbox{und}\qquad f_{\,i} =
+\int_0^{\,l} p \, \,\Np_i \, dx \qquad l = 4\,l_e
+\end{align}
+haben. Das Minimum von $\Pi$ auf $\mathcal{V}_{h}$ zu finden, ist daher \"{a}quivalent mit der Aufgabe,
+den Vektor $\vek w$ zu finden, der die {\em Funktion} $\Pi(\vek w) = \Pi(w_1,w_2,w_3)$ zum Minimum macht.
+Notwendig daf\"{u}r ist bekanntlich, dass die ersten Ableitungen der Funktion $\Pi(\vek w)$ nach den 3
+Parametern $w_i$ im tiefsten Punkt, an der Stelle $\vek w$, verschwinden,
+\begin{align}
+\frac{\partial \Pi}{\partial w_i} = \sum_{j = 1}^3 k_{\,ij}\, w_j - f_{\,i} = 0\,,
+\qquad i = 1,2,3\,,
+\end{align}
+oder ausgeschrieben,
+\begin{align}\label{Eq5}
+ \frac{4\,H}{l}\,\left[\barr{r r r} 2 & - 1 & 0 \\ - 1 & 2 & -1 \\ 0 & -1 & 2 \earr\right]
+\,\left[\barr{c} w_1 \\w_2 \\ w_3 \earr \right] = \left[\barr{c} p\,l_e \\ p\,l_e  \\ p\,l_e  \earr \right]\,.
+\end{align}
+Das ist das Gleichungssystem $ \vek K \vek w = \vek f $,
+und die zugeh\"{o}rige L\"{o}sung $w_1 = w_3 = 1.5\,p\,l_e\,, w_2 = 2.0\,p\,l_e$ markiert auf $\mathcal{V}_h$ die beste Ann\"{a}herung an die exakte Biegelinie
+\begin{align}\label{A11Resultat}
+w_{h}(x) = p\, l_e \left(1.5 \cdot \Np_1(x) + 2.0 \cdot \Np_2(x) + 1.5 \cdot \Np_3(x)\right)\,.
+\end{align}
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/U163}
+\caption{Seilberechnung mit zwei Elementen,  \textbf{a)} Belastung und Biegelinie, \textbf{ b)} FE-L\"{o}sung + lokale L\"{o}sungen, \textbf{ c)} lokale L\"{o}sungen, \textbf{ d)} Einheitsverformung des Knotens. Bemerkenswert ist, dass die Tangente im Mittenknoten automatisch stetig ist (kein Knick!), kein Sprung in der Querkraft $V = H\,w'$} \label{U163}
+\end{figure}%%
+%----------------------------------------------------------
+\vspace{-0.1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Addition der lokalen L\"{o}sung}}}\index{lokale L\"{o}sung}
+Nun sieht man auf dem Bildschirm kein Seileck, sondern eine wohlgeschwungene Parabel, also die exakte Kurve. Wie macht das das FE-Programm? Es geht genau so vor, wie wir das beschrieben haben:\\
+
+\begin{itemize}
+  \item Es unterteilt das Seil in kleine Elemente.
+  \item Es reduziert die Belastung in die Knoten, es berechnet also die $f_i$\,.
+  \item Es l\"{o}st das Gleichungssystem $\vek K\,\vek w = \vek f$\,.
+\end{itemize}
+Wenn es jetzt stehen bleiben w\"{u}rde, dann w\"{u}rde man auf dem Bildschirm ein Seileck sehen.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.75\textwidth]{\Fpath/U529}
+\caption{Zweifeldtr\"{a}ger,  \textbf{a)} System und Belastung, \textbf{ b)} Reduktion der Belastung in die festgehaltenen Knoten, \textbf{ c)} resultierende Knotenkr\"{a}fte \textbf{ d)} Definition der Knotenverdrehungen $w_4, w_6$ und Bestimmung der Gr\"{o}{\ss}en durch einen Knotenausgleich, $\vek K\,\vek w = \vek f$} \label{U529}
+\end{figure}%%
+%----------------------------------------------------------
+Es folgt nun aber noch ein weiterer Schritt. Das Programm berechnet f\"{u}r jedes Element die sogenannte {\em lokale L\"{o}sung\/}\index{lokale L\"{o}sung} $w_{loc}$. Das ist die Durchbiegung, die die Streckenlast an dem {\em beidseitig festgehaltenen Element\/} erzeugt, und diese wird elementweise zu dem Seileck addiert. So ist die exakte Seilkurve in Abb. \ref{U163} entstanden.
+
+Das ist eine 1:1 Kopie des Drehwinkelverfahrens, das erst alle Belastung in die Knoten reduziert, dann einen Knotenausgleich ausf\"{u}hrt und zum Schluss feldweise die lokalen L\"{o}sungen einh\"{a}ngt.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Bei Stabtragwerken ist die Methode der finiten Elemente mit dem Drehwinkelverfahren identisch. }}\\
+
+Das L\"{o}sen des Gleichungssystems $\vek K\,\vek w = \vek  f$ in der FEM entspricht einem Knotenausgleich in einem Schritt, s. Abb. \ref{U529}.
+
+So gelingt es also den finiten Elementen trotz ihrer beschr\"{a}nkten Kinematik, also der Verwendung von
+\begin{itemize}
+  \item linearen Ans\"{a}tzen f\"{u}r die Element-L\"{a}ngsverschiebungen
+  \item kubischen Polynomen f\"{u}r die Element-Durchbiegungen
+\end{itemize}
+die exakten Verformungen zu generieren; die lokalen L\"{o}sungen bringen den fehlenden \glq Schwung\grq\ in die Verformungsfigur. Die $u_{loc}$ bzw. $w_{loc}$ stehen in einer (aus der Statik-Literatur \"{u}bernommen) Bibliothek des FE-Programms und werden von dort bei Bedarf abgerufen (oder jedesmal neu mit dem {\em \"{U}bertragungsverfahren\/}\index{Uebertragungsverfahren} berechnet).
+
+All dies gilt genau genommen nur, wenn die Steifigkeiten $EA$ bzw. $EI$ konstant sind, weil nur dann die Element-Einheitsverformungen $\Np_i^e$ homogene L\"{o}sungen der Stab- bzw. Balkendifferentialgleichung sind. Bei gevouteten Tr\"{a}gern liefern die finiten Elementen  also nur eine N\"{a}herung, was aber auch f\"{u}r das Drehwinkelverfahren gilt, denn die exakte Reduktion der Belastung in die Knoten bei gevouteten Tr\"{a}gern beherrscht auch das Drehwinkelverfahren in der Regel nicht. Ganz zu schweigen von der Kenntnis der exakten Fortleitungszahlen in einem solchen Fall.
+
+Die \"{A}quivalenz {\em Finite Elemente = Drehwinkelverfahren\/} bedeutet aber auch, dass es keinen Sinn macht, die Stiele und Riegel eines Rahmens weiter in Elemente zu unterteilen. Es bringt nichts an Genauigkeit.
+
+Statisch beruht der \glq Trick\grq\ mit der lokalen L\"{o}sung darauf, dass sich die Knotenverformungen eines Rahmens nicht \"{a}ndern, wenn man die Belastung in die Knoten reduziert.
+
+Bei Fl\"{a}chentragwerken funktioniert das leider nicht, weil zum einen auf den Kanten des Netzes unendlich viele Punkte, sprich Knoten, liegen und man zum anderen die lokalen L\"{o}sungen nicht kennt. Am n\"{a}hesten kommt dem Drehwinkelverfahren noch die {\em Methode der Randelemente\/} (BEM)\index{BEM}, die den Rand in Randelemente unterteilt, einen Knotenausgleich auf dem Rand ausf\"{u}hrt und dann mittels Einflussfunktionen die Schnittgr\"{o}{\ss}en im Inneren berechnet, \cite{Ha2}.
+
+\begin{remark}
+Die finiten Elemente werden gerne am Balken erkl\"{a}rt. Wir machen das auch. Damit die finiten Elemente aber finite Elemente bleiben, m\"{u}ssen wir uns darauf verst\"{a}ndigen, dass alle diese Demonstrationen sich auf den Zeitpunkt beziehen, {\em bevor\/} die lokale L\"{o}sung zur FE-L\"{o}sung addiert wird.
+\end{remark}
+\vspace{-1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Projektion}}}\label{Projektion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Die FEM ist ein Projektionsverfahren. Arbeit ist ein Skalar -- wie die Temperatur und der Luftdruck. Arbeit ist {\em Kraft $\times$ Weg\/} und Arbeit und Energie sind
+dasselbe. Das Integral
+\begin{align}
+ \frac{1}{2} \int_0^{\,l} \frac{V^2}{H}\, dx\,, \qquad V = H w'\,,
+\end{align}
+ist die innere Energie des Seils in der ausgelenkten Lage $w$. Es ist die Verzerrungsenergie, die nach unserem Verst\"{a}ndnis in dem ausgelenkten Seil  gespeichert ist.
+
+Energie ist das Ma{\ss}, mit dem die finiten Elemente arbeiten. Wenn man ein Ma{\ss} hat, dann hat man auch eine {\em Topologie\/}, dann gibt es nah und fern.
+
+Das bekannteste Ma{\ss} ist das {\em euklidische Ma{\ss}}
+\begin{align}
+| \vek x | = \sqrt{x_1^2 + x_2^2 + x_3^2}\,.
+\end{align}
+In dieser Topologie sind zwei St\"{a}dte $A$ und $B$ benachbart, wenn der Abstand zwischen ihren Ortsvektoren $\vek a$ und $\vek b$ (bezogen auf den geographischen Nullpunkt) klein ist,
+\begin{align}
+|\vek a - \vek b\,| \quad \mbox{\glq klein\grq\ \, } \quad \Longrightarrow \qquad
+\mbox{$A$ und $B$ liegen nah beeinander}\,.
+\end{align}
+Der Begriff des Abstands leitet \"{u}ber zu dem Begriff der Projektion, zum Schattenwurf. Der Schatten $\vek x'$ eines Vektors $\vek x$ ist der Vektor in der Ebene, der den k\"{u}rzesten Abstand zur Spitze von $\vek x$ hat, s. Abb. \ref{U161}, was bedeutet, dass der Fehlervektor
+\begin{align}
+\vek e = \vek x - \vek x' \,,
+\end{align}
+die kleinstm\"{o}gliche L\"{a}nge hat
+\begin{align}
+ |\vek e| =
+\sqrt{(x_1 - x_1' )^2 + (x_2 - x_2')^2 + (x_3 - 0)^2} = \textrm{Minimum}\,.
+\end{align}
+Von jedem anderen Punkt $\hat{\vek x}$ in der Ebene zur Spitze des Vektors $\vek x$ ist es ein l\"{a}ngerer Weg
+\begin{align}
+|\hat{\vek e}| = |\vek x - \hat{ \vek x}| > |\vek  e| = |\vek x - \vek x'| \,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/U161}
+\caption{Alle Vektoren haben denselben Schatten $\vek x'$. Das Projektionsverfahren ist
+blind gegen\"{u}ber Unterschieden in Projektionsrichtung} \label{U161}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Dies ist also das {\em erste} Kennzeichnen einer Projektion: Der Schatten ist der Sieger in einem Wettbewerb. Er ist die L\"{o}sung eines Minimumproblems.
+
+Das {\em zweite} Kennzeichen einer Projektion ist, dass der Fehler $\vek e$ orthogonal auf der $x_1\!-\! x_2$-Ebene steht (wir nehmen an, dass die Sonne genau von oben scheint), denn das Skalarprodukt zwischen dem Fehler und dem Schatten ist null
+\begin{align}
+\vek e^T \vek x' = 0 \,,
+\end{align}
+was bedeutet, dass der Schatten des Fehlers $\vek e$ keine Ausdehnung hat, weil der Fehler genau in die Projektionsrichtung f\"{a}llt. Ein Projektionsverfahren ist also {\em blind gegen\"{u}ber Fehlern, die in der Blickrichtung liegen}. Alle Vektoren $\bar{\vek x}$, die \glq \"{u}ber\grq\ dem Vektor $\vek x$ liegen, sich nur um einen additiven Term in Projektionsrichtung von dem Vektor $\vek x$ unterscheiden, haben den gleichen Schatten, s. Abb. \ref{U161}.
+
+Das {\em dritte} Kennzeichen ist, dass eine nochmalige Projektion nichts bringt, der Fehler nicht kleiner gemacht werden kann: {\em Der Schatten des Schattens ist der Schatten\/}. Ein Projektionsverfahren bleibt nach dem ersten Schritt stehen, w\"{a}hrend andere Operationen wie z.B. das Quadrieren {\em ad infinitum} fortgesetzt werden k\"{o}nnen.
+
+Das {\em vierte\/} Kennzeichen ist, dass der Schatten eine k\"{u}rzere L\"{a}nge hat, als das Original, s. Abb. \ref{U161}.  \"{U}bertragen auf die finiten Elemente bedeutet das, dass die Projektion $w_h$ auf den Unterraum $\mathcal{V}_{h}$, die FE-L\"{o}sung, eine kleinere Energie hat als die exakte L\"{o}sung $w$.
+
+
+Die FE-Biegelinie $w_h$ l\"{o}st also das folgende Minimumproblem:
+
+{\flushleft {\em Finde die Biegelinie
+\begin{align}
+ w_{h}(x) = w_1 \Np_1(x) + w_2
+\Np_2(x) + w_3 \Np_3(x)
+\end{align}
+in $\mathcal{V}_{h}$, deren Fehler $e = w - w_h$ senkrecht auf $\mathcal{V}_{h}$ steht
+\begin{align} \label{Eq4}
+a(e,\Np_i) = 0 \qquad i = 1,2,3\,, \qquad \text{Galerkin Orthogonalit\"{a}t}
+\end{align}
+die also -- was damit gleichbedeutend ist -- den k\"{u}rzesten Abstand zur wahren Biegelinie $w$ aufweist! }}\\
+
+Abstand hier als Abstand in der inneren Energie, f\"{u}r die wir in der FEM gerne die Notation
+\begin{align}
+a(w,w) := \int_0^{\,l} H\,(w')^2\,dx = \int_0^{\,l} \frac{V^2}{H}\,dx
+\end{align}
+benutzen. Die drei Gleichungen (\ref{Eq4}) sind wegen\footnote{$a(w,\Np_i) = \delta A_i(w,\Np_i)$ = virtuelle innere Energie im Seil bei der Verr\"{u}ckung $\Np_i$, die gleich der virtuellen \"{a}u{\ss}eren Arbeit $\delta A_a(w,\Np_i) = (p,\Np_i) = f_i$ ist}
+\begin{align}
+a(e,\Np_i) &= a(w - w_h,\Np_i) = a(w,\Np_i) - a(w_h,\Np_i)\nn \\
+&= f_i - \sum_{j = 1}^3 a(\Np_j,\Np_i) \,w_j = f_i - \sum_{j = 1}^3 k_{ij} w_j = 0 \qquad  i = 1,2,3
+\end{align}
+mit dem System System $\vek K\,\vek w = \vek f$ in (\ref{Eq5}) identisch.
+
+Und die Projektion $w_h$ weist in der Tat den kleinsten Fehler in der {\em inneren Energie} auf
+\begin{align}
+\frac{1}{2} \int_0^{\,l} \frac{V_e^2}{H} \,dx = a(e,e) = \mbox{Minimum}\,, \qquad V_e = H e' = H
+(w' -  w_h') \,,
+\end{align}
+denn der Versuch durch Addition einer Funktion $v_h \in \mathcal{V}_h$ zu $e$ den Abstand weiter zu verk\"{u}rzen scheitert, weil die Energie gr\"{o}{\ss}er wird und nicht kleiner
+\begin{align}\label{E7Proof1}
+a(e + v_h,e + v_h) = a(e,e) + 2\underbrace{a(e,v_h)}_{=\, 0} +
+\underbrace{a(v_h,v_h)}_{>\, 0}\,,
+\end{align}
+und zwar w\"{a}chst sie genau um die Energie $a(v_h,v_h)$ der Testfunktion, die man dazu addiert.
+
+Weil die Verzerrungsenergie der FE-L\"{o}sung kleiner als die Verzerrungsenergie der exakten L\"{o}sung ist
+\begin{align}\label{UngA12}
+a(w_h,w_h) = \int_0^{\,l} \frac{V_h^2}{H}\,dx < \int_0^{\,l} \frac{V^2}{H}\,dx =
+a(w,w)\,,
+\end{align}
+also der Schatten eine k\"{u}rzere  L\"{a}nge (= Energie) hat als $w$, sagen wir das FE-Tragwerk sei zu steif. Diese Absch\"{a}tzung ergibt sich mit $e = w - w_h$ direkt aus
+\begin{align}
+0 < a(w,w) = a(w_h + e,w_h + e) = a(w_h,w_h) + 2\,\underbrace{a(e,w_h)}_{=\, 0} +
+\underbrace{a(e,e)}_{>\, 0}\,.
+\end{align}
+{\em Die Verzerrungsenergie oder innere Energie ist also das Ma{\ss}, mit dem die finiten Elementen arbeiten\/}. Nah und fern, gro{\ss} und klein, beziehen sich auf dieses Ma{\ss}.
+
+Durch die innere Energie wird auf dem Verformungsraum $\mathcal{V}$ des Seils eine Topologie induziert. Die Energie ist dort sogar eine {\em Norm}, d.h. sie ist in der Lage die Elemente von $\mathcal{V}$ zu {\em trennen}, denn zwei Biegelinien $w_1$ und $w_2$ sind genau dann gleich, wenn ihr Abstand in der Energie null ist
+\begin{align}
+\frac{1}{2} \int_0^{\,l} \frac{(V_1 - V_2)^2}{H}\, dx = 0 \qquad \Rightarrow \qquad w_1 =
+w_2\,.
+\end{align}
+Und eine Funktion $w$ ist in dieser Metrik klein, wenn ihre Energie (im wesentlichen also das Quadrat ihrer ersten Ableitung) klein ist, und die exakte Biegelinie $w$ und das FE-Seileck $w_{h}$ liegen in dieser Metrik nah beieinander, wenn die Energie der n\"{o}tigen Korrektur
+\begin{align}
+e(x) = w(x) - w_{h}(x)\qquad (\mbox{$e$ = Fehler} )
+\end{align}
+klein ist,
+\begin{align}
+\frac{1}{2} \int_0^{\,l} \frac{V_e^2}{H}\, dx  = \frac{1}{2} \int_0^{\,l} H (w' - w_h')^2
+\,dx  = \mbox{klein} \qquad \Longrightarrow \qquad e(x) = \mbox{klein}\,,
+\end{align}
+wenn also das Fehlerquadrat der ersten Ableitungen des Fehlers $e(x)$ klein ist.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/U478}
+\caption{In einer kleinen Flatterschwingung kann eine gro{\ss}e Energie stecken} \label{Schwankung}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Diese Energiemetrik ist sinnvoller als der naive Abstandsbegriff, f\"{u}r den z.B. eine kleine Auslenkung des Seils  wie etwa $w(x) = 0.1 \sin (10 \,x)$, s. Abb. \ref{Schwankung}, eine \glq kleine\grq\ Funktion ist, w\"{a}hrend sie f\"{u}r die FEM eine \glq gro{\ss}e\grq\ Funktion ist, weil der rasche Wechsel der Ausschl\"{a}ge, auch wenn sie an sich klein sind, die Verzerrungsenergie nach oben treibt,
+\begin{align}
+ \int_0^1 w(x)^2 \, dx =
+0.005\,, \qquad \frac{1}{2}\int_0^1 H w'(x)^2 \, dx = 50.0 \cdot H\qquad\mbox{(Energie)}\,.
+\end{align}
+Aus statischer Sicht ist es also besser Biegelinien nach der Energie zu beurteilen, die in ihnen enthalten ist.
+
+Noch besser w\"{a}re es, beide Anteile in das Ma{\ss}, in die Metrik einflie{\ss}en zu lassen. Damit kommt man zu den sogenannten \index{Sobolev-Norm}{\em Sobolev-Normen}, die, je nach Ordnung $m$ der Norm, die Ableitungen bis zur Ordnung $m$ messen
+\begin{align}
+ ||w||_m = \left[\int_0^{\,l} \left [w(x)^2 + w'(x)^2 +
+\ldots + w^{(m)}(x)^2 \right]\, dx \right]^{1/2}
+\end{align}
+und Funktionen nach diesem Ma{\ss} klassifizieren. Man kann hiermit verschieden feine Topologien auf $\mathcal{V}$ erzeugen. So wie ja der Abstand zweier Vektoren nicht nur von dem Abstand der beiden ersten Komponenten abh\"{a}ngt, $|\vek a - \vek b| = \sqrt{(a_1- b_1)^2}$, das w\"{a}re eine sehr grobe Topologie, sondern vom Abstand {\em aller\/} Komponenten
+\begin{align}
+|\vek a - \vek b| = \sqrt{(a_1- b_1)^2 + (a_2- b_2)^2 + \ldots + (a_n- b_n)^2 }\,.
+\end{align}
+Diese Metrik erlaubt die beste Unterscheidung, sie erzeugt die feinst m\"{o}gliche Topologie. So wie in einer Lotterie der Gewinn um so h\"{o}her ausf\"{a}llt, je mehr Ziffern in der Losnummer mit der gezogenen Zahl \"{u}bereinstimmen.\\
+
+{\em Anmerkung:\/} Wenn sich Lager senken, ist  \index{schiefe Projektion}die Projektion \glq schief\grq,  dann hat der Schatten eine gr\"{o}{\ss}ere L\"{a}nge als das Original, und der Fehler $e = w - w_h$ steht nicht mehr senkrecht auf $\mathcal{V}_h$
+\begin{align}
+a(e,v_h) \neq 0\,,  \qquad v_h \in \mathcal{V}_h\,,
+\end{align}
+und die Ungleichung  $a(w_h,w_h) < a(w,w)$ gilt nicht mehr, s. (\ref{UngA12}). Ja in diesem Fall ist es so, dass die FE-L\"{o}sung eine gr\"{o}{\ss}ere innere Energie hat als die exakte L\"{o}sung, $a(w,w) < a(w_h,w_h)$, was ja auch der Anschauung entspricht: Je steifer ein Tragwerk ist, um so mehr Energie ist n\"{o}tig, um ein Lager auzulenken.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/UNTERRAUM}
+\caption{Die Seilecke, die das FE-Programm darstellen kann, bilden eine kleine Teilmenge $\mathcal{V}_{h}$
+des Verformungsraums $\mathcal{V}$}
+\label{Unterraum}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Der Fehler der FE-L\"{o}sung}}}\label{Der Fehler der FE-Loesung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Drei Funktionen bestimmen die Statik des Seils:\\
+\begin{itemize}
+\item{Die Durchbiegung $w$}
+\item{Die Schnittkraft $V = H w' $ }
+\item{Die Belastung $p = - H w''$}
+\end{itemize}
+-- also die nullte $(\,)$, die erste $(')$ und die zweite Ableitung $('')$ der Biegelinie und die FEM muss sich entscheiden, welcher der drei Abst\"{a}nde
+\begin{alignat}{2}
+w - w_{h} &\qquad && \textrm{Fehler in der Durchbiegung} \nn\\
+V - V_{h} &\qquad && \textrm{Fehler in der Schnittkraft} \nn\\
+p - p_{h} &\qquad &&\textrm{Fehler in der Belastung}\nn
+\end{alignat}
+m\"{o}glichst klein werden soll. Im Prinzip haben wir die Antwort darauf oben schon gegeben: Die FE-L\"{o}sung stellt sich so ein, dass der Fehler in der Schnittkraft, $V- V_h$, der ersten Ableitung $(')$, m\"{o}glichst klein wird
+\begin{align}
+ \int_0^{\,l} (V - V_h)^2 dx = \int_0^{\,l} H^2
+(w{'} - w_h')^2 dx \quad \rightarrow \quad \mbox{Minimum}\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/VERGLEICHD}
+\caption{ Die drei Fehler einer FE-L\"{o}sung {\bf a)} Der Fehler in der Belastung, $p -
+p_h$, {\bf b)} Der Fehler in der Durchbiegung, $w - w_h$, {\bf c)} Der Fehler in den
+Schnittgr\"{o}{\ss}en, $V - V_h$. Das FE-Programm strebt danach, den Fehler in den
+Schnittkr\"{a}ften, $V-V_{h} $, zu minimieren} \label{Vergleich}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Eine FE-L\"{o}sung m\"{o}chte also keinen Sch\"{o}nheitspreis gewinnen, sich nicht m\"{o}glichst genau an die wahre Biegelinie (die nullte Ableitung) anschmiegen oder die Belastung (die zweite Ableitung) treu nachbilden, sondern sie legt mehr Gewicht auf Seelenverwandtschaft, auf bestm\"{o}gliche Ann\"{a}herung an die inneren Werte, die Verzerrungsenergie.
+
+Der Fehler $p - p_h$ in der Belastung, das $p_h$ sind hier die Knotenkr\"{a}fte $f_i$, ist also nicht das prim\"{a}re Augenmerk eines FE-Programms, aber es ist der einzige Fehler, den wir kontrollieren k\"{o}nnen, den wir quantifizieren k\"{o}nnen.
+
+Wir br\"{a}uchten daher eine Formel, die es erlauben w\"{u}rde, aus dem Unterschied $ p - p_{h}$ auf der Lastseite auf die Differenz $V - V_{h}$ in der Schnittkraft und den Unterschied $w - w_{h}$ in der Durchbiegung zu schlie{\ss}en.
+
+Beim Differenzieren durchlaufen wir diese Kette in der Richtung
+\begin{align}
+ w \qquad \Rightarrow\qquad  V = H\,
+w' \qquad  \Rightarrow\qquad  p = - H\, w''\,,
+\end{align}
+und in umgekehrter Richtung m\"{u}ssen wir integrieren
+\begin{align}
+ w = \int\!\!\! \int - \frac{p}{H} \,dx\, dx \!\quad \Leftarrow\quad  V = \int- p \,\,dx \quad \Leftarrow\quad  p
+= - H \,w''\,.
+\end{align}
+Anders als die Differentiation, die aufrauht, gl\"{a}ttet die Integration. Beim R\"{u}ckw\"{a}rtsgehen wird aus einem etwaigen gro{\ss}en Fehler in den Lasten ein kleinerer Fehler in den Schnittkr\"{a}ften und noch eine Stufe h\"{o}her ein noch kleinerer Fehler in den Durchbiegungen, wie Abb. \ref{Vergleich} anschaulich illustriert.
+
+Das ist eine beruhigende Beobachtung, aber technisch geht sie nicht \"{u}ber eine Vermutung hinaus, denn es gibt leider keine verl\"{a}ssliche Methode aus dem Unterschied in den Lasten auf den Unterschied in den Schnittkr\"{a}ften zu schlie{\ss}en. W\"{a}re es anders, so k\"{o}nnte man eine erste L\"{o}sung auf einem groben Netz berechnen, diese dann korrigieren, und man h\"{a}tte die exakte L\"{o}sung.
+
+\begin{remark}
+Man w\"{u}rde vermuten, dass die Funktion $w_I$ in $\mathcal{V}_h$, die die L\"{o}sung in den Knoten interpoliert, auch die Funktion ist, die den Fehler $e = w - w_h$ in der Energie zum Minimum macht, $a(e,e) \to$ {\em  Minimum\/}, also $w_h$ und $w_I$ zusammenfallen. Unsere Beobachtungen sagen jedoch etwas anderes. Die L\"{o}sung $\vek w$ des Systems $\vek K\,\vek w = \vek f$ sind nicht die Knotenverschiebungen der exakten L\"{o}sung. Nur bei den 1-D Standardgleichungen wie $EI\,w^{IV} = p_z$ und $- EA\,u'' = p_x$ und dem Seil, $- H w'' = p_z$, ist die Interpolierende auch die Funktion mit dem kleinsten Fehler in der Energie, ist $w_h = w_I$. Notwendig daf\"{u}r ist, dass die homogenen L\"{o}sungen in $\mathcal{V}_h$ liegen, \cite{HaJa2}.
+
+Der {\em drift\/} $w_h(\vek x_k) \neq w(\vek x_k)$ der FE-L\"{o}sungen in den Knoten bei Fl\"{a}chentragwerken ist also kein Defekt, sondern eher ein \glq Qualit\"{a}tsmerkmal\grq{}. {\em Nicht interpolieren, sondern den Abstand in der Energie minimieren!\/}
+\end{remark}
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Eine sch\"{o}ne Idee, die nicht funktioniert}}}
+\label{Eine schoene Idee, die nicht funktioniert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+\item{Eine FE-L\"{o}sung l\"{a}sst sich auf demselben Netz nicht verbessern.}
+\end{itemize}
+Weil der Fehler seine Ursache in den abweichenden Lasten hat, so k\"{o}nnte man auf die Idee kommen, den Fehler zu beheben, indem man das Seil mit den \index{Fehlerkr\"{a}fte}Fehlerkr\"{a}ften belastet, diesen Lastfall mit den finiten Elementen l\"{o}st, gegebenenfalls noch einmal korrigiert, so lange bis die Fehlerkr\"{a}fte unter eine vorgegebene Schranke $\varepsilon$ sinken.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/FEHLERKRAEFTE}
+\caption{Die Knotenverschiebungen sind null, weil die Gegenkr\"{a}fte die Knoten in der Schwebe halten. Es gibt nur die lokalen L\"{o}sungen $w_{loc}$, die von Knoten zu Knoten spannen} \label{Fehlerkraefte}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Allein diese Idee funktioniert leider nicht, denn die Fehlerkr\"{a}fte
+\begin{align}
+p_e = p - p_{h}
+\end{align}
+fallen durch den Rost  des FE-Netzes, (es sind {\em spurious loadcases\/}), d.h. die \"{a}quivalenten Knotenkr\"{a}fte sind alle null
+\begin{align}
+f_i = \int_0^{\,l}  p_e\, \Np_i \,dx = 0 \qquad \textrm{f\"{u}r alle $\Np_i$}\,,
+\end{align}
+und null Knotenkr\"{a}fte bedeutet eben null Verformungen
+\begin{align}
+ \vek
+K \vek u = \vek 0 \qquad \Rightarrow \qquad  \vek u = \vek 0 \,.
+\end{align}
+Die FE-L\"{o}sung $w_{h}$ ist ja der Schatten der Biegelinie $w$. Da der Fehler $w -w_{h}$ aber senkrecht (im Sinne der Energie) auf der Teilmenge $\mathcal{V}_{h}$ steht,
+\begin{align}
+a(e,\Np_i) = \int_0^{\,l} H (w' - w_h')\,\Np_i{'} \,dx = 0 \qquad\mbox{f\"{u}r alle} \,\,\Np_i\,,
+\end{align}
+wirft er keinen Schatten, ist sein Bild die Funktion $w_{h} = 0$.
+
+F\"{u}hren wir das Thema weiter, so bedeutet dies, dass es Lastf\"{a}lle gibt, bei denen sich die Knoten nicht bewegen, s. Abb. \ref{Fehlerkraefte}. Das passiert immer dann, wenn die Belastung $p$ so auf dem Netz verteilt ist, dass sie {\em keine Arbeit leistet}, die \"{a}quivalenten Knotenkr\"{a}fte $f_i$ alle null sind
+\begin{align}
+ f_i = \delta A_a(p,\Np_i) = 0\,, \qquad  i = 1,2,\ldots n \,.
+\end{align}
+Lasten, die in die Projektionsrichtung fallen, haben keinen Schatten oder besser \glq null Schatten\grq\, und sie existieren somit f\"{u}r das FE-Programm nicht. Wenn so etwas passiert, muss man das Netz \"{a}ndern.
+
+Gef\"{a}hrlich nahe an null kommen FE-L\"{o}sungen, wenn die Belastung schachbrettartig angeordnet ist, also im Rhythmus der Elemente alterniert, positiv auf wei{\ss}en Feldern und negativ auf schwarzen Feldern, denn dann heben sich die Beitr\"{a}ge benachbarter Felder zu den Knotenkr\"{a}ften $f_i$ gegenseitig auf.
+
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Schwache L\"{o}sung}}}\label{Prinzip der virtuellen Verrueckungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.3cm}
+{\textcolor{sectionTitleBlue}{\subsubsection*{FEM = \glq Wackelstatik\grq}}}
+
+
+Wir haben oben die Gleichung $\vek K\,\vek w = \vek f$ aus dem Prinzip vom Minimum der potentiellen
+Energie hergeleitet, und gesehen, dass das Vorgehen der FEM einem Projektionsverfahren gleicht, bei dem die FE-L\"{o}sung so eingestellt wird, dass der Fehler $e = w - w_h$ orthogonal zu dem Unterraum $\mathcal{V}_h$ ist
+\begin{align}
+a(w -w_h,\Np_i) = 0 \qquad \text{f\"{u}r alle $\Np_i \in \mathcal{V}_h$}\,.
+\end{align}
+Diese Gleichung nennt man die {\em Galerkin Orthogonalit\"{a}t\/}. Bei einem Balken w\"{a}re das die Gleichung
+\begin{align}
+a(w - w_h,\Np_i) = \int_{0}^{l}\frac{(M - M_h)\,M_i}{EI}\,dx = 0  \qquad M_i = - EI\,\Np_i''\,.
+\end{align}
+Betrachtet man die Gleichung aber genauer, dann stutzt man: Wie kann man die Orthogonalit\"{a}t kontrollieren, wenn man den exakten Momentenverlauf $M(x)$, wie z.B. in  Abb. \ref{Ausgleich1}, nicht kennt?
+
+Das geht, weil die virtuelle innere Arbeit gleich der virtuellen \"{a}u{\ss}eren Arbeit ist, $\delta A_i(w - w_h,\Np_i) = \delta A_a(p - p_h,\Np_i)$, und daher die Orthogonalit\"{a}t im Innern gleichbedeutend mit der Orthogonalit\"{a}t der Fehlerlasten $p - p_h$  ist
+\begin{align}\label{Eq14}
+\delta A_i = \int_0^{\,l} \underbrace{(M - M_h)}_{\mbox{unbekannt}}\frac{M_i}{EI} \,dx =
+\int_0^{\,l} \underbrace{\vphantom{M_h}(p - p_h)}_{\mbox{bekannt}} \,\Np_i\,dx = \delta
+A_a = 0\,,
+\end{align}
+die ja von $\vek K\vek w = \vek f$, oder eben $\vek f_h = \vek f$, garantiert wird, denn
+\begin{align}
+\int_0^{\,l} (p - p_h) \,\Np_i\,dx &= \int_0^{\,l} p \,\Np_i\,dx - \int_0^{\,l} p_h \,\Np_i\,dx
+= f_i - f_i^h = 0\,.
+\end{align}
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/AUSGLEICHD}
+\caption{Die Ersatzbelastung wird so ausgesucht, dass sie a) arbeits\"{a}quivalent zur
+Originalbelastung ist und b) dass das Fehlerquadrat des Moments minimal wird. In der
+Balkenstatik sind die Ersatzlasten gerade die umgedrehten Festhaltekr\"{a}fte}
+\label{Ausgleich1}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Das {\em Prinzip der virtuellen Verr\"{u}ckungen\/} erlaubt also die {\em Galerkin Orthogonalit\"{a}t\/} nach \glq au{\ss}en\grq\ zu wenden. Die Projektion bedeutet, dass wir die FE-L\"{o}sung $w_h$ so einstellen, dass sie arbeits\"{a}quivalent oder, wie wir auch sagen, \glq wackel\"{a}quivalent\grq\ zu der wahren L\"{o}sung ist.\\
+\begin{align}
+\text{Projektion} = \underbrace{\text{Galerkin-Orthogonalit\"{a}t}}_{innen} = \underbrace{\text{Wackel\"{a}quivalenz}}_{aussen}
+\end{align}
+Urspr\"{u}nglich bedeutet die Orthogonalit\"{a}t Gleichheit in den virtuellen inneren Arbeiten, denn $a(w,\Np_i) = \delta A_i(w,\Np_i)$ ist eine innere Arbeit
+\begin{align}
+a(w -w_h,\Np_i) = \delta A_i(w,\Np_i) - \delta A_i(w_h,\Np_i) = 0\,.
+\end{align}
+Weil nun aber $\delta A_i = \delta A_a$ ist, kann man sie auch als Gleichheit in den virtuellen \"{a}u{\ss}eren Arbeiten schreiben
+\begin{align}
+a(w -w_h,\Np_i) = \delta A_a(p,\Np_i) - \delta A_a(p_h,\Np_i) = 0\,,
+\end{align}
+und das ist die \glq Wackel\"{a}quivalenz\grq\, wie sie die Marktfrau benutzt. Auf dem Wochenmarkt sind $p$ und $p_h$ die Gewichte in den beiden Waagschalen und $\Np_i$ ist die Drehung der Waage. Die Waage ist im Gleichgewicht, wenn die Arbeiten der beiden Gewichte gleich gro{\ss} sind.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Prinzip der virtuellen Verr\"{u}ckungen als Testverfahren}}}
+Die Wackel\"{a}quivalenz h\"{a}ngt an dem Prinzip der virtuellen Verr\"{u}ckungen. Nun tr\"{a}gt dieses Prinzip eine gro{\ss}e Erblast mit sich. Davon wollen wir hier jedoch absehen und ganz naiv das Prinzip der virtuellen Verr\"{u}ckungen als eine mathematische Aussage, als eine Feststellung verstehen.
+
+Wenn $3\cdot 4 = 12$ ist, dann ist auch $\delta u\cdot 3 \cdot 4 = 12 \cdot \delta u$ f\"{u}r jede Zahl
+$\delta u$. Das ist das Prinzip der virtuellen Verr\"{u}ckungen in seiner elementarsten Form und so verwendet es auch die FEM.
+
+Interessanter wird die Gleichung $\delta u \cdot 3 \cdot u = 12 \cdot \delta u$, wenn man aus ihr ein {\em Variationsproblem\/} zur Be\-stimmung der \glq starken L\"{o}sung\grq\ $ u = 4$ macht. Betrachten wir das n\"{a}her.
+
+Wir betrachten eine Feder mit einer Steifigkeit von $k = 3$ kN/m, an der eine Kraft $f = 12$ kN h\"{a}ngt. Gem\"{a}{\ss} dem Federgesetz $k \cdot u = f$ gen\"{u}gt dann die
+Verl\"{a}ngerung $u$ der Feder der Gleichung $3 \cdot u = 12$. Wenn aber $3 \cdot u = 12$ ist, dann ist nat\"{u}rlich auch $\delta u \cdot 3\cdot u = 12 \cdot \delta u$, gleich wie gro{\ss} $\delta u$ ist.
+
+In demselben Sinn gilt: Wenn ein Vektor $\vek u$ das Gleichungssystem $\vek K \vek u = \vek f$ l\"{o}st, dann ist
+auch $\vek \delta \vek u^T\,\vek K\vek u = \vek \delta \vek u^T\,\vek f$ wie immer auch der
+Vektor $\vek \delta \vek u$ aussieht.
+
+Und schlie{\ss}lich: Wenn die Biegelinie $w$ der Differentialgleichung
+$EI\,w^{IV} = p$ gen\"{u}gt, dann ist $(\delta\,w,EI\,w^{IV}) = (\delta \,w,p)$ f\"{u}r
+beliebige virtuelle Verr\"{u}ckungen $\delta\,w$. Wir k\"{o}nnen also immer den gleichen Schluss ziehen
+\begin{alignat}{4}
+3\,u &= 12  &&\quad\Rightarrow \quad &\delta u \cdot 3\, u &= 12 \cdot \delta u & &\quad \mbox{f\"{u}r alle $\delta u$}\nn \\
+\vek K \vek u &= \vek f  &&\quad\Rightarrow \quad &\vek \delta \vek u^T \,\vek K \vek
+u &= \vek \delta \vek u^T \vek f & &\quad \mbox{f\"{u}r alle $\vek \delta \vek u$}\nn \\
+EI\,w^{IV}(x) &= p(x) &&\quad\Rightarrow \quad &\int_0^{\,l} \delta w\,EI\,w^{IV}\,dx &=
+\int_0^{\,l} \delta w\,p\,dx & &\quad \mbox{f\"{u}r alle $\delta w$}\,. \nn \label{A12DEZ2}
+\end{alignat}
+Links steht das Gleichgewicht der Feder, des Fachwerks (Steifigkeitsmatrix $\vek K$) und des Balkens. Die Gleichungen links sind die sogenannten {\em Euler-Gleichungen\/}\index{Euler-Gleichung}. Rechts steht, was aus ihnen folgt, das Gleichgewicht im {\em schwachen Sinn\/}, im Sinn des \index{Prinzip der virtuellen Verr\"{u}ckungen}Prinzips der virtuellen Verr\"{u}ckungen:\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Wenn ein Tragwerk im Gleichgewicht ist, dann ist bei jeder virtuellen Verr\"{u}ckung $\delta u$ die virtuelle innere Arbeit $\delta A_i$ gleich der virtuellen \"{a}u{\ss}eren Arbeit
+$\delta A_a$.}}\\
+
+Schr\"{a}nken wir die virtuellen Verr\"{u}ckungen $\delta w$ des Balkens auf {\em zul\"{a}ssige\/} Verr\"{u}ckungen \index{zul\"{a}ssige virtuelle Verr\"{u}ckungen}ein, also Verr\"{u}ckungen, die mit den Lagerbedingungen vertr\"{a}glich sind, und nehmen wir der Einfachheit halber an, dass der gelenkig gelagerte Balken auf starren Lagern liegt, so gilt\footnote{Dies ist die erste Greensche Identit\"{a}t $\text{\normalfont\calligra G\,\,}(w, \delta w) = 0$ mit $M(0) = M(l) = 0$, \cite{HaJa2}.}
+\begin{align}
+\int_0^{\,l} \delta w\,EI\,w^{IV}\,dx = \int_0^{\,l} \frac{M\,\delta M}{EI}\,dx
+\end{align}
+und dann wird die dritte Gleichung (\ref{A12DEZ2})
+\begin{align}
+EI\,w^{IV}(x) &= p(x)\qquad &\Rightarrow \qquad \underbrace{\int_0^{\,l} \frac{M\,\delta
+M}{EI}\,dx}_{\delta A_i} = \underbrace{\int_0^{\,l} \delta w\,p\,dx}_{\delta A_a}\,.
+\end{align}
+Das Gleichgewicht im punktweisen Sinn impliziert also $\delta A_i = \delta A_a$.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Die moderne Statik}}}
+Die klassische Statik schlie{\ss}t von Links nach Rechts, die moderne Statik von Rechts nach
+Links
+\begin{align}
+\mbox{Euler-Gleichung} \qquad \Rightarrow \qquad \delta A_i = \delta A_a
+\qquad\mbox{klassische
+Statik}\\
+\mbox{Euler-Gleichung} \qquad \Leftarrow \qquad \delta A_i = \delta A_a
+\qquad\mbox{moderne Statik}\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/WAAGE4D}
+\caption{Die Marktfrau kontrolliert das Gleichgewicht einer Waage mittels des Prinzips
+der virtuellen Verr\"{u}ckungen} \label{Waage}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Sie formuliert die Suche nach der Gleichgewichtslage als {\em Variationsproblem\/}. Die Auslenkung $u$ der Feder, die Knotenverschiebungen $\vek  u$ des Fachwerks, die Biegelinie $w$ des Balkens sind die L\"{o}sungen dreier Variationsprobleme: \\
+
+Gesucht ist eine Zahl $u$, ein Vektor $\vek u$, eine Funktion $w$ so, dass
+\begin{alignat}{2}
+\delta u \cdot 3\,\underset{\uparrow}{u} &= 12 \cdot \delta u &\qquad\mbox{f\"{u}r alle $\delta u$}\,, \nn \\
+\vek \delta \vek u^T \,\vek K\,\underset{\uparrow}{\vek u} &=
+\vek \delta \vek u^T \vek f &\qquad\mbox{f\"{u}r alle $\vek \delta \vek u$}\,, \nn \\
+ \int_0^{\,l} \frac{\overset{\downarrow}{M}\,\delta M}{EI}\,dx &= \int_0^{\,l} \delta w\,p\,dx &\qquad\mbox{f\"{u}r alle $\delta
+ w$}\,. \nn
+\end{alignat}
+Die L\"{o}sungen dieser Variationsprobleme nennt man {\em schwache L\"{o}sungen\/} im Gegensatz zu den L\"{o}sungen der Euler-Gleichungen (wie $EI\,w^{IV} = p$), die man {\em starke L\"{o}sungen\/} nennt.
+
+Die entscheidende Frage ist: Wann ist der umgekehrte Schluss zul\"{a}ssig? Wann ist eine schwache L\"{o}sung auch eine starke L\"{o}sung?
+\begin{alignat}{3}
+3\,u &= 12  &&\qquad\Longleftarrow &\qquad \delta u \cdot 3\, u &= 12 \cdot \delta u\,, \nn \\
+\vek K \vek u &= \vek f &&\qquad\Longleftarrow &\qquad\vek \delta \vek u^T \,\vek K\vek u
+&= \vek \delta \vek u^T \vek f\,,\nn \\
+EI\,w^{IV}(x) &= p(x)  &&\qquad\Longleftarrow &\qquad\int_0^{\,l} \frac{M\,\delta M}{EI}\,dx
+&= \int_0^{\,l} \delta w\,p\,dx\,.\nn
+\end{alignat}
+Wie oft m\"{u}ssen wir an der Feder, dem Fachwerk, dem Balken wackeln, bevor wir sicher sein k\"{o}nnen, dass die schwache L\"{o}sung auch eine starke L\"{o}sung ist? Bei der Feder reicht ein Test. Wenn das Fachwerk $n$ Freiheitsgrade hat, dann muss $\delta A_i = \delta A_a$ f\"{u}r $n$ linear unabh\"{a}ngige Vektoren $\vek \delta \vek u$ gelten, bevor wir den Schluss $\vek K\vek u = \vek f$ wagen k\"{o}nnen. Beim Balken m\"{u}ssen wir theoretisch unendlich viele Tests fahren -- so viele virtuelle Verr\"{u}ckungen $\delta w$ gibt es.
+
+Betrachten wir das an einem konkreten Beispiel. Wenn die Marktfrau das Gleichgewicht
+einer Waage kontrolliert
+\begin{align} \label {Hebel}
+P_l \,h_l = P_r \, h_r\,,
+\end{align}
+so tippt sie die Waage leicht an, Abb. \ref{Waage}. Wenn ein kurze Drehung die Waage nicht in Rotation versetzt, dann m\"{u}ssen die Arbeiten, die von den beiden Kr\"{a}ften links und rechts, $P_l$ und $P_r$, geleistet werden, gleich gro{\ss} sein, und dann, so schlie{\ss}t sie, muss das Hebelgesetz (\ref{Hebel}) gelten
+\begin{align}
+ P_l \,h_l = P_r \, h_r \quad
+\Longleftarrow \quad P_l \,h_l \tan \Np = P_r \,h_r \tan \Np \quad \mbox{f\"{u}r alle
+Drehungen $ \Np$}\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/ROLLEN}
+\caption{Der Monteur pr\"{u}ft die Exzentrizit\"{a}t des Zylinders, indem er ihn \"{u}ber den Tisch rollt} \label{Rollen}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.4\textwidth]{\Fpath/CIRCLE}
+\caption{Das Vieleck ist einem Kreis bez\"{u}glich aller Rotationen, die ein Vielfaches von $45^\circ$ sind, \"{a}quivalent} \label{Circle}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Die Marktfrau benutzt das Prinzip der virtuellen Verr\"{u}ckungen: {\em Wenn ein System im Gleichgewicht ist, so ist bei jeder virtuellen Ver\-r\"{u}ck\-ung die virtuelle \"{a}u{\ss}ere Arbeit gleich der virtuellen inneren Arbeit}
+\begin{align}
+ \mbox{Gleichgewicht} \qquad
+\Longrightarrow \qquad \delta A_a = \delta A_i
+\end{align}
+in umgekehrter Richtung -- {\em contromano\/}. Sie schlie{\ss}t aus der G\"{u}ltigkeit der Variation auf das Gleichgewicht
+\begin{align}
+ \mbox{Gleichgewicht} \qquad \Longleftarrow
+\qquad \delta A_a = \delta A_i\,.
+\end{align}
+Auch der Monteur, der einen Zylinder mit seinen Fingern \"{u}ber den Tisch rollt, dreht den Schluss, der eigentlich die Richtung
+\begin{align}
+\text{Perfekter Zylinder} \qquad \Longrightarrow \qquad \text{Achse \glq eiert\grq\ nicht}\nn
+\end{align}
+hat, um, schlie{\ss}t von rechts nach links, s. Abb. \ref{Rollen}.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.5\textwidth]{\Fpath/U525A}
+\caption{Zwei Pendel mit gleicher L\"{a}nge: Die beiden Massen treffen immer zur gleichen Zeit im tiefsten Punkt ein -- ihre Bewegungen sind synchron} \label{U525}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Wie nat\"{u}rlich wird man so auf den Begriff der {\em N\"{a}herung\/} gef\"{u}hrt. Man f\"{a}hrt nur noch endlich viele Tests. Der Lehrling, der aus einem Vierkant einen Rundstahl mit Radius $R$ schleifen soll, beginnt mit einem quadratischen Eisen mit der Kantenl\"{a}nge $2\,R$. Das ist schon ein guter Anfang, denn das Quadrat ist einem Kreis hinsichtlich aller Drehungen, die ein Vielfaches von $90^\circ$ sind, \"{a}quivalent -- hat der Schwerpunkt nach einer $90^\circ$ Drehung dieselbe H\"{o}he \"{u}ber der Tischkante wie vorher, s. Abb. \ref{Circle}.
+
+Indem der Lehrling nun mehr und mehr Kanten in das Profil hineinschleift, $4 \rightarrow 8 \rightarrow 16 \rightarrow \ldots$, vergr\"{o}{\ss}ert er den Test- und Ansatzraum $\mathcal{V}_h$ und kommt damit dem Kreisquerschnitt immer n\"{a}her. So macht es auch die moderne Statik. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Die Methode der finiten Elemente konstruiert einen Ersatzlastfall, der bez\"{u}glich endlich vieler Tests \glq wackel\"{a}quivalent\grq\ zum richtigen Lastfall ist.}}\\
+
+Die {\em Schwingungsdauer\/} $t$ eines Pendels h\"{a}ngt nur von der L\"{a}nge $ \ell$ des Pendels ab, aber nicht davon, wie weit das Pendel ausschwingt oder wie gro{\ss} das Gewicht ist, s. Abb. \ref{U525},
+\begin{align}
+t = 2\,\pi \sqrt{{\ell}/{g}} \qquad g = \text{Erdbeschleunigung}\,.
+\end{align}
+Vielleicht kann man die beiden Lastf\"{a}lle $p$ und $p_h $ in Analogie dazu sehen. Die \glq Massen\grq{} $p$ und $p_h$ sind nicht gleich, und auch ihre \glq Amplituden\grq{} $u$ und $u_h$ sind ungleich, aber mit Blick auf die Einheitsverformungen $\Np_i $ sind ihre Bewegungen \glq synchron\grq. {\em Es herrscht also Gleichheit gegen\"{u}ber dritten\/}.
+
+Fassen wir zusammen: Es gibt also zwei m\"{o}gliche Zug\"{a}nge zur Gleichung $\vek K\vek w = \vek f$\\
+\begin{itemize}
+  \item Das Prinzip vom Minimum der potentiellen  Energie
+  \item \glq Wackel\"{a}quivalenz\grq\ (der Ansatz in der Originalarbeit, \cite{Turner})
+\end{itemize}
+Wackel\"{a}quivalenz meint die \"{A}quivalenz bez\"{u}glich der Testfunktionen, der virtuellen Verr\"{u}ckungen
+\begin{align}
+\delta A_a(p,\Np_i) = \delta A_a(p_h,\Np_i)\,.
+\end{align}
+In der aller einfachsten Form sehen wir diesen \"{A}quivalenzgedanken in Abb. \ref{Schaukel} vor uns: Bei jeder Drehung der Wippe leisten Vater (LF $p$) und Sohn (LF $p_h$) (oder ist es umgekehrt?) dieselbe Arbeit. Bez\"{u}glich den m\"{o}glichen Drehungen der Wippe sind Vater und Sohn einander \"{a}quivalent.
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/SCHAUKEL}
+\caption{Bei jeder Bewegung der Wippe leisten Vater und Sohn dieselbe Arbeit}
+\label{Schaukel}
+\end{figure}%%
+%-----------------------------------------------------------------
+
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Seil}}}\label{Seil}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wie man nun diese Gedanken technisch umsetzt, soll am Beispiel eines Seils aus vier linearen Elementen erl\"{a}utert werden. Vier Elemente bedeutet drei Innenknoten und daher ist der FE-Ansatz eine Entwicklung nach den Einheitsverformungen der drei Innenknoten
+\begin{align}
+ w_{h}(x) = w_1\,\Np_1(x) + w_2\, \Np_2(x) + w_3 \,\Np_3(x) \qquad \mbox{(FE-Ansatz)} \,.
+\end{align}
+Nun steht jede Einheitsverformung $\Np_i$ auch gleichzeitig f\"{u}r eine spezielle Kombination von Knotenkr\"{a}ften, n\"{a}mlich die drei Knotenkr\"{a}fte, die  dem Seil gerade die Form $\Np_i$ geben. Wir nennen diese drei Lastf\"{a}lle $p_{\,1}, p_{\,2}, p_{\,3}$\footnote{Das sind die {\em shape forces\/}, die zu den {\em shape functions\/} $\Np_i$ geh\"{o}ren}.
+
+
+So entsteht die erste Einheitsverformung, das Seileck $\Np_1$ in Abb. \ref{GrundlastD}, wenn im linken Lagerknoten eine Kraft $f_1 = P = H/l_e$ das Seil st\"{u}tzt, im n\"{a}chsten Knoten eine doppelt so gro{\ss}e Kraft $f_2 = 2 P$ nach unten dr\"{u}ckt und darauf eine Kraft $f_3 =  P$ das Seil wieder nach oben dr\"{u}ckt. Das $H$ ist die horizontale Kraft, mit der das Seil vorgespannt ist. Diese drei Kr\"{a}fte
+\begin{align}
+ f_1 = - \frac{H}{l_e} \quad \uparrow  \qquad f_2 = 2 \frac{H}{l_e}\quad \downarrow \qquad f_3 = - \frac{H}{l_e} \quad \uparrow
+\end{align}
+geben dem Seil die Form $\Np_1(x)$ und sie stellen den LF $p_1$ dar. Genauso ist es mit den anderen beiden Seilecken, s. Abb. \ref{GrundlastD}.
+
+Wegen der G\"{u}ltigkeit des Superpositionsgesetzes geh\"{o}rt daher zu einem Seileck wie
+\begin{align}
+ w_{h} = w_1\, \Np_1(x) + w_2\, \Np_2(x) + w_3 \,\Np_3(x)
+\end{align}
+eine entsprechende Kombination $p_h$ der drei {\em shape forces\/}
+\begin{align}
+ p_{h} = w_1\, p_1 + w_2\,  p_2 + w_3\, p_3 \,.
+\end{align}
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/GrundlastD}
+\caption{Die drei Lastf\"{a}lle $p_1, p_2, p_3$, die die Seilecke $\Np_1, \Np_2,
+\Np_3$ erzeugen} \label{GrundlastD}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Wir stellen die FE-Belastung $p_{h}$ nun durch eine geeignete Wahl der Zahlen $w_i$ (der Knotendurchbiegungen!) so ein, dass sie der Streckenlast $p$ im Sinne des {\em Prinzips der virtuellen Verr\"{u}ckungen\/} \"{a}quivalent ist. Das ist die Idee.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Die Knotenkr\"{a}fte $f_i$ sollen bei einer
+virtuellen Verr\"{u}ckung des Seils dieselbe Arbeit leisten, wie die Streckenlast $p$.}}\\
+
+Weil man an drei Kr\"{a}fte $f_i$ nicht unendlich viele Forderungen stellen kann, so viele Testfunktionen liegen ja in $\mathcal{V}$, schr\"{a}nken wir die Tests auf die Verr\"{u}ckungen in $\mathcal{V}_h$ ein und weil die drei $\Np_i$ den Raum $\mathcal{V}_h$ aufspannen, reicht es, die Tests mit den drei $\Np_i$ durchzuf\"{u}hren. So herrscht automatisch {\em pari\/} zwischen der Zahl der $f_i$ und der Zahl der Tests, der $\delta w = \Np_i$.\\
+
+\begin{itemize}
+\item  Die drei Einheitsverformungen $\Np_i$ dienen als
+Testfunktionen\index{Testfunktionen}, als virt. Verr\"{u}ckungen $\delta w = \Np_i$, mit denen wir den FE-Lastfall $p_h$ auf die Probe stellen.
+\end{itemize}
+
+\noindent Die virtuelle Arbeit der Streckenlast bei einer Verr\"{u}ckung $\Np_i$ ist
+\begin{align}
+ \delta A_a(p,\Np_i) := \int_0^{\,l} p \,\Np_i \,dx \,,
+\end{align}
+und die virtuelle Arbeit der drei Knotenkr\"{a}fte $f_i$ in den Knoten $x_1,x_2,x_3$ ist bei derselben Verr\"{u}ckung
+\begin{align}
+ \delta
+A_a(p_{h},\Np_i) := f_1\,\Np_i(x_1)+  f_2\,\Np_i(x_2) + f_3\,\Np_i(x_3)\,.
+\end{align}
+Diese Arbeiten sollen also jeweils gleich sein, s. Abb. \ref{Testfunktionen},
+\begin{align}\label{G11}
+\delta A_a(p,\Np_i) = \delta A_a(p_{h},\Np_i)\,, \quad i = 1,2,3\,.
+\end{align}
+Nun kann man die virtuelle \"{a}u{\ss}ere Arbeit der drei Knotenkr\"{a}fte auch als virtuelle innere Arbeit schreiben
+\begin{align}
+ \delta A_a(p_{h},\Np_i) &= f_1\,\Np_i(x_1)+  f_2\,\Np_i(x_2) + f_3\,\Np_i(x_3) \qquad \text{(au{\ss}en)} \nn \\
+ &= \delta A_i(w_h,\Np_i)= \sum_{j = 1}^3\int_{0}^{l}H\,\Np_j'\,\Np_i'\,dx\, w_j = \sum_{j = 1}^3 k_{ij}\,w_j\qquad \text{(innen)}\,.
+\end{align}
+Der letzte Term ist das Skalarprodukt der Zeile $i$ der Steifigkeitsmatrix
+\begin{align}\label{Eq10}
+ \vek K = \frac{H}{l_{e}}\left[ \begin{array}{r r r}
+ 2 & -1 & 0 \\
+ -1 & 2 & -1 \\
+  0 & -1 & 2 \\
+ \end{array}
+  \right] \qquad k_{\,ij} = \int_0^{\,l} H \Np_i'  \, \Np_j'  \,dx = \int_{0}^{l} \frac{V_i\,V_j}{H}\,dx\,,
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Testfunktionen}
+\caption{Die Arbeiten der Streckenlast $p$ und der Knotenkr\"{a}fte
+auf den Wegen $\Np_i$ sind gleich gro{\ss}, $\delta A_a(p_h,\Np_i) = \delta
+A_a(p,\Np_i)$. Deswegen hei{\ss}en die Knotenkr\"{a}fte \"{a}quivalente Knotenkr\"{a}fte.} \label{Testfunktionen}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+mit dem Vektor $\vek w$ der Knotenverschiebungen. Die drei Tests (\ref{G11}) sind also identisch mit den drei Zeilen des Systems
+\begin{align}\label{Eq22}
+\vek K\,\vek w = \vek f\,.
+\end{align}
+Rechts stehen die \"{a}quivalenten Knotenkr\"{a}fte\index{aequivalente Knotenkr\"{a}fte} aus der Streckenlast
+\begin{align}
+ f_i = \int_0^{\,l} p\, \,\Np_i\, dx\,,
+\end{align}
+die, weil $p$ konstant ist, alle gleich gro{\ss} sind
+\begin{align}
+f_1 = f_2 = f_3 = p \, l_{e} \,,
+\end{align}
+und so hat das System (\ref{Eq22}) die L\"{o}sung
+\begin{align}
+w_1 = 1.5\, p \, l_{e}\,, \qquad  w_2 = 2.0 \,p \, l_{e}\,, \qquad  w_3 = 1.5 \,p \,
+l_{e}\,,
+\end{align}
+was der Biegelinie die Gestalt
+\begin{align}
+w_{h} =  p\, l_{e}(1.5 \cdot \Np_1(x) + 2.0 \cdot \Np_2(x) + 1.5 \cdot \Np_3(x)) \,,
+\end{align}
+gibt. Das stimmt mit (\ref{A11Resultat}) \"{u}berein.
+
+
+Letztendlich haben wir durch den FE-Algorithmus den Lastfall $p$ durch drei Knotenkr\"{a}fte, den Lastfall $p_h$, ersetzt. Ein Pr\"{u}fstatiker, dem als einziges  Sensorium  die Einheitsverformungen zur Verf\"{u}gung st\"{u}nden, w\"{u}rde keinen Unterschied zwischen den beiden Lastf\"{a}llen $p$ und $p_h$ feststellen, wenn er an dem Seil wackelt. Bei jedem Wackeltest mit einer der Einheitsverformungen w\"{u}rde die Antwort des Seils, die Arbeit der Kr\"{a}fte, gleich gro{\ss} sein.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/SINUSD}
+\caption{Sinuswelle als virtuelle Verr\"{u}ckung. Bez\"{u}glich einer Sinuswelle ist der
+Lastfall $p_h$ dem Original nicht arbeits\"{a}quivalent} \label{Sinus}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Nur wenn er sein  Sensorium verfeinert, wenn er z.B. eine
+Sinuswelle
+\begin{align}
+ \delta w = \sin (\pi x/l)
+ \end{align}
+als virtuelle Verr\"{u}ckung w\"{a}hlt, s. Abb. \ref{Sinus}, wird er merken, dass die beiden Lastf\"{a}lle nicht gleich
+sein k\"{o}nnen, weil die virtuellen Arbeiten nicht gleich sind
+\begin{align}
+\int_0^{\,l} p \,\sin \frac{\pi x}{l} \,dx \neq \sum_{i = 1}^3 f_i \,\sin \frac{\pi x_i}{l}
+\qquad\qquad x_i = \mbox{Knoten}\,.
+\end{align}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Stab}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Zum Exempel machen wir dasselbe nun auch noch mit einem Stab, an dem eine Streckenlast $p$ zieht, s. Abb. \ref{Bsp1}, und der in zwei lineare Elemente unterteilt wurde. Zu den beiden freien Knoten geh\"{o}ren zusammen zwei Einheitsverformungen $\Np_i(x), i = 1,2$, die den FE-Ansatz $u_{h} = u_1 \,\Np_1(x) + u_2 \,\Np_2(x)$ f\"{u}r die L\"{a}ngsverschiebung bilden.
+
+Um den Knoten 1 um $u_1 = 1$ auszulenken und die Bewegung im Knoten 2 zu stoppen, $u_2 = 0$, braucht man die Kr\"{a}fte
+\begin{align}
+&2\,\frac{EA}{l_e}\quad\text{(im Knoten 1)}\qquad  -\frac{EA}{l_e}\qquad\text{(im Knoten 2)}\,,
+\end{align}
+und um den Knoten 2 auszulenken, $u_2 = 1, u_1 = 0$, die Kr\"{a}fte
+\begin{align}
+ -\frac{EA}{l_e}\quad\text{(im Knoten 1)}\qquad \frac{EA}{l_e} \quad\text{(im Knoten 2)}\,.
+\end{align}
+Das sind die {\em shape forces\/} $p_1$ bzw. $p_2$ und der FE-Lastfall ist
+\begin{align}
+p_h = u_1\,p_1 + u_2\,p_2\,.
+\end{align}
+Die $u_i$ werden nun so eingestellt, dass die Kr\"{a}fte $p_h$, die n\"{o}tig sind, um den Stab in die noch zu bestimmende Form $u_1, u_2$ zu bringen, arbeits\"{a}quivalent zur Streckenlast $p$ bez\"{u}glich der beiden Einheitsverformungen sind
+\begin{align}\label{101}
+\delta A_a(p_{h} ,\Np_i ) = \delta A_a(p,\Np_i ) \qquad i = 1,2\,.
+\end{align}
+Das sind zwei Gleichungen. Rechts steht die Arbeit der Streckenlast auf dem Weg $\Np_1$ bzw. $\Np_2$, also
+\begin{align}
+\text{(rechts)}\qquad \delta A_a(p,\Np_i ) = \int_0^{\,l} p\,\,\Np_i \,dx = f_i \qquad i = 1,2\,,
+\end{align}
+w\"{a}hrend auf der linken Seite die Arbeiten der beiden Knotenkr\"{a}fte des LF $p_h$ auf diesen Wegen stehen. Schauen wir uns die Arbeiten im LF $p_h$ genauer an.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/BSP1}
+\caption{FE-Analyse eines Stabes {\bf a)} LF $p$, {\bf b)} FE-Ansatz und die {\em shape forces\/}
+$p_i$} \label{Bsp1}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Bei einer virtuellen Verr\"{u}ckung $\delta u_1 = 1$ des Knotens 1 und $\delta u_2 = 0$ des Knotens 2 leistet nur die Knotenkraft im Knoten 1 eine Arbeit
+\begin{align}
+\delta A_a(p_{h} ,\Np_1) &= f_{h1} = (u_1 \cdot 2\,\frac{EA}{l_e} - u_2 \cdot \frac{EA}{l_e}) \times 1 = \text{Kraft in Kn. 1 $\times$ Weg}
+\end{align}
+und bei einer Verr\"{u}ckung $\delta u_1 = 0$ des Knotens 1 und $\delta u_2 = 1$ des Knotens 2 wird die Arbeit
+\begin{align}
+\delta A_a(p_{h} ,\Np_2) &= (- u_1 \cdot \frac{EA}{l_e} + u_2\cdot \frac{EA}{l_e}) \times 1  = \text{Kraft in Kn. 2 $\times$ Weg}
+\,,
+\end{align}
+geleistet. Diese Arbeiten sollen genauso gro{\ss} sein wie $f_1$ bzw. $f_2$, was auf das System
+\begin{align}
+\frac{EA}{l_e} \left[\barr{r r} 2 & -1 \\ -1 & 1 \earr \right]
+\left[\barr{r} u_1 \\ u_2 \earr \right] = \left[\barr{r } f_1 \\
+f_2 \earr \right] = p\,l_e\,\left[\barr{r } 1 \\
+0.5 \earr \right]
+\end{align}
+f\"{u}hrt. Die Werte
+\begin{align}
+u_1 = \frac{1.5\,p^{\,2}\,l_e^2}{EA}\,, \qquad u_2 = \frac{2.0\,p^{\,2}\,l_e^2}{EA}\,,
+\end{align}
+sind gerade die Knotenverschiebungen der exakten L\"{o}sung $u(x)$, weil die FE-L\"{o}sung in den Knoten mit der wahren L\"{o}sung \"{u}bereinstimmt, $u_h(x_i) = u(x_i)$.
+
+Wir haben hier die \"{a}u{\ss}eren Arbeiten $\delta A_a$ verglichen, haben nicht, wie im vorigen Beispiel, den Wechsel zu $\delta A_i$ vollzogen,  aber trotzdem steht am Schluss die Steifigkeitsmatrix da, $k_{ij} = \delta A_i(\Np_i,\Np_j)$, was noch einmal belegt, dass \glq au{\ss}en = innen\grq\ ist, $\delta A_a = \delta A_i$.
+
+Auch in der Originalarbeit \cite{Turner} ist die \glq erste\grq{} Steifigkeitsmatrix in der Geschichte der FEM eigentlich eine Tabelle von virtuellen \"{a}u{\ss}eren Arbeiten, $k_{ij} = \delta A_a(p_i,\Np_j)$, w\"{a}hrend wir heute $k_{ij} = \delta A_i(\Np_i,\Np_j)$ lesen, \cite{HaJa2}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Fehlerquadrat}}}\label{Fehlerquadrat}\index{Fehlerquadrat}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Finite Elemente bedeutet also {\em Restriktion\/}, bedeutet Verk\"{u}rzung der
+Bewegungs\-m\"{o}g\-lich\-keiten eines Tragwerks auf Bewegungen, die im wesentlichen
+st\"{u}ckweise linear, quadratisch oder kubisch verlaufen. Nun gilt:\\
+
+\begin{itemize}
+  \item Die FE-L\"{o}sung ist diejenige Verformungsfigur des Tragwerks, die unter den
+noch verbliebenen Bewegungsm\"{o}glichkeiten die kleinste potentielle Energie aufweist.
+  \item Dies ist gleichbedeutend damit, dass der zugeh\"{o}rige Lastfall $p_h$ arbeits\"{a}quivalent zum
+Originallastfall $p$ ist,
+  \item und dass der Abstand zwischen der exakten L\"{o}sung und der
+FE-L\"{o}sung, $e = w - w_h$, in der Verzerrungsenergie zum Minimum wird, s. Abb. \ref{MBalken}
+\begin{align}\label{Eq8}
+a(e,e) \qquad \rightarrow \qquad \mbox{Minimum}\,.
+\end{align}
+\end{itemize}
+Der letzte Ausdruck ist, je nach Bauteil, eine abk\"{u}rzende Schreibweise f\"{u}r
+\begin{subequations}
+\begin{alignat}{2}
+a(e,e) &= \int_{0}^{l}\frac{(V - V_h)^2}{H}\,dx &&\qquad \text{Seil} \\
+a(e,e) &= \int_{0}^{l}\frac{(M - M_h)^2}{EI}\,dx &&\qquad \text{Balken} \\
+a(e,e) &= \int_{0}^{l}\frac{(N - N_h)^2}{EA}\,dx &&\qquad \text{Stab}
+\end{alignat}
+\end{subequations}
+\begin{remark}
+Das Fehlerquadrat $a(e,e)$ ist ein (sehr) globales Ma{\ss}, denn dabei wird \"{u}ber alle Elemente integriert und f\"{u}r die ganze M\"{u}he  erh\"{a}lt man am Schluss {\em eine\/}  Zahl. Das ist ein mageres Ergebnis. Aber die FEM benutzt auch noch eine {\em lokale Kontrolle\/} und die steckt in der Galerkin-Orthogonalit\"{a}t $a(w-w_h,\Np_i) = 0$. Sei $(x_a,x_b)$ das Intervall, auf dem die {\em shape function\/} $\Np_i(x)$ \glq lebt\grq\, dann ist der Fehler in den Momenten orthogonal zu dem Moment $M_i$ bzw. der Kr\"{u}mmung $\kappa_i = -\Np_i''$ der Ansatzfunktion
+\begin{align}\label{Eq18}
+a(w-w_h,\Np_i) = \int_{x_a}^{x_b} \frac{(M - M_h)\,M_i}{EI}\,dx =  \int_{x_a}^{x_b} (M - M_h)\,\kappa_i\,dx =0\,,
+\end{align}
+und das f\"{u}r jede {\em shape function\/}. Die $\Np_i$ passen also auf, dass die FE-L\"{o}sung $w_h$ lokal \glq in der Flucht\grq\ bleibt.
+\end{remark}
+
+\vspace{-1cm}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/MBALKEND}
+\caption{Kragarm mit Streckenlast und FE-Ersatzbelastung. Die Gr\"{o}{\ss}e der Knotenkr\"{a}fte und
+Knotenmomente wird so eingestellt, dass das Fehlerquadrat von $M - M_h$ zum Minimum wird.
+In der Stabstatik sind die Knotenkr\"{a}fte und Knotenmomente $f_i$ ({\em actio\/}) gerade die umgedrehten ({\em reactio\/}) Festhaltekr\"{a}fte des Drehwinkelverfahrens}
+\label{MBalken}
+\end{figure}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Skalarprodukt und schwache L\"{o}sung}}}\label{SchwacheLoesung}\index{Skalarprodukt}\index{schwache L\"{o}sung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%w%%%%
+\begin{itemize}
+\item{Finite Elemente = Energie = Arbeit = Skalarprodukt}
+\end{itemize}
+In der klassischen Statik bestimmen wir die Biegelinie $w$ eines Balkens, indem wir die Differentialgleichung $EI\,w^{IV} = p$ l\"{o}sen und die L\"{o}sung den Randbedingungen anpassen. Gem\"{a}{\ss} dem Prinzip der virtuellen Verr\"{u}ckungen ist aber die klassische L\"{o}sung auch eine L\"{o}sung der Variationsaufgabe:
+{\em Bestimme die Biegelinie $w$ so, dass bei jeder virtuellen Verr\"{u}ckung $\delta w$ die virtuelle innere Energie gleich der virtuellen \"{a}u{\ss}eren Arbeit ist\/}
+\begin{align}
+\int_0^{\,l} \frac{M\,\delta M}{EI}\,dx = \int_0^{\,l} p\,\delta w\,dx \qquad \mbox{{\em f\"{u}r
+alle $\delta w \in V$\/}}\,.
+\end{align}
+Die Variationsaufgabe und die Differentialgleichung sind gleichwertige Formulierungen. Die Differentialgleichung $EI\,w^{IV} = p$ nennt man, s.o., die {\em Euler-Gleichung\/}\index{Euler-Gleichung} des Variationsprinzips.
+
+Die moderne Statik l\"{o}st keine Differentialgleichungen mehr, sondern sie l\"{o}st Variationsprobleme.
+FE-L\"{o}sungen sind Variationsl\"{o}sungen. Man bezeichnet die FE-L\"{o}sungen auch als {\em schwache L\"{o}sungen\/}. Gew\"{o}hnlich wird der Begriff so erkl\"{a}rt, dass bei einer FE-For\-mu\-lier\-ung
+\begin{align}
+\int_0^{\,l} \frac{M_h\,M_i}{EI}\,dx = \int_0^{\,l} p \,\Np_i\,dx\,, \qquad i =
+1,2,\ldots n\,,
+\end{align}
+der FE-Ansatz nur zweimal ableitbar sein muss, $M_h = -EI\,w_h''$, damit die
+Wechselwirkungsenergie einen Sinn gibt, w\"{a}hrend doch die Euler-Gleichung $EI\,w^{IV} = p$ voraussetzt, dass
+die vierte Ableitung von $w$ existiert.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Schwache Konvergenz}}}
+
+Treffender scheint uns jedoch die folgende Interpretation. In der Mathematik kennt man den Begriff der {\em schwachen Konvergenz\/}\index{schwache Konvergenz}, der ganz eng mit dem Skalarprodukt zusammenh\"{a}ngt.
+
+Das Skalarprodukt ist ja im Grunde der Finger, den wir in die Luft halten, um -- im \"{u}bertragenen Sinn -- herauszufinden aus welcher Richtung der Wind weht. Es ist das Messinstrument der finiten Elemente (und vieler anderer Messungen im Alltag auch).
+
+Um die Masse $m$ eines Ziegels zu bestimmen, nehmen wir den Ziegel in die Hand und werfen ihn hoch. Aus der Kraft $K$ und der Beschleunigung $a$, die wir dem Ziegel erteilen, k\"{o}nnen wir so gem\"{a}{\ss} dem Gesetz $K = m \cdot a$ auf die Masse $m$ des Ziegels schlie{\ss}en. {\em Wir schlie{\ss}en indirekt\/}.
+
+Und so geht auch ein FE-Programm vor. Die Belastung, die auf ein Tragwerk wirkt, kann ein FE-Programm nur indirekt wahrnehmen, indem es an dem Tragwerk \glq wackelt\grq\, ihm eine virtuelle Verr\"{u}ckung erteilt und die Arbeit misst, die die Lasten dabei leisten. Und das Wackeln, das ist das Skalarprodukt.
+
+Mit dem Skalarprodukt kommt die {\em Dualit\"{a}t}\index{Dualit\"{a}t} in die Statik hinein, und damit die Unterscheidung zwischen {\em Weggr\"{o}{\ss}en} und {\em Kraftgr\"{o}{\ss}en}\index{Weggr\"{o}{\ss}en}\index{Kraftgr\"{o}{\ss}en}. Wir testen ein $A$, indem wir es gegen ein $B$ halten, wobei $A (= p)$  etwa eine Streckenlast ist und $B (= \delta w)$ eine virtuelle Verr\"{u}ckung und die Arbeit, die $p$ gegen die Verr\"{u}ckung $\delta w$ leistet, gibt uns ein Ma{\ss} an die Hand, um $p$ zu beurteilen.
+
+Wenn man einen SLW auf eine Br\"{u}cke stellt, und die Br\"{u}cke dann in Schwingungen $\delta w$ versetzt, so leistet der SLW eine Arbeit, die gerade das Skalarprodukt zwischen der Last $p$ -- das soll der SLW sein -- und der virtuellen Verr\"{u}ckung $\delta w$ ist. H\"{a}lt man in dem Skalarprodukt
+\begin{align}
+\int_{\Omega} p \,\delta w \,d\Omega = : p\,(\delta w)
+\end{align}
+die Belastung $p$ nun fest und variiert nur die virtuelle Verr\"{u}ckung $\delta w$,
+probiert also verschiedene virtuelle Verr\"{u}ckungen aus, dann wird aus dem Skalarprodukt
+ein {\em Funktional\/} $p\,(\delta w)$.
+
+Das ist ein Ausdruck, in den man eine Funktion $\delta w$ einsetzt und eine Zahl
+zur\"{u}ckbekommt. Jeder SLW, jede Belastung, generiert in diesem \"{u}bertragenen Sinn ein Funktional.
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/U503}
+\caption{Br\"{u}cke mit SLW {\bf a)} die Radlasten bilden den LF $p$ und {\bf b)} Linienlasten den FE-Lastfall $p_h$ und mit feiner werdender Elementierung konvergiert der FE-SLW (hoffentlich) gegen den richtigen SLW, konvergiert $p_h(\delta w)  \to p(\delta w)$ f\"{u}r jedes $\delta w$} \label{U503}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Ist das $p$ der Original-SLW und $p_h$ der FE-SLW, dann besteht die Methode der finiten
+Elemente genau darin, den SLW $p\,()$ auf $\mathcal{V}_h$ durch einen FE-SLW $p_h\,()$ so zu
+ersetzen, dass die beiden Fahrzeuge bez\"{u}glich aller virtuellen Verr\"{u}ckungen $\Np_i \in
+\mathcal{V}_h$ \"{u}bereinstimmen, s. Abb. \ref{U503},
+\begin{align}
+p\,(\Np_i) = p_h\,(\Np_i)\,, \qquad i = 1,2,\ldots \,,n\,,
+\end{align}
+und der FE-SLW $p_h$ konvergiert genau dann gegen den echten SLW, den Lastfall $p$ (mit feiner werdender Unterteilung des Netzes), wenn in der Grenze das Funktional $p_h$ mit dem Funktional $p$ hinsichtlich {\em aller\/} virtuellen Verr\"{u}ckungen \"{u}bereinstimmt
+\begin{align}
+\lim_{h \to 0} p_h\,(\delta w) = p\,(\delta w) \qquad \mbox{f\"{u}r alle v. V. $\delta w$
+des Tragwerks}\,.
+\end{align}
+Das bedeutet in der Mathematik {\em schwache Konvergenz}, und in diesem Sinne ist eine
+FE-L\"{o}sung eine {\em schwache L\"{o}sung\/}.
+
+Wir beurteilen den Abstand zwischen $p$ und $p_h$, dem Original-SLW und dem FE-SLW also nicht direkt, indem wir in jedem Punkt $\vek x$ der Br\"{u}cke die Differenz der Radlasten, $|p_h(\vek x) - p(\vek x)|$, kontrollieren, sondern nach den Effekten, die die beiden Fahrzeuge $p_h$ und $p$ gegen\"{u}ber Dritten ausl\"{o}sen. Unser Urteil basiert auf der \"{U}berzeugung: {\em Wenn die Wirkungen gleich sind, dann m\"{u}ssen auch die Ursachen gleich sein.\/}
+
+Diese Schlussweise ist -- diese Bemerkung sei hier gestattet -- typisch f\"{u}r die Moderne, in der der Substanzbegriff durch den Funktionsbegriff ersetzt worden ist. Wo es nicht mehr darauf ankommt, was etwas \glq an sich\grq\ ist, sondern nur noch darauf, wie es sich gegen\"{u}ber andern verh\"{a}lt.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{\"{A}quivalente Knotenkr\"{a}fte}}}
+\label{Aequivalente Knotenkraefte}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Kein Begriff bringt die Natur der \FEM besser zum Ausdruck, als der Begriff der \"{a}quivalenten Knotenkraft, denn die FEM denkt nicht in Kr\"{a}ften, sondern in Arbeiten. Das ist das Sensorium, durch das die FEM die Welt wahrnimmt und Kr\"{a}fte, die dieselbe Arbeit leisten, sind f\"{u}r die FEM identisch. Die Repr\"{a}sentanten dieser {\em \"{A}quivalenzklassen} sind die \"{a}quivalenten Knotenkr\"{a}fte. Sie entstehen, wenn man die Belastung, etwa eine Fl\"{a}chenkraft $ p$, gegen die Einheitsverformungen der Knoten arbeiten l\"{a}sst,
+\begin{align}\label{A311} f_i = \int_{\Omega}  p \, \Np_i
+ \,d\Omega \qquad  [\mbox{kNm}\,] = [\mbox{kN/m$^2$}] [\mbox{m}]
+[\mbox{m}^2]\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/DreieckslastenX}
+\caption{Die \"{a}quivalente Knotenkraft (= die Arbeit) der beiden Dreieckslasten auf dem
+Weg $\Np$ ist gleich gro{\ss}} \label{Dreieckslasten}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/FBEAM}
+\caption{Reduktion der Belastung in die Knoten. Die arbeits\"{a}quivalenten Knotenkr\"{a}fte sind
+gleich den Arbeiten, die die beiden Kr\"{a}fte $P$ auf den Wegen der Einheitsverformungen
+leisten, angetragen sind hier die positiven Richtungen der $f_i$. Das Moment $f_2$ wird dann negativ sein. Statisch
+sind die $f_i$ ({\em actio\/}) die umgedrehten Festhaltekr\"{a}fte ({\em reactio\/})} \label{FBeam}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Wieviel von einer Last in einem Knoten als \"{a}quivalente Knotenkraft \glq ankommt\grq\, h\"{a}ngt davon ab, wieviel von der Bewegung im Angriffspunkt der Last noch sp\"{u}rbar ist, die der Knoten ausgel\"{o}st hat. {\em So weit, wie eine Einheitsverformung reicht, so weit geht der Einfluss eines Knotens}. Die {\em shape functions\/} sind die  Einflussfunktionen f\"{u}r die \"{a}quivalenten Knotenkr\"{a}fte. (Wir benutzen die Begriffe Einheitsverformung und {\em shape function\/} wie Synonyme).
+
+Nun ist virtuelle Arbeit ein unscharfes Ma{\ss}, denn es ist anschaulich klar, dass es zu jeder Streckenlast $p$ eine {\em zweite}, ({\em dritte, vierte,} ...), nicht mit $p$ identische Streckenlast $\hat{p}$ gibt, die dieselbe Arbeit leistet wie $p$, s. Abb. \ref{Dreieckslasten}
+\begin{align}
+\int_0^{\,l} p \,\, \Np_i\, dx = f_i = \int_0^{\,l} \hat{p}\, \, \Np_i\, dx \,.
+\end{align}
+Eine einzelne Knotenkraft $f_i$ wie in Abb. \ref{FBeam} repr\"{a}sentiert also immer eine ganze Klasse von Lasten, n\"{a}mlich alle die Lasten, die auf dem Weg $\Np_i $ dieselbe Arbeit leisten. Weil sie alle hinsichtlich der Knotenverformung $\Np_i $ \"{a}quivalent sind, nennen wir $f_i$ eine {\em \"{A}quivalenzklasse\/} von Lasten.
+
+Und so erinnert uns jede Kraft $f_i$ daran, dass die Genauigkeit der Ergebnisse nicht gr\"{o}{\ss}er sein kann, als das Aufl\"{o}sungsverm\"{o}gen des Netzes.
+
+{\em \"{A}quivalenz\/} ist, wenn wir hier weiter ausholen d\"{u}rfen, der Schl\"{u}sselbegriff der finiten Elemente. Die FEM l\"{o}st nicht den urspr\"{u}nglichen Lastfall, sondern einen dazu \"{a}quivalenten Lastfall, s. Abb. \ref{U502}. Eine \"{A}quivalenzrelation liegt vor, wenn aus $a \sim b $ und $b \sim c $ folgt, dass auch $a \sim c$, also
+\begin{align}
+p \sim \Np_i \qquad \text{und} \qquad p_h \sim \Np_i \qquad \Rightarrow \qquad p \sim p_h\,.
+\end{align}
+Das Merkmal der finiten Elemente ist, dass diese \"{A}quivalenz \glq endlich\grq\ ist, d.h. wir stellen die \"{A}quivalenz nur bez\"{u}glich endlich vieler Testfunktionen $\Np_i, i = 1,2,\ldots n$ her.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.4\textwidth]{\Fpath/U502}
+\caption{Der Ansatzraum $\mathcal{V}_h$ begr\"{u}ndet die \"{A}quivalenz, in ihm spiegelt sich der LF $p$ und erzeugt sein Bild $p_h$} \label{U502}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Wir benutzen \"{A}quivalenzen viel h\"{a}ufiger, als uns das gemeinhin bewusst ist. Wenn wir mit einem Zollstock die L\"{a}nge zweier Bretter $A$ und $B$ vergleichen, messen wir zweimal, nutzen wir eine \"{A}quivalenzrelation. Die Bretter sind gleich lang, sind zueinander \"{a}quivalent, wenn sie mit dem Zollstock in identischen Relationen stehen. \"{A}quivalenz ist indirekte Gleichheit, ist wie die schwache Konvergenz, und sie m\"{u}ndet in eine echte Identit\"{a}t, $A \equiv B$, (alle Stellen nach dem Komma sind gleich), wenn die Relation alle Tests besteht, also auch den Test mit dem Urmeter in Paris.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Warum FE-Ergebnisse nur N\"{a}herungen sind}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.85\textwidth]{\Fpath/U33A}
+\caption{FE-Berechnung eines Seils, \textbf{a)} System und Belastung, \textbf{ b)} Dach- oder H\"{u}tchenfunktionen, \textbf{ c)} FE-L\"{o}sung $w_h(x)$ ,
+\textbf{ d)} Vergleich $w(x)$ und $w_h(x)$} \label{U33}
+\end{figure}%%
+%----------------------------------------------------------
+
+In Abb. \ref{U33} sieht man die exakte und die FE-L\"{o}sung eines Seils nebeneinander und dabei f\"{a}llt auf, dass die FE-L\"{o}sung die exakte L\"{o}sung in den Knoten genau trifft. Das ist kein Zufall:\\
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.7\textwidth]{\Fpath/U122}
+\caption{FE-Modell eines Seils, Vorspannung $H = 1$, \textbf{a)} Ansatzfunktionen, \textbf{ b)} Einflussfunktion (EF) f\"{u}r $w(x_1)$ und \textbf{ c)} f\"{u}r die Durchbiegung $w(x)$ im Zwischenpunkt, \textbf{ d)} die exakte Einflussfunktion f\"{u}r $w(x)$} \label{U122}
+\end{figure}%%
+%----------------------------------------------------------
+
+\begin{itemize}
+  \item Ein FE-Programm berechnet jede Verschiebung, jede Spannung, jede Lagerkraft mit der betreffenden Einflussfunktion -- entweder mit einer N\"{a}herung oder, wenn die Einflussfunktion in  dem Ansatzraum $\mathcal{V}_h $ liegt, mit der exakten Einflussfunktion.
+\end{itemize}
+Die Einflussfunktion $G(y,x)$ f\"{u}r die Durchbiegung in einem Punkt $x$ des Seils
+\begin{align}\label{Eq9}
+w(x) = \int_{0}^{l} G(y,x)\,p(y)\,dy
+\end{align}
+ist das Seileck, das entsteht, wenn man eine Einzelkraft $P = 1 $ in den Aufpunkt $x$ stellt. In unserer Notation ist also $x$ der Aufpunkt und $y$ ist die Integrationsvariable, also die Punkte \glq auf der Strecke\grq.
+
+Dieses Seileck k\"{o}nnen die vier Ansatzfunktionen darstellen, und darum stimmt in dem LF $p$ in Abb. \ref{U33}, aber auch in jedem (!) anderen LF die FE-L\"{o}sung mit der exakten L\"{o}sung in dem Knoten $x_1$ \"{u}berein.
+
+Wir machen die Probe. Es sei $p(x) = \sin(\pi x/5)$, dann ist
+\begin{align}
+\vek f = \{0.569, \,0.920, \,0.920, \,0.569\}^T
+\end{align}
+und das System $\vek K\,\vek w = \vek f$, mit der Matrix $\vek K$, s. (\ref{Eq11}), hat die L\"{o}sung $\vek w = \{1.489, 2.409, 2.409, 1.489\}^T$, und das sind genau die Knotenwerte der exakten L\"{o}sung $w(x) = 25/\pi^2 \cdot \sin(\pi  x/5)$.
+
+Zur\"{u}ck zu (\ref{Eq9}). Weil $p = 1$ konstant ist, kann man es vor das Integral ziehen und so ist das Integral gerade die Fl\"{a}che $A$ unter der Kurve $G$
+\begin{align}
+ w_h(x_1) = \int_0^{\,l} G(y,x_1)\,p(y)\,dy = A \cdot 1.0 = 2.0 \cdot 1.0 = w(x_1)\,.
+\end{align}
+Wenn aber der Aufpunkt $x = 1.5$ zwischen zwei Knoten liegt wie in Abb. \ref{U122} c, dann l\"{a}sst sich das Dreieck nicht aus den vier Ansatzfunktionen erzeugen. Das FE-Programm verbindet daher die beiden Knoten links und rechts vom Aufpunkt mit einer geraden Linie und rechnet mit dieser N\"{a}herung $G_h(y,x)$
+\begin{align}
+w_h(x) = \int_0^{\,l} G_h(y,x)\,p(y)\,dy = A_h \cdot 1.0 = 2.5 \neq 2.75 = w(x)\,,
+\end{align}
+und erh\"{a}lt so nat\"{u}rlich auch nur einen gen\"{a}herten Wert f\"{u}r die Durchbiegung, n\"{a}mlich $w_h(x) = 2.5$ m, statt des exakten Werts $w = 2.75$ m.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=0.95\textwidth]{\Fpath/U553}  %U189A
+\caption{Deckenplatte, \textbf{a)} System,  \textbf{ b)} Biegefl\"{a}che im LF $g$, \textbf{ c)} Einflussfunktion f\"{u}r die Durchbiegung $w$ in einem Knoten $\vek x$, das Programm berechnet (theoretisch) diese Einflussfl\"{a}che f\"{u}r jeden Knoten und stellt die Durchbiegungen genau so ein, als ob sie aus der \"{U}berlagerung der Belastung mit diesen Einflussfunktionen k\"{a}men. Die Genauigkeit dieser Einflussfunktionen bestimmt also die Genauigkeit der FE-L\"{o}sung } \label{U189}
+\end{figure}%%
+%----------------------------------------------------------
+
+Nun wird der Leser sicher einwenden wollen: Ein FE-Programm berechnet doch die Knotenwerte, indem es das Gleichungssystems $\vek K\,\vek w = \vek f$ l\"{o}st und die Werte dazwischen, indem es zwischen den Knoten interpoliert.
+
+Das ist richtig, aber die Werte in dem Vektor $\vek w$ sind genauso gro{\ss}, {\em als ob\/} das FE-Programm sie mit den gen\"{a}herten Einflussfunktionen berechnet h\"{a}tte. {\bf Das ist der entscheidende Punkt}. Von der klassischen Statik zu den finiten Elementen ist es ein ganz, ganz kurzer Weg.
+
+Die Biegefl\"{a}che der Platte in Abb. \ref{U189} hat das FE-Programm (theoretisch) so berechnet, dass es in jeden Knoten $\vek x_i$ nacheinander eine Kraft $P = 1$ gestellt hat und die sich darunter ausbildende Biegefl\"{a}che $G_h(\vek y,\vek x_i)$ mit der konstanten Funktion $g$, dem Eigengewicht, \"{u}berlagert hat
+\begin{align}\label{Eq78}
+w_h(\vek x_i) = \int_{\Omega} G_h(\vek y, \vek x_i)\,g(\vek y)\,\,d\Omega_{\vek y} = \text{Volumen von $G_h$ $\times\,g$}\,.
+\end{align}
+Wir sagen theoretisch, weil nat\"{u}rlich das FE-Programm die Knotenwerte durch das L\"{o}sen von $\vek K\,\vek w = \vek f$ bestimmt hat, aber diese sind  genau so gro{\ss}, {\em als ob\/} das FE-Programm die Einflussfunktion (\ref{Eq78}) benutzt h\"{a}tte.
+
+Das System $\vek K\,\vek w = \vek f$ ist der \glq kurze Weg\grq\ zu den $w_i$, die Formel (\ref{Eq78}) ist der \glq lange\grq\ Weg, aber die Ergebnisse sind dieselben\footnote{Ungl\"{a}ubige Leser d\"{u}rfen das Integral partiell integrieren, um sich davon zu \"{u}berzeugen.}
+\begin{align}
+w_h(\vek x_i) = w_i = \sum_j\,k_{ij}^{(-1)}\,f_j = \int_{\Omega} G_h(\vek y, \vek x_i)\,g(\vek y)\,\,d\Omega_{\vek y}\,.
+\end{align}
+Dies ist das wenig bekannte Gesetz hinter den finiten Elementen. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{{ So gut, wie die Einflussfunktionen sind, so gut sind die FE-Ergebnisse.}}}\\
+
+\vspace{-1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Steifigkeitsmatrizen}}}\label{Steifigkeitsmatrizen}\index{Steifigkeitsmatrizen, Herleitung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/STABBALKENX}
+\caption{Stab- und Balkenelement und zugeh\"{o}rige Einheitsverformungen} \label{StabBalken}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Beginnen wir mit einem Stab, s. Abb. \ref{StabBalken}. Er hat zwei Enden, also zwei Knoten $x_i$ und zwei Freiheitsgrade, die horizontalen Verschiebungen $u_i$ der Knoten und an jedem Ende wirkt eine Knotenkraft $f_i$. Der Zusammenhang zwischen den $u_i$ und $f_i$ wird beschrieben durch die Matrix
+\begin{align} \label{Eq42}
+\frac{EA}{l}\left[ \barr {r @{\hspace{4mm}}r @{\hspace{4mm}}}
+      1 & -1  \\
+      -1 & 1 \\
+     \earr \right]\left [\barr{c}  u_1 \\  u_2\earr \right ]
+= \frac{EA}{l}\left[ \barr {r }
+      1 \\
+      -1  \\
+     \earr \right]\,u_1 + \frac{EA}{l}\left[ \barr {r }
+      1 \\
+      -1  \\
+     \earr \right]\,u_2 = \left [\barr{c}  f_1 \\  f_2\earr \right ]\,.
+\end{align}
+Um diese Matrix herzuleiten, verschieben wir erst das linke Ende um 1 Meter, $u_1 = 1, u_2 = 0$ ($\vek u = \vek e_1$) und dann das rechte Ende $u_1 = 0, u_1 = 1$ ($\vek u = \vek e_2$) und notieren jeweils, welche Kr\"{a}fte $f_i$ daf\"{u}r n\"{o}tig sind. Diese Kr\"{a}fte bilden die Spalten 1 und 2 der obigen Steifigkeitsmatrix, denn $\vek K^e\,\vek e_1 = \text{Spalte 1}$ und $\vek K^e\,\vek e_2 = \text{Spalte 2}$. $\vek K^e$ ist die Elementsteifigkeitsmatrix.
+
+F\"{u}r kleine Systeme reicht diese Handmethode durchaus aus. Wir wollen den Zugang jedoch etwas formalisieren.
+
+Zu jedem Freiheitsgrad $u_i$ eines Elements ($e$) geh\"{o}rt eine Einheitsverformung $\Np_i^e(x)$, die die Verformung des Elements beschreibt, wenn $u_i = 1$ ist und alle anderen Freiheitsgrade null sind. Bei einem linearen Stab\footnote{Linear bedeutet hier, dass die Einheitsverformungen lineare Funktionen sind} sind das die beiden Funktionen
+\begin{align}
+\Np_1^e(x) = 1 - \frac{x}{l} \qquad \Np_2^e(x) = \frac{x}{l}\,.
+\end{align}
+Zur Steifigkeitsmatrix kommt man \"{u}ber die erste Greensche Identit\"{a}t, \cite{HaJa2},
+\begin{align}\label{Eq106}
+\text{\normalfont\calligra G\,\,}(u,\textcolor{red}{\delta u}) &= \underbrace{\int_0^{\,l} - EA\,u''(x)\,\textcolor{red}{\delta u(x)}\,dx + [N\,\textcolor{red}{\delta u}]_{@0}^{@l}}_{\delta A_a(u, \delta u)} - \underbrace{\int_0^{\,l} \frac{N\,\textcolor{red}{\delta N}}{EA}\,dx}_{ \delta A_i(u,\delta u)} = 0\,,
+\end{align}
+denn in ihr steht die virtuelle innere Energie, die  {\em Wechselwirkungsenergie\/}
+\begin{align}
+\int_{0}^{l} \frac{N\,\textcolor{red}{\delta N}}{EA}\,dx = a(u, \textcolor{red}{\delta u})\,.
+\end{align}
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Das Element $k_{ij}^e$ einer Elementmatrix ist die Wechselwirkungsenergie zwischen den Einheitsverformungen $\Np_i^e$ und $\Np_j^e$ des Elements}}\\
+\begin{align}
+k_{ij}^e = a(\Np_i^e,\Np_j^e) = \int_{0}^{l}\frac{N_i^e\,N_j^e}{EA}\,dx = \int_{0}^{l}EA\,\Np_i^{e'}\,\Np_j^{e'}\,dx\,.
+\end{align}
+Wegen $\delta A_a(p_i^e,\Np_j^e) = \delta A_i(\Np_i^e,\Np_j^e)$ kann man auch sagen:\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Das Element $k_{ij}^e$ einer Elementmatrix ist gleich der Arbeit, die die Kr\"{a}fte $p_i^e$, die {\em shape forces\/}, die das Element in die Form $\Np_i^e$ dr\"{u}cken, auf den Wegen der Einheitsverformung $\Np_j^e$ leisten}}\\
+
+Speziell sind die Terme auf der Diagonalen, $k_{ii}^e$, die \"{a}quivalenten Knotenkr\"{a}fte der Kr\"{a}fte, die den Freiheitsgrad $u_i$ aktivieren, $u_i = 1$, und die $k_{ji}^e$ oberhalb und unterhalb davon (wir bleiben in der Spalte $i$) sind die \"{a}quiv. Knotenkr\"{a}fte der Bremskr\"{a}fte, also der Kr\"{a}fte, die die Bewegung abstoppen, $u_j = 0$, was ja $\vek K^e \vek e_i = \vek s_i$ (Spalte $i$) entspricht.
+
+Bei Balken- und Stabelementen mit konstanten Steifigkeiten $EI$ bzw. $EA$ ist zahlenm\"{a}{\ss}ig kein Unterschied zwischen den treibenden/haltenden Kr\"{a}ften selbst und ihren \"{a}quivalenten Knotenkr\"{a}ften, also ihren Arbeiten, weil die $\Np_j$ die Knoten gerade um Eins auslenken. (Im folgenden lassen wir den oberen Index $e$ weg).
+
+Die Gestalt der virtuellen inneren Energie $a(\Np_i,\Np_j)$ kann man an der ersten Greenschen Identit\"{a}t ablesen, die zur Differentialgleichung geh\"{o}rt. Beim Biegebalken $EI\,w^{IV} $ ist es die \"{U}berlagerung der Momente $M_i$ und $M_j$ der Einheitsverformungen
+\begin{align}
+k_{ij} = a(\Np_i,\Np_j) = \int_{0}^{l}\frac{M_i\, M_j}{EI}\,dx\,.
+\end{align}
+Sinngem\"{a}{\ss} dasselbe gilt f\"{u}r Scheiben und Platten
+\begin{align}
+k_{\,ij} &= a(\vek \Np_i,\vek \Np_j) = \int_{\Omega} \vek S_i \dotprod \vek E_j\,
+d\Omega
+= \int_{\Omega} \vek \sigma_i \dotprod \vek \varepsilon_j \,d\Omega\\
+k_{\,ij} &= a(\Np_i,\Np_j) = \int_{\Omega} \vek M_i \dotprod \vek K_j\, d\Omega =
+\int_{\Omega} \vek m_i \dotprod \vek \kappa_j \,d\Omega
+\end{align}
+wo die Eintr\"{a}ge das $L_2$-Skalarprodukt (= Integral) zwischen dem Spannungstensor des Felds $\vek \Np_i$ und des Verzerrungstensors des Felds $\vek \Np_j$ bzw. des Momententensors $\vek M_i$ von $\Np_i$  und des Kr\"{u}mmungstensor $\vek K_j$ von $\Np_j$ sind.
+
+Die nachgestellte Schreibweise ist die in der FEM gebr\"{a}uchliche Schreibweise mit Vektoren (kleine Buchstaben) statt Matrizen (gro{\ss}e Buchstaben).
+
+Zu jeder Einheitsverformung $\vek \Np_i $ einer Scheibe, (einem Verschiebungsfeld), geh\"{o}rt also ein Spannungsvektor $\vek \sigma_i$ und ein  Verzerrungsvektor $\vek \varepsilon_i$
+\begin{align}
+\vek \sigma_i = \{\sigma_{xx}(\vek \Np_i), \sigma_{yy}(\vek \Np_i), \sigma_{xy}(\vek \Np_i)\}^T \quad \vek \varepsilon_i = \{\varepsilon_{xx}(\vek \Np_i), \varepsilon_{yy}(\vek \Np_i), 2\,\varepsilon_{xy}(\vek \Np_i)\}^T\,.
+\end{align}
+Das sind einfach die Spannungen und Verzerrungen, die durch die Knotenbewegung $u_i = 1$ und $u_j = 0$ sonst ausgel\"{o}st werden. Weil sich alle drei Werte mit dem Ort \"{a}ndern, sind es vektorwertige Funktionen.
+
+Schreibt man jeden Vektor als Zeilenvektor und setzt die Zeilen untereinander, so entstehen Matrizen, drei Spalten breit und $n$ Zeilen hoch,
+\begin{align}
+\vek B_{(n \times 3)} = [\vek \varepsilon_1^T, \vek \varepsilon_2^T, \vek
+\varepsilon_3^T, \ldots,\vek \varepsilon_n^T]^T \qquad \vek S_{(n \times 3)} = [\vek
+\sigma_1^T, \vek \sigma_2^T, \vek \sigma_3^T, \ldots,\vek \sigma_n^T]^T\,,
+\end{align}
+und die Steifigkeitsmatrix schreibt sich
+\begin{align}
+\vek K_{(n \times n)} = \int_{\Omega} \vek B_{(n \times 3)} \,\,\vek S^T_{(3 \times n)}
+\,d\Omega = \int_{\Omega} \vek B_{(n \times 3)} \,\, \vek D_{(3 \times 3)}\,\,\vek B_{(3
+\times n)}^T \,d\Omega\,,
+\end{align}
+wobei $\vek D$ eine $3 \times 3$-Matrix ist, die die Verzerrungen in Spannungen
+umrechnet, $\vek \sigma_i = \vek D\,\vek \varepsilon_i$,
+\begin{align}
+\left[ \barr {c} \sigma_{xx} \\ \sigma_{yy} \\ \sigma_{xy} \earr \right] = \frac{E}{1 -
+\nu^2} \left [ \barr {c c c} 1\,\, \,\,&\nu & 0 \\ \nu\,\,\,\, & 1 & 0 \\ 0\,\,\,\, & 0
+& (1-\nu)/2 \earr \right] \, \left[ \barr {r} \varepsilon_{xx} \\ \varepsilon_{yy} \\
+2\,\varepsilon_{xy} \earr \right ]\,,
+\end{align}
+die also das Materialgesetz repr\"{a}sentiert. In dieser Form gilt sie f\"{u}r ebene Spannungszust\"{a}nde\index{ebener Spannungszustand}. F\"{u}r ebene Verzerrungszust\"{a}nde \index{ebener Verzerrungszustand} hat sie die Gestalt
+\begin{align}
+\vek D = \frac{E}{(1 + \nu)(1 - 2\,\nu)} \left [ \barr {c c c} (1 - \nu) &\nu & 0 \\ \nu
+& (1 - \nu) & 0 \\ 0 & 0 & (1-2\,\nu)/2 \earr \right] \,.
+\end{align}
+Oft wird auch $2\,\varepsilon_{xy} = \gamma_{xy}$ gesetzt, und bei Platten gilt nat\"{u}rlich alles sinngem\"{a}{\ss}.
+
+
+Drei Eigenschaften charakterisieren eine Steifigkeitsmatrix
+\begin{alignat}{2}
+\hat{\vek u}^T\,\vek K\,\vek u &= \vek u^T\,\vek K\,\hat{\vek u} \qquad &&\mbox{Symmetrie} \nn \\
+\vek u_0^T\,\vek K\,\vek u &= 0 \qquad &&\mbox{Gleichgewicht} \nn \\
+\vek K \,\vek u_0 &= \vek 0 \qquad &&\mbox{null Kr\"{a}fte bei Starrk\"{o}rperbewegungen} \nn
+\end{alignat}
+wenn $\vek u_0$ der Knotenvektor einer Starrk\"{o}rperbewegung ist. Wegen $\vek K \,\vek u_0 = \vek 0$ sind Steifigkeitsmatrizen singul\"{a}r (ein Vektor $\vek u_0 \neq \vek 0 $ wird auf den Nullvektor abgebildet). Sie werden erst dann regul\"{a}r, wenn man die Spalten und Zeilen streicht, die zu gesperrten Freiheitsgraden geh\"{o}ren, also zu den Lagerknoten. Diese modifizierte Matrix nennt man die {\em reduzierte Steifigkeitsmatrix\/}\index{reduzierte Steifigkeitsmatrix} und bezeichnet sie meist mit demselben Buchstaben $\vek K$.
+
+Um das Tragwerk aus der neutralen Lage $ \vek u = \vek 0$ in die Lage $\vek u$ zu dr\"{u}cken ist Energie,
+sind Kr\"{a}fte $ p_h = \sum_i u_i\,p_i$ n\"{o}tig. Stellen wir uns nun vor, dass wir dem Tragwerk in Gegenwart dieser Kr\"{a}fte die virtuelle Verr\"{u}ckung $\vek \Np_i$ erteilen, dann ist die virtuelle Arbeit der Kr\"{a}fte gerade das Skalarprodukt der Zeile $\vek z_i$ (Eintr\"{a}ge $k_{ij}$) der Steifigkeitsmatrix mit dem Vektor $\vek u$
+\begin{align}
+\delta A_a( p_h, \Np_i) = \delta A_i( u_h, \Np_i) = \sum_{j = 1}^n  a(\Np_j,\Np_i)\,u_j =  \sum_{j = 1}^n k_{\,ij}\,u_j =\vek z_i \,\vek u \,.
+\end{align}
+Notieren wir in einem Vektor $\vek f$ die Arbeiten, die die Originalbelastung bei
+denselben Bewegungen leistet,
+\begin{align}
+f_i = \delta A_a( p, \Np_i)\,,
+\end{align}
+und stellen wir nun den Vektor $\vek u$ so ein, dass er dem Gleichungssystem
+\begin{align}
+\vek K \vek u = \vek f
+\end{align}
+gen\"{u}gt, dann haben wir den FE-Lastfall $\vek p_h$ so justiert, dass er {\em
+arbeits\"{a}quivalent\/}\index{arbeits\"{a}quivalent}, \glq wackel\"{a}quivalent\grq\ zu dem
+Originallastfall ist, $\vek f_h = \vek f$.
+
+Echte Steifigkeitsmatrizen gibt es nur in der Stabstatik. Echt in dem Sinne, dass die Verkn\"{u}pfung $\vek K \vek u = \vek f$ zwischen den Weggr\"{o}{\ss}en $u_i$ und den Kraftgr\"{o}{\ss}en $f_i$ exakt ist. In der Stabstatik kann man daher Steifigkeitsmatrizen auch unabh\"{a}ngig von finiten Elementen herleiten, indem man notiert, welche Kr\"{a}fte zu den Einheitsverformungen $\Np_i$ geh\"{o}ren und so kann man auch die einzelnen Spalten von $\vek K$ erzeugen, s. S. \pageref{Dimensionsbetrachtung}, \cite{HaJa2}.
+
+{\textcolor{sectionTitleBlue}{\section{Die Magie der Knotenkr\"{a}fte}}}\index{Magie der Knotenkr\"{a}fte}
+Die so eing\"{a}ngige Gleichung $\vek K\,\vek u = \vek f $ und das Bild von Knotenkr\"{a}ften $\vek f$, dass wir dabei vor Augen haben, f\"{u}hrt nur zu leicht dazu, dass wir wirklich meinen, dass in den Knoten Knotenkr\"{a}fte angreifen und wir dieses Modell gern f\"{u}r die Wirklichkeit nehmen. In vielen Situationen ist das sehr bequem und ist oft auch der schnellste Weg, um ein Thema auf den Punkt zu bringen. Das Modell w\"{a}re nicht so erfolgreich, wenn von ihm nicht eine solche gro{\ss}e suggestive Kraft ausginge.
+
+Gelegentlich sollten wir uns jedoch daran erinnern, dass es nur ein Modell \glq als ob\grq{} ist und man die feineren Details der Methode der finiten Elemente auf anderem Wege suchen muss.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Gesamtsteifigkeitsmatrix}}}
+Die Gesamtsteifigkeitsmatrix wiederholt das Muster der Elementmatrizen. Der Eintrag auf der Diagonalen, $k_{ii} $, ist die \"{a}quiv. Knotenkraft der Kraft, die n\"{o}tig ist, den Knoten um $u_i = 1 $ auszulenken und die $k_{ij} $ oberhalb und unterhalb davon sind die \"{a}quiv. Knotenkr\"{a}fte der Bremskr\"{a}fte, also der Kr\"{a}fte die die Bewegung an den n\"{a}chsten Knoten abstoppen. Weil nun die treibende Kraft gegen die Steifigkeit aller Elemente arbeiten muss, die in dem Knoten angeschlossen sind, ist $k_{ii} $ eine Summe \"{u}ber die anliegenden Elementsteifigkeiten. Dem Zusammenbau der Gesamtsteifigkeitsmatrix entspricht also die Addition der Steifigkeiten in den Knoten.
+
+Der Zusammenbau orientiert sich dabei an der Kopplung der Weggr\"{o}{\ss}en, s. Abb. \ref{U387A}. Wenn zwei Elemente einen Knoten gemeinsam haben, dann m\"{u}ssen auch die Verformungen gleich sein. Umgekehrt bedeutet dies f\"{u}r eine Kraft, die in dem Knoten angreift, dass sie gegen die Steifigkeit beider Elemente arbeiten muss, die Steifigkeiten werden also addiert, wie bei {\em parallel geschalteten Federn\/}. Es ist diese Universalit\"{a}t der Kopplung von beliebigen Elementtypen, die die St\"{a}rke der finiten Elemente gegen\"{u}ber anderen numerischen N\"{a}herungsverfahren ausmacht. Tats\"{a}chlich ist es erstaunlich, wie gut die finiten Elemente die Kopplung auch der unterschiedlichsten Elementtypen verkraften.
+
+Wie sich die einzelnen Elemente eines Netzes zu einem Ganzen f\"{u}gen, sei am Beispiel zweier St\"{a}be verfolgt.
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\includegraphics[width=1.0\textwidth]{\Fpath/U387A}
+\caption{Kopplung zweier Stabelemente }
+\label{U387A}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Die beiden Elementmatrizen des Stabes in Abb. \ref{U387A} stehen auf der Diagonalen einer $4 \times 4$ Matrix $\vek K_E$
+\begin{align}
+\vek f_E = \left[ \barr{c} f_1^a \\ f_2^a \\ f_1^b \\ f_2^b \earr \right] =  \frac{EA}{\ell_e} \left [
+\barr {r @{\hspace{2mm}} r @{\hspace{2mm}} r @{\hspace{2mm}} r} 1 & -1 & 0 & 0 \\ -1 & 1 & 0 & 0 \\ 0 & 0 & 1 & -1 \\ 0 & 0 & -1 & 1 \\ \earr \right] \left[ \barr{cc} u_1^a \\ u_2^a \\ u_1^b \\ u_2^b \earr \right] = \vek K_E\vek u_E\,.
+\end{align}
+Die Verschiebungen der Elementenden sind an die Knotenverschiebungen $u_1, u_2, u_3$ gekoppelt
+\begin{align}
+\vek u_E = \left[ \barr{c} u_1^a \\ u_2^a \\ u_1^b \\ u_2^b \earr \right] = \left [
+\barr {r @{\hspace{2mm}} r @{\hspace{2mm}} r } 1 & 0 & 0  \\ 0 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 &  1 \\ \earr \right] \left[ \barr{cc} u_1 \\ u_2 \\ u_3 \earr \right] = \vek  A\vek u\,.
+\end{align}
+Die Kr\"{a}fte $\vek f_E$ und die Knotenkr\"{a}fte $\vek f$ m\"{u}ssen bei einer virtuellen Verr\"{u}ckung $\vek \delta \vek u$ bzw. $\vek \delta \vek u_E = \vek A\,\vek \delta \vek  u$ die gleiche Arbeit leisten
+\begin{align}\label{Eq25}
+\vek f_E^T\,\vek \delta \vek u_E = \vek f^T\,\vek \delta \vek u \qquad \text{oder} \qquad \vek f_E^T\,\vek A\,\vek  \delta\vek u = \vek f^T\,\vek  \delta\vek u\,,
+\end{align}
+was $\vek f = \vek A^T\,\vek f_E$ ergibt und das sind nat\"{u}rlich gerade die Gleichgewichtsbedingungen zwischen den Stabendkr\"{a}ften und den Knotenkr\"{a}ften $f_i$
+\begin{align}
+\vek f = \left[ \barr{c} f_1 \\ f_2 \\ f_3 \earr \right] = \left [
+\barr {r @{\hspace{2mm}} r @{\hspace{2mm}} r @{\hspace{2mm}} r} 1 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 \earr \right] \left[ \barr{c} f_1^a \\ f_2^a \\ f_1^b \\ f_2^b \earr \right] = \vek A^T\,\vek f_E\,.
+\end{align}
+Entsprechend erh\"{a}lt man durch Multiplikation der Matrix $\vek K_E$ von links und rechts mit
+$\vek A^T$ bzw. $\vek A$ die Gesamtsteifigkeitsmatrix
+\begin{align}
+\vek K = \vek A^T \vek K_E \vek A = \frac{EA}{\ell_e} \left [
+\barr {r @{\hspace{2mm}} r @{\hspace{2mm}} r} 1 & -1 & 0  \\ -1 & 2 &-1 \\ 0 &-1 &1\earr \right]\,.
+\end{align}
+Was man hier auch sieht, ist, dass es eine Rangordnung der Freiheitsgrade gibt. Die {\em master\/} sind die Bewegungen der Knoten und die {\em slaves\/} sind die Bewegungen an den Elementenden, die den Knoten gegen\"{u}ber liegen. Der {\em master\/} ist ein echter Freiheitsgrad und hat im Gleichungssystem seine Stelle, der {\em slave\/} hingegen wird entweder bereits bei der Elementformulierung oder erst beim Zusammenbau des Gleichungssystems eliminiert. Dies auf Elementebene zu tun ist eigentlich nur sinnvoll, wenn diese Bedingung lokal zu dem entsprechenden Element geh\"{o}rt, und wenn sich dadurch nicht der Rang der Steifigkeitsmatrix erh\"{o}ht. Wendet man n\"{a}mlich die explizite Form rekursiv mehrfach an, so steigt der Rang der Matrix und damit auch die Bandweite unter Umst\"{a}nden mit der Potenz der Schachtelungstiefe an.
+
+W\"{u}rde man auch die Bewegungen einzelner Knoten einschr\"{a}nken wollen, wie etwa in einem schr\"{a}g verlaufenden Rollenlager,
+\begin{align}
+\vek u^T\,\vek n = u_x\,n_x + u_y\,n_y = 0\,,
+\end{align}
+dann w\"{a}re das so, als ob man die Steifigkeitsmatrix mit einer weiteren Matrix $\vek B $ von links und rechts multiplizieren w\"{u}rde
+\begin{align}
+\vek K = \vek B^T\vek A^T\vek K_E\vek A\,\vek B \,,
+\end{align}
+die die Kopplung der alten {\em master\/} an die dann neuen {\em master\/} beschreibt. Mit jeder weiteren Zwangsbedingung, also zus\"{a}tzlichen Kopplungsbedingungen, Matrizen $\vek C, \vek D, \ldots $, schrumpft die Steifigkeitsmatrix
+\begin{align}
+\vek K = \vek D^T \vek C^T\vek B^T\vek A^T \vek K_E\vek A\,\vek B \,\vek C\, \vek D\,,
+\end{align}
+bleiben immer weniger echte Freiheitsgrade \"{u}brig. Programmintern hat man nat\"{u}rlich k\"{u}rzere Wege, um zu dem Endprodukt $\vek K$ zu kommen, aber mathematisch ist es eine Hilfe zu wissen, dass die Gesamtsteifigkeitsmatrix als das Produkt von Matrizen geschrieben werden kann.
+
+Vor allem \glq unendlich\grq\ steife Elemente sollte man direkt \"{u}ber Koppelbedingungen und nicht \"{u}ber k\"{u}nstlich hoch gesetzte Steifigkeiten realisieren. Zum Beispiel kann man die Knotenverformungen $u_x, u_y, u_z$ eines Knotens $\vek x = (x,y,z)$ in einem starren K\"{o}rper explizit auf die Bewegung $u_{x,ref},u_{y,ref},u_{z,ref}$ und Rotation $\Np_x, \Np_y, \Np_z$ der Referenzachse zur\"{u}ckf\"{u}hren, wie etwa in
+\begin{align}
+u_z = u_{z,ref} - ( x - x_{ref})\,\varphi_{y,ref} + (y - y_{ref})\, \Np_{x,ref}\,.
+\end{align}
+
+%----------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/PBalken4X}
+\caption{Ankopplung eines Plattenbalkens an eine Platte} \label{PBalken4}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+Unterz\"{u}ge werden gerne durch einen Balken modelliert, der unterhalb der Platte verl\"{a}uft wie in Abb. \ref{PBalken4} und dessen Bewegungen dann an die Bewegungen der Platte gekn\"{u}pft werden,
+\begin{align}
+ \left [ \barr {l} u_5 \\ u_6 \\u_7 \\u_8 \\u_9 \\ u_{10}\earr \right] =
+ \left [ \barr {r@{\hspace{2mm}} r @{\hspace{2mm}}r @{\hspace{2mm}}r @{\hspace{2mm}}}
+  0 & -e & 0 & 0  \\
+  1 &  0 & 0 & 0  \\
+  0 &  1 & 0 & 0  \\
+  0 &  0 & 0 & e \\
+  0 &  0 & 1 & 0 \\
+  0 &  0 & 0 & 1 \earr \right ] \left [ \barr {l} u_1 \\ u_2 \\u_3 \\u_4\earr \right]
+  \qquad \mbox{oder} \qquad \vek u_{(6)}^B = \vek A_{(6 \times  4)} \vek u_{(4)}^P\,.
+\end{align}
+Entsprechend erh\"{a}lt man eine modifizierte Balkenmatrix
+\begin{align}
+\vek A^T_{(4 \times 6}) \,\vek K_{(6 \times  6)} \,\vek A_{(6 \times 4)} = \vek K_{(4
+\times 4)}\,,
+\end{align}
+die man direkt in die globale Steifigkeitsmatrix der Platte einbauen kann.
+
+Eine andere Methode Freiheitsgrade zu koppeln, ist die Methode der {\em Lagrangeschen Multiplikatoren\/}\index{Lagrangesche Multiplikatoren}. Allerdings ist es oft nicht einfach mit dieser Methode stabile L\"{o}sungen zu erhalten.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Lagerbedingungen}}}\label{Lagerbedingungen}\index{Lagerbedingungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vor geometrischen Lagerbedingungen hat die FEM \glq Respekt\grq\, aber statische Randbedingungen
+erf\"{u}llt sie nur n\"{a}herungsweise. Anders gesagt: Die FEM kennt ein {\em starkes\/} und ein {\em schwaches\/} Gleichheitszeichen.
+\index{schwaches Gleichheitszeichen}\index{starkes Gleichheitszeichen}
+
+Am Rand einer gelenkig gelagerten Platte ist die Durchbiegung wirklich in jedem Punkt $\vek x$  null (starkes Gleichheitszeichen). Statische Lagerbedingungen dagegen erf\"{u}llt sie nur im Sinne des Prinzips der virtuellen Verr\"{u}ckungen, \glq im integralen Mittel\grq\, d.h. am freien Rand einer Platte ist z.B. nur garantiert, dass die Lagerkraft $v_n$, (der Kirchhoffschub), und die Lasten $p_h$ in der N\"{a}he des Randes auf den Wegen der Einheitsverformungen $\Np_i$ der Randknoten null Arbeit leisten
+\begin{align}
+\delta A_a = \int_{\Omega} p_h\,\Np_i \,d\Omega + \int_{\Gamma} v_n\,\Np_i\,ds = 0\,,
+\end{align}
+aber der freie Rand ist im strengen, punktweisen Sinn nicht kr\"{a}ftefrei. (Die virtuelle Verr\"{u}ckung $\delta w = \Np_i$ setzt ja auch die Lasten $p_h$ nahe dem Rand in Bewegung und  deren Arbeit muss mitgez\"{a}hlt werden).
+
+Auch das Randmoment an einem gelenkig gelagerten oder freien Rand ist punktweise nicht null, sondern nur so ausbalanciert, dass es und die Last $p_h$ bei einer Verdrehung der Randknoten  keine Arbeit leisten. Das bedeutet das schwache Gleichheitszeichen.
+
+Dieselbe Logik gilt nat\"{u}rlich auch f\"{u}r eingepr\"{a}gte Lasten, also z.B. Randlasten am Zwischenpodest einer Treppe, denn die Randkr\"{a}fte der FE-L\"{o}sung sind nur im schwachen Sinn, im Wackelsinn, mit den eingepr\"{a}gten Kr\"{a}ften gleich, aber nicht punktweise.
+
+Der technische Grund ist, dass bei der Konstruktion von $\mathcal{V}_h$ von vorneherein keine Funktionen zugelassen werden, die die geometrischen Lagerbedingungen verletzen, aber die Einhaltung der statischen Lagerbedingungen nicht verlangt wird ({\em strong and weak boundary conditions\/}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Gleichgewicht}}}\label{Gleichgewicht}\index{Gleichgewicht}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+S\"{a}tze wie\\
+
+\begin{itemize}
+{\em
+\item{Das globale Gleichgewicht ist erf\"{u}llt.}
+\item{Das Gleichgewicht im Element ist nicht erf\"{u}llt.}
+\item{Das Gleichgewicht an den Elementr\"{a}ndern ist nicht erf\"{u}llt.}
+\item{Das Gleichgewicht an den Knoten ist erf\"{u}llt.  \,\,\,\,\,{\rm (?)}}
+}
+\end{itemize}
+st\"{a}rken nicht das Vertrauen in die Methode der finiten Elemente, aber sie verlieren doch viel von ihrer Dramatik, wenn man sich in Erinnerung ruft, dass die Methode der finiten Elemente ein Ersatzlastverfahren ist. Die Schnittkr\"{a}fte, die ein FE-Programm ausgibt, geh\"{o}ren zum \"{a}quivalenten Lastfall $p_{h}$, und daher ist es (aus Sicht der FEM) ganz nat\"{u}rlich, dass nichts passt, wenn man \"{u}ber Kreuz vergleicht: Die Schnittkr\"{a}fte eines Lastfalls $A$ sind in der Regel nie im Gleichgewicht mit den Lasten eines Lastfalls $B$.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Apaper4X}
+\caption{Die Resultierenden sind gleich, $R = R_h$} \label{Apaper4}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Ein FE-Programm begeht nur {\em  einen} Fehler, den ihm ein Pr\"{u}fingenieur anlasten k\"{o}nnte, und den begeht es gleich zu Anfang: Es ersetzt die Originalbelastung durch einen \"{a}quivalenten Lastfall. Alles andere aber, was danach kommt, ist klassische Baustatik im Sinne des Regelwerkes. Das FE-Programm l\"{o}st den \"{a}quivalenten Lastfall {\em exakt}. Daher ist das ganze Tragwerk und jedes Teilsystem im Gleichgewicht -- mit den Lasten des \"{a}quivalenten Lastfalls.
+
+Die Gleichung $\vek K\,\vek u = \vek f$ ist auch keine Gleichgewichtsbedingung (bei Stabtragwerken kann man das noch so sehen), denn es werden keine Kr\"{a}fte gleichgesetzt, sondern Arbeiten. Die \"{a}quivalenten Knotenkr\"{a}fte $f_i$ [kNm] sind Arbeiten. Keine Scheibe k\"{o}nnte dem enormen Druck einer echten Knotenkraft $f_i$ widerstehen.
+
+{\textcolor{sectionTitleBlue}{\subsection{Globales Gleichgewicht}}}\index{globales Gleichgewicht}
+{\small Dieser Begriff hat eine ganz spezielle Bedeutung in der FEM. Globales Gleichgewicht meint, dass die Summe der \"{a}quivalenten Knotenkr\"{a}fte aus der Last gleich der Summe der Lagerkr\"{a}fte ist, also unter Ber\"{u}cksichtigung des Vorzeichens,
+\begin{align}
+\vek f_{Last} + \vek f_{Lager} = \vek 0\,.
+\end{align}
+Dies ist eine einfache Konsequenz der Tatsache, dass die {\em shape functions\/} eine {\em Partition der Eins\/} bilden (oder bilden sollten).
+
+Alle Ansatzfunktionen $\Np_i$ eines Netz zusammen bilden den Ansatzraum $\mathcal{V}_h^+$. (Wenn man die Ansatzfunktionen $\Np_i$ streicht, die zu gesperrten Freiheitsgraden geh\"{o}rt, dann erh\"{a}lt man den Ansatzraum $\mathcal{V}_h \subset \mathcal{V}_h^+$ auf dem wir die FE-L\"{o}sung suchen). Setzt man alle vertikalen Knotenverschiebungen $u_i$ eines Netzes auf Eins, auch die der Lagerknoten, dann muss die Summe {\em in jedem Punkt $x$\/} genau den Wert 1 ergeben
+\begin{align}
+\sum_i \Np_i(x) = 1 \qquad \text{Partition der Eins}\,.
+\end{align}
+Bei Platten fordert man ferner, dass die Starrk\"{o}rperdrehungen der Platte, also die Kippbewegungen bei weggenommenen Lagern, mit den $\Np_i(\vek x)$ darstellbar sein m\"{u}ssen.
+
+Wir stellen die FE-Belastung ja so ein, dass sie arbeits\"{a}quivalent zu allen $\Np_i \in V_h^+$ ist
+\begin{align} \label{Eq1}
+\int_{\Omega} p\,\Np_i\,d\Omega = \int_{\Omega} p_h\,\Np_i\,d\Omega\qquad i = 1,2,\ldots, n\,,
+\end{align}
+und weil die Starrk\"{o}rperbewegungen $w_0$ der Platte in
+$\mathcal{V}_h^{+}$ liegen, nach den $\Np_i$ entwickelbar sind, gilt die \"{A}quivalenz auch f\"{u}r die $w_0$
+\begin{align}
+\int_{\Omega} p\,w_0\,d\Omega = \int_{\Omega} p_h\,w_0\,d\Omega
+\end{align}
+f\"{a}llt also die Resultierende $\vek R_h$ der Ersatzlasten $\vek p_h$ mit der Resultierenden $\vek R$ der Originallasten $\vek p$ nach Gr\"{o}{\ss}e und Richtung zusammen. {\em Globales Gleichgewicht\/} bedeutet also $\vek R_h = \vek R$, s. Abb. \ref{Apaper4}.
+
+Ist nun $\vek A$ die resultierende Lagerkraft im LF $p$, dann gilt $\vek R + \vek A = \vek 0$ und dasselbe gilt sinngem\"{a}{\ss} auch f\"{u}r die FE-L\"{o}sung $\vek R_h + \vek A_h = \vek 0$. Wegen $\vek R_h = \vek R$ muss daher auch gelten $\vek A_h + \vek R = \vek 0$, und deswegen haben wir Gl\"{u}ck, denn wenn wir die Lagerkr\"{a}fte (des LF $p_h$) addieren und sie mit der Resultierenden $\vek R$ des LF $p$ vergleichen, dann ist das zwar formal eine Kontrolle \"{u}ber Kreuz, aber weil globales Gleichgewicht herrscht, haben wir diesmal die Logik auf unserer Seite.
+
+{\em Anmerkung:\/}
+Wir \glq wackeln\grq\ auch mit den gesperrten $\Np_i$ an der Last, nur verschwinden diese $f_i$ direkt in den Lagern, belasten also \glq das Innere\grq\ des Tragwerks nicht. Sie m\"{u}ssen aber bei dem globalen Gleichgewicht nat\"{u}rlich mitgez\"{a}hlt werden.
+} %ENDE SMALL
+
+{\textcolor{sectionTitleBlue}{\subsection{Lokales Gleichgewicht}}}\index{lokales Gleichgewicht}
+{\small Warum haben wir aber kein lokales Gleichgewicht? Warum sind die Schnittkr\"{a}fte $S_h^p$ der FE-L\"{o}sung l\"{a}ngs des Randes eines beliebigen {\em patchs\/} $\Omega_p$ nicht im Gleichgewicht mit der Originalbelastung? Der Grund ist, dass die Starrk\"{o}rperbewegungen des {\em patchs\/} \"{u}ber den {\em patch\/} hinausragen.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/TRANSLATION4}
+\caption{Die \"{U}berst\"{a}nde, die Schnipsel am Rand, st\"{o}ren das Gleichgewicht}
+\label{Translation4}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Betrachten wir einen {\em patch\/} $\Omega$ einer Platte, der im LF $p$ mit einer konstanten Blocklast $p$ belastet sei, die au{\ss}erhalb des {\em patchs\/} null sei, s. Abb. \ref{Translation4}. Es sei $\vek R^p$ die Resultierende der Originalbelastung $p$ auf dem {\em patch\/} und $\vek R_h^p$ habe dieselbe Bedeutung f\"{u}r die FE-Belastung $p_h$. Wenn die Resultierenden gleich w\"{a}ren, $\vek R^p = \vek R_h^p$, dann w\"{a}ren auch die resultierenden Schnittkr\"{a}fte $\vek S^p = \vek S_h^p$ gleich. Die Gleichung $\vek R^p = \vek R_h^p$ gilt genau dann, wenn
+\begin{align}
+\int_{\Omega_p} p \,u_0^p\,d\Omega = \int_{\Omega_p} p_h \,u_0^p\,d\Omega
+\end{align}
+f\"{u}r alle Starrk\"{o}rperbewegungen $u_0^p$ des {\em patchs\/} gilt. Das Problem ist nun aber, dass die Starrk\"{o}rperbewegungen eines solchen {\em patchs\/} nicht in $\mathcal{V}_h$ liegen. Um z.B. ein Hoch- und Runterfahren des {\em patchs\/} um 1 m zu simulieren, m\"{u}sste die Bewegung
+\begin{align}
+u_0^p(\vek x) = \left \{ \barr {l} 1 \qquad \vek x \in \Omega_p \\
+0 \qquad \mbox{sonst} \earr \right.
+\end{align}
+in $\mathcal{V}_h$ liegen. Wegen des Versprungs von null auf Eins, ist diese Bewegung aber unstetig, also nicht konform und liegt daher nicht in $\mathcal{V}_h$. Was aber in $\mathcal{V}_h$ liegt, ist die Bewegung, die ein Tischtuch beim Hochfahren vollf\"{u}hren w\"{u}rde, das wir \"{u}ber den {\em patch\/} legen. Vom Rand des hochgefahrenen {\em patchs\/} w\"{u}rde es in einer geraden Linie (unter $\sim 45^\circ$) auf null abfallen.
+
+Weil die beiden Lastf\"{a}lle $p$ und $p_h$ hinsichtlich aller $\Np_i$ \"{a}quivalent sind, sind sie es auch hinsichtlich des \glq Tischtuchs\grq. In einer symbolischen Notation gilt also
+\begin{align}
+\int_{\Omega_{p + 1}} p \,(\rampeL \cross \rampeR\,) \,d\Omega = \int_{\Omega_{p + 1}}
+p_h \,(\rampeL \cross \rampeR\,) \,d\Omega\,,
+\end{align}
+wobei $\Omega_{p + 1}$ der Teil der Platte sein soll, in dem das Tischtuch nicht null ist. Das ist praktisch $\Omega_p$ plus eine Elementreihe. Nun ist voraussetzungsgem\"{a}{\ss} $p$ au{\ss}erhalb $\Omega_p$ null -- das macht das Ergebnis anschaulicher -- und deswegen haben wir \glq fast\grq\ Gleichgewicht
+\begin{align}
+\int_{\Omega_{p}} p \,\, \cross \,\,d\Omega =  \int_{\Omega_{p + 1}} p_h \,(\rampeL
+\cross \rampeR\,) \,d\Omega\,,
+\end{align}
+haben wir fast das Wunschergebnis des Pr\"{u}fingenieurs
+\begin{align}
+\int_{\Omega_{p}} p \,\, \cross \,\,d\Omega =  \int_{\Omega_{p}} p_h \, \cross
+\,d\Omega\,,
+\end{align}
+was nur gelten w\"{u}rde, wenn $p_h$ in der angrenzenden Elementreihe identisch null w\"{a}re,
+was sehr unwahrscheinlich ist.
+
+Dieses Beispiel belegt noch einmal sehr sch\"{o}n die Sichtweise eines FE-Programms. Die kleinste Me{\ss}strecke\index{Me{\ss}strecke} f\"{u}r ein FE-Programm sind nicht die einzelnen Elemente $\Omega_e$, sondern das {\em cluster\/}\index{cluster} von je 4 oder 5 Elementen, das den Tr\"{a}ger $T_i$ der einzelnen Einheitsverformungen $\vek \Np_i $ bildet. Die Tr\"{a}ger umfassen -- von {\em bubble-functions} abgesehen -- in der Regel mehrere Elemente. Wir hatten das oben, s. (\ref{Eq18}) auf S. \pageref{Eq18}, die {\em lokale Kontrolle\/} genannt.
+
+Die Elementspannungen sind also nicht elementweise orthogonal zu den wahren Spannungen, sondern nur bezogen auf {\em cluster} von 4 oder 5 Elementen, die die Tr\"{a}ger $T_{\,i}$ der Einheitsverformungen bilden,
+\begin{align}
+\mbox{Nicht} \quad \int_{\Omega_e} (\vek \sigma - \vek \sigma_{h} ) \dotprod \vek
+\varepsilon_i \,d\Omega = 0, \quad \mbox{sondern} \quad \int_{T_i} (\vek \sigma - \vek
+\sigma_{h} ) \dotprod \vek \varepsilon_i \,d\Omega = 0\,.
+\end{align}
+} %ENDE SMALL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Das Schnittprinzip}}}\label{Schnittprinzip}\index{Schnittprinzip}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Das Schnittprinzip hat f\"{u}r die Statik axiomatischen Charakter. In der FEM gilt dieses Prinzip aber nur noch in abgeschw\"{a}chter Form, \cite{Gr}:\\
+
+\begin{itemize}
+\item Die Schnittkr\"{a}fte
+auf den beiden Schnittufern und die Fl\"{a}chen- und Volumenlasten links und rechts von der Schnittfuge leisten bei einer Einheitsverformung der Knoten in der Schnittfuge die gleiche Arbeit. Das ist garantiert. Es ist aber nicht garantiert, dass die Schnittkr\"{a}fte punktweise gleich sind.
+\end{itemize}
+Auf den beiden Schnittufern k\"{o}nnen also (aber m\"{u}ssen nicht) unterschiedlich verteilte Kr\"{a}fte wirken. Insbesondere gehen eben auch die Fl\"{a}chen- bzw. Volumenlasten (die \glq Umgebungskr\"{a}fte\grq)\index{Umgebungskr\"{a}fte} in der N\"{a}he der Schnittfuge in die Bilanz der Arbeiten ein. Alles, was an Lasten in der N\"{a}he der Schnittfuge steht und bei einer Einheitsverformung eines Koppelknotens mitbewegt wird, wird mitgez\"{a}hlt!
+
+Diesem {\em schwachen Schnittprinzip\/}, wenn wir es so nennen wollen, begegnen wir vorwiegend in den Koppelfugen unterschiedlicher Tragglieder, wie etwa Platte und Balken oder Wand und Lisene (Wandvorspr\"{u}nge), s. Abb. \ref{Lisene}.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/LISENE}
+\caption{Lisene und Wandscheibe} \label{Lisene}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/MODELLPLATTENBALKEN}
+\caption{Die Kopplung zwischen Balken und Platte ist eine arbeits\"{a}quivalente Kopplung,
+aber keine \glq kraftschl\"{u}ssige\grq\ Kopplung weil {\bf a)} die Balkenmomente keinen
+Widerstand auf der Seite der schubstarren Platte finden, bzw. {\bf b)} die Knotenkr\"{a}fte
+keinen Widerstand bei der schubweichen Platte.} \label{Modellplattenbalken}
+\end{figure}%%
+%------------------------------------------------------------------------
+
+Modellieren wir die Lisene als Stab mit linearen Elementen, so bedeutet das, dass in den Knoten der Lisene Einzelkr\"{a}fte wirken. Am anderen Schnittufer finden wir statt der Knotenkr\"{a}fte aber Linienkr\"{a}fte als Schnittkr\"{a}fte, s. Abb. \ref{Lisene}. (Einzelkr\"{a}fte auf der Seite der Scheibe w\"{u}rden die Knoten wegdr\"{u}cken). Was den unterschiedlichen Schnittkr\"{a}ften + Umgebungskr\"{a}ften aber gemeinsam ist, ist, dass sie arbeits\"{a}quivalent bez\"{u}glich der Einheitsverformungen der Knoten sind.
+
+Stab (Lisene) und Wandscheibe sind also f\"{u}r die FEM nicht zwei monolithisch verbundene Bauteile, sondern jedes Bauteil lebt -- bis auf die Koinzidenz der Knotenverschiebungen und die energetische Kopplung, wenn man das $\delta A_a$(Stab) = $\delta A_a$(Scheibe) der Schnittkr\"{a}fte so nennen will -- f\"{u}r  sich allein.
+
+Dazu kommt, dass sich auch die Schnittufer in der Regel unterschiedlich verformen, weil die Verschiebungsans\"{a}tze auf beiden Seiten des Schnitts unterschiedlich sind, wenn das auch bei diesem Beispiel gerade nicht der Fall ist: Lineare Ans\"{a}tze f\"{u}r die Scheibe und lineare Ans\"{a}tze f\"{u}r die St\"{a}be w\"{u}rden zueinander passen, w\"{a}hrend quadratische Ans\"{a}tze f\"{u}r die Scheibe die Kompatibilit\"{a}t dagegen verletzen w\"{u}rden.
+
+Solche Inkonsistenzen in der Formulierung treten viel h\"{a}ufiger auf, als sich der Anwender vielleicht bewusst ist. Allerdings sollten sie auf Koppelfugen beschr\"{a}nkt bleiben, denn man kann schlecht ein Tragwerk mit lauter klaffenden Fugen rechnen.
+
+Was wir oben \"{u}ber Stab und Scheibe gesagt haben, gilt nat\"{u}rlich erst recht f\"{u}r die Kopplung zwischen einer Platte und einem Balken, s. Abb. \ref{Modellplattenbalken}, denn eine Platte kann Einzelmomente nicht aufnehmen, und daher kann man nicht einfach die Knotenmomente von der Seite des Balkens auf das andere Schnittufer \"{u}bertragen. Wird die Platte schubweich gerechnet, dann kann man selbst die Knotenkr\"{a}fte nicht mehr \"{u}bertragen, weil eine schubweiche Platte Einzelkr\"{a}ften nichts festhalten kann.
+
+F\"{u}r Kr\"{a}fte, und dazu geh\"{o}ren auch die Schnittkr\"{a}fte in den Koppelfugen, benutzt die FEM eben, so kann man es zusammenfassen, das {\em schwache Gleichheitszeichen\/}.
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Die Ergebnisse im Ausdruck}}}\label{Ausdruck}\index{Ausdruck}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Um FE-Ergebnisse richtig beurteilen zu k\"{o}nnen, muss man wissen, wie ein FE-Programm die
+Ergebnisse pr\"{a}sentiert.
+%-----------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.7\textwidth]{\Fpath/U142}
+\caption{Starre St\"{u}tze, die gesamte St\"{u}tzenkraft ist die Summe aus der St\"{u}tzenkraft $R_{FE}$ der FE-L\"{o}sung plus dem direkt in die St\"{u}tze reduziertem Anteil aus der Last $p$} \label{U142}
+\end{figure}%
+%-----------------------------------------------------------------
+
+{\textcolor{sectionTitleBlue}{\subsection{Der LF $p_h$}}}
+ Der \"{a}quivalente Lastfall $p_h$ wird in der Regel von FE-Program\-men -- zu Recht -- nicht ausgegeben, weil die Darstellung der Fehlerkr\"{a}fte $p - p_h$ den Anwender eher irritiert. Programmintern und mit den richtigen mathematischen {\em tools\/} k\"{o}nnen jedoch die Fehlerkr\"{a}fte eine Hilfe bei der Beurteilung der G\"{u}te einer FE-L\"{o}sung sein.
+\pagebreak
+{\textcolor{sectionTitleBlue}{\subsection{Lagerkr\"{a}fte}}}
+Die $f_i$ in den Lagerknoten berechnet ein FE-Programm im Nachlauf, nachdem es das System $\vek K\,\vek u = \vek f$ gel\"{o}st hat, wie folgt: \\
+\begin{itemize}
+  \item Es erweitert den Vektor $\vek u$ zun\"{a}chst um die zuvor gestrichenen $u_i = 0$ in den Lagerknoten, $\vek u \to \vek u_{G}$,
+  \item und multipliziert die nicht-reduzierte, globale Steifigkeitsmatrix $\vek K_{G}$\index{nicht-reduzierte Steifigkeitsmatrix} mit dem vollen Vektor $\vek u_{G}$,
+  \item die Eintr\"{a}ge $f_i$ in dem Vektor $\vek f_{G} = \vek K_{G}\,\vek u_{G}$, die zu den gesperrten Freiheitsgraden geh\"{o}ren, sind die \"{a}quiv. Knotenkr\"{a}fte in den Lagern {\em ohne\/} die Anteile der Last, die direkt in die Lager reduziert wurden. Zu diesen muss man also noch die \"{a}quiv. Lagerkr\"{a}fte aus der direkten Reduktion addieren, die wir $R_{d}$ nennen, s. Abb. \ref{U142},
+      \begin{align}
+      f_i(komplett) = f_i +  R_{d} = R_{FE} + R_{d}\,.
+      \end{align}
+      \item Wenn allerdings die Lager nachgiebig gerechnet wurden, dann ist das letzte Man\"{o}ver nicht notwendig, dann beinhaltet $f_i = R_{FE}$ die volle Lagerkraft.
+\end{itemize}
+
+Diese \"{a}quivalenten Knotenkr\"{a}fte $f_i$ [kNm] werden dann in Linienkr\"{a}fte [kN/m]
+umgerechnet.
+
+
+Dieses Umrechnen macht es auch, dass im Ausdruck die Einspannmomente $m_n^h$ an freien R\"{a}ndern von Platten null sind, obwohl sie punktweise eigentlich nicht null sind, sondern nur im integralen Sinn: Weil die Einspannmomente $m_n^h$ (plus den FE-Lasten $p_h$) im Mittel null sind, wenn man sie gegen die Einheitsverdrehungen der Randknoten arbeiten l\"{a}sst,
+\begin{align}\label{Eq6}
+f_i = \int_{\Omega} p_h\,\Np_i \,\,d\Omega + \int_{\Gamma} m_n^h\,\Np_i \,ds = 0 \,,
+\end{align}
+so sind die \"{a}quivalenten Knotenmomente $f_i$ null, und deswegen dann auch ihre Verteilung im Sinne von (\ref{Eq6}) l\"{a}ngs des Randes.
+
+Dieselbe Logik gilt auch f\"{u}r die Lagerkr\"{a}fte an Zwischenlagern wie W\"{a}nden oder Unterz\"{u}gen. Was man im Ausdruck sieht, sind die in Linienkr\"{a}fte umgerechneten \"{a}quivalenten Knotenkr\"{a}fte $f_i$.
+
+In Wirklichkeit wird es so sein, dass die Platte an einem Zwischenlager von dort aufw\"{a}rts gerichteten Fl\"{a}chenkr\"{a}ften $p_h$, Linienkr\"{a}ften $l_h$ und Linienmomenten $m_h$ (auf den Elementkanten) gest\"{u}tzt wird. Diese l\"{a}sst man gegen die Einheitsverformungen $\Np_i $ der Lagerknoten arbeiten, was die $f_i$ ergibt, und diese werden
+anschlie{\ss}end in Linienkr\"{a}fte umgerechnet. So entsteht der Eindruck einer Linienlagerung.
+
+{\textcolor{sectionTitleBlue}{\subsection{Kontrolle der Lagerkr\"{a}fte}}}\index{Kontrolle der Lagerkr\"{a}fte}
+Die Gleichgewichtskontrollle, {\em Summe der Belastung = Summe der Knotenkr\"{a}fte\/}, ist eine notwendige Kontrolle, denn es darf keine Belastung verloren gehen, aber sie sagt nichts \"{u}ber die G\"{u}te einer FE-Berechnung aus, weil jedes FE-Programm diese Bedingung erf\"{u}llt, sie ist sozusagen {\em hard wired\/}.
+
+Man beachte auch, dass nur die Anteile der Last zu Schnittkr\"{a}ften f\"{u}hren, die in freie Knoten, in der Regel sind das die innenliegenden Knoten, reduziert werden. Ein gewisser Teil wandert ja direkt in die Lagerknoten und flie{\ss}t damit direkt ab. Beim Aufsummieren muss man diese nat\"{u}rlich mitz\"{a}hlen, FE-Programme machen das.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Einfluss der Modellbildung bei der
+Berechnung am Gesamtmodell}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\`{O}%%%%%%%%%%%%%w%%%%
+\vspace{-0.3cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Positions-Statik}}}\label{Positionsstatik}\index{Positionsstatik}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Der herk\"{o}mmlichen Weg einer statischen Berechnung soll als Positions-Statik bezeichnet werden. Das Tragwerk wird in einzelne Positionen aufgeteilt und die Lastabtragung erfolgt von Position zu Position, wobei die st\"{u}tzende Konstruktion jeweils als steif angesehen wird, und die dar\"{u}ber liegenden Strukturen nur als Lasten angesetzt werden. Dem klaren Vorteil des ingenieurgerechten Ansatzes steht der Nachteil gegen\"{u}ber Effekte zweiter Ordnung zu vernachl\"{a}ssigen, die jedoch f\"{u}r das Ergebnis von Bedeutung sein k\"{o}nnen.  Der ganz gro{\ss}e praktische Vorteil besteht jedoch darin, dass die Methode gegen\"{u}ber den Bauzust\"{a}nden gutm\"{u}tig ist: Jede Belastung wirkt nur auf die darunterliegenden Strukturen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Statik am Gesamtsystem}}}\index{Statik am Gesamtsystem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In vielen F\"{a}llen ist jedoch auch eine Untersuchung am Gesamtsystem erforderlich. Sowohl die Stabilit\"{a}t wie auch dynamische Beanspruchungen sind Belastungszust\"{a}nde bei denen die Steifigkeit und das Zusammenwirken aller Teile ber\"{u}cksichtigt werden muss. Au{\ss}erdem ist es f\"{u}r die Pr\"{a}sentation sehr vorteilhaft, dem Bauherrn ein Gesamtmodell pr\"{a}sentieren zu k\"{o}nnen. Um richtige Ergebnisse zu erhalten, muss man den Modellierungsaufwand entsprechend erh\"{o}hen. Dabei besteht die gro{\ss}e Gefahr, dass man in Zugzwang ger\"{a}t: Durch die Ber\"{u}cksichtigung von Effekt $a$ muss auch Effekt $b$ ber\"{u}cksichtigt werden, usw. Es kann aber auch sein, dass lokale Effekte wie z.B. das Knickversagen einer Aussteifung vom Gesamtmodell gar nicht erfasst werden k\"{o}nnen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Kritische Punkte bei der Statik am Gesamtsystem}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.3cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Bauphasen}}}\index{Bauphasen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Da wesentliche Lasten w\"{a}hrend der Bauphasen auf Teilen des Systems wirken, m\"{u}ssen f\"{u}r die richtige Verteilung der Beanspruchung des Endzustands alle diese Bauphasen akkumuliert werden. Dies kann dadurch geschehen, dass man Ergebnisse an einzelnen statischen Systemen einfach \"{u}berlagert, aber sp\"{a}testens dann, wenn auch Teile der Struktur wieder entfernt werden, m\"{u}ssen die Umlagerungen dadurch modelliert werden, dass die freigeschnittenen inneren Kr\"{a}fte der entfernten Teile als Belastung auf das n\"{a}chste System wirken. Vereinfacht gesagt: die Schwerkraft wirkt schon w\"{a}hrend der Bauzeit und wird nicht erst nach dem Richtfest eingeschaltet. Dieser Aspekt erh\"{o}ht den Rechen- und Bearbeitungsaufwand erheblich, aber es gibt keine Alternative.
+
+Wird eine Vorspannung auf das falsche System aufgebracht, kann es sogar passieren, dass die Kr\"{a}fte aus der Verformungsbehinderung deutlich gr\"{o}{\ss}er werden als die statisch bestimmten Anteile und dann quasi mit dem falschen Vorzeichen wirken.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Lagerungen}}}\index{Lagerungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Die erste Grundregel bei Berechnungen am Gesamtsystem ist: \glq Es gibt keine unendlich steifen Elemente\grq. Insbesondere wenn Zwang aus Temperatur untersucht wird, muss jede Behinderung der Verformung zu entsprechenden Kr\"{a}ften f\"{u}hren. Dann k\"{o}nnen Details wie z.B. die Verwendung von nachgiebigen Verbindungsmitteln die Ergebnisse v\"{o}llig ver\"{a}ndern.
+
+Bei der Lagerung der Systeme muss vor allem den horizontalen Verschiebungs-M\"{o}glichkeiten Aufmerksamkeit geschenkt werden. Der normale Durchlauftr\"{a}ger kennt keine horizontalen Lagerungen, als Riegel in einem Rahmensystem ist er weder frei verschieblich, noch komplett behindert. Bei einer nichtlinearen Berechnung eines Stahlbetonelements entstehen durch die Rissbildung zus\"{a}tzliche Dehnungen der Schwerachse, die bei entsprechender Dehnungsbehinderung zu Normalkr\"{a}ften f\"{u}hren.
+
+Eine elastisch gebettete Bodenplatte hat z.B. keinen definierten Lagerpunkt f\"{u}r horizontale Belastungen. Man muss eine fl\"{a}chenhafte Steifigkeit anordnen, tiefer gelegte Fundamente sind dabei \glq etwas\grq\ steifer, dazwischen k\"{o}nnen gro{\ss}e Kr\"{a}fte entstehen.
+
+Auch die Behandlung einer Quervorspannung im Br\"{u}ckenbau kann infolge der ungenauen Steifigkeiten und Lagerungen in Querrichtung sehr leicht v\"{o}llig missraten.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Verbindungen}}}\index{Verbindungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Auch die Modellierung der statischen und dynamischen Verbindungen der einzelnen Bauteile hat h\"{a}ufig einen sehr gro{\ss}en Effekt auf die Ergebnisse. Die Erfassung der korrekten Steifigkeit ist schon schwierig genug, die Erfassung des nichtlinearen Verformungsverhaltens oder der dynamischen Eigenschaften einer Verbindung stellt eine au{\ss}erordentliche Ingenieuraufgabe dar. Aber auch die Modellierung einer einfachen Rahmenecke ist komplex, \cite{Rombach}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Rotationsfreiheitsgrade}}}\index{Rotationsfreiheitsgrade}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Einen besonderen Einfluss haben die Verdrehungsfreiheitsgrade bzw. deren Kopplung mit den Verschiebungen. Vernachl\"{a}ssigt man diese Effekte, dann erf\"{u}llt die L\"{o}sung nicht mehr das Momentengleichgewicht, man muss sich also mit diesen Freiheitsgraden kritisch auseinandersetzen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Randbedingungen}}}\index{Randbedingungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.7\textwidth]{\Fpath/Katz2nd12A}
+\caption{Koppelfeder} \label{Katz2nd12}
+\end{figure}%%
+%----------------------------------------------------------
+
+Es werden heute meist finite Elemente nach der {\em Reissner-Mindlin-Theorie\/}, bzw. Stabelemente nach der {\em Timoshenko-Theorie\/} verwendet. Die Verdrehung ist dabei also die Gesamtverdrehung als Summe aus Biegeverdrehung und Schubverzerrung. Bei Platten und Schalen muss daher die \glq harte\grq\ und die \glq weiche\grq\ Lagerung unterschieden werden, s. S. \pageref{Lagerungsarten}. Obwohl die harte Lagerung mit ihrer behinderten Verdrehung intuitiv richtiger erscheint, erzeugt diese gerne ungewollte Einspannungen bei gekr\"{u}mmten R\"{a}ndern. Die weiche Lagerung hingegen muss Lagerbedingungen f\"{u}r die Torsionsmomente durch Kr\"{a}ftepaare erzeugen, was zur Ausbildung von Grenzschichten mit gro{\ss}en Schubkr\"{a}ften entlang des Randes und oszillierenden Lagerkr\"{a}ften f\"{u}hrt.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Koppelelemente}}}\index{Koppelelemente}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Gerade bei r\"{a}umlichen Systemen werden h\"{a}ufig entfernt liegende Knoten miteinander mechanisch gekoppelt. Sowohl bei den Koppelbedingungen wie auch bei den Federn m\"{u}ssen die Verdrehungen und der reale Abstand der Knoten in die Elementbedingung mit einbezogen werden.
+
+So ist z.B. ein allgemeines Koppelelement mit Federn durch die Skizze in Abb. \ref{Katz2nd12} gegeben: Zwischen zwei Knoten KA und K2 wirken eine Feder $C$ in Richtung der Knoten (= Vektor $\bar{\vek n}$)  sowie eine isotrope Querfedersteifigkeit $CT$ in der Ebene senkrecht dazu. Durch die Kombination beider Federn lassen sich nichtlineare Effekte wie Reibung vorteilhaft modellieren. Die grundlegenden Beziehungen der Verschiebungen $\vek u$, der Kr\"{a}fte $\vek f$ und der Steifigkeit $\vek K$ sind durch die folgenden Ausdr\"{u}cke gegeben
+\begin{subequations}	
+\begin{align}
+\vek \Delta \bar{\vek u} &= \bar{\vek u}(KA) - \bar{\vek u}(K2) \qquad \Delta u_n = \vek \Delta \bar{\vek u}^T \bar{\vek n} \qquad \vek \Delta \bar{\vek u}_t = \vek \Delta \bar{\vek u} - \bar{\vek n} \cdot  \Delta u_n \\
+\bar{\vek f} &= [f_x, f_y, f_z]^T = \bar{\vek n} \cdot \Delta u_n \cdot C + \vek \Delta \bar{\vek u}_t \cdot CT \\
+\vek K &= \left[\barr{r r} \vek k_{ii} & - \vek k_{ii}\\  -\vek k_{ii} & \vek k_{ii} \earr\right] \qquad \vek k_{ii} = \vek E_3 \cdot CT + \bar{\vek n}\, (C - CT) \,\bar{\vek n}^T
+\end{align}
+\end{subequations}
+mit $\vek E_3$ als der Einheitsmatrix vom Rang 3.
+
+Dieser Ansatz ist jedoch nur richtig, wenn die Elementknoten zusammenfallen. Haben sie einen echten Abstand, dann sollte eine horizontale Kraft im oberen Knoten ein Moment im unteren Knoten erzeugen. Man kann diesen Effekt allgemein dadurch beschreiben, dass die Summe der Verdrehungen eine Verschiebung der Feder CT erzeugt, die proportional zum Abstand der Knoten ist. Damit wird der Verschiebungsvektor erg\"{a}nzt
+\begin{align}
+\vek \Delta \bar{\vek u}_E = \left[\barr{r } \Delta u_x \\ \Delta u_y \\ \Delta u_z\earr\right] +
+\left[\barr{r r r} 0 & - \Delta z & \Delta y\\  \Delta z & 0 & -\Delta x\\
+-\Delta y &\Delta x &0 \earr\right] \,\left[\barr{r } \sum u_{xx} \\ \sum u_{yy} \\ \sum u_{zz} \earr\right]\,.
+\end{align}
+Diese Exzentrizit\"{a}tsbeziehung $\vek E$ erzeugt aus der $3 \times 3$ Steifigkeitsmatrix $\vek k_{ii}$ eine $6 \times 6$ Steifigkeitsmatrix, indem man sie unter Beachtung der entsprechenden Vorzeichen von rechts und links mit $\vek E_{(3 \times 6)}$ multipliziert
+\begin{align}
+\vek k_{ii @E} = \vek E^T\,\vek k_{ii}\,\vek E \qquad \vek E = \left[\barr{c@{\hspace{4mm}} c @{\hspace{4mm}}c@{\hspace{4mm}} c @{\hspace{4mm}}c @{\hspace{4mm}}l } 1 &0 &0 &0 & \mp \Delta z &\pm \Delta y\\
+0 & 1 &0 & \pm \Delta z & 0 & \mp\,\Delta x\\
+0& 0 &1 &\mp\,\Delta y &\pm \Delta x &0 \earr\right]\,.
+\end{align}
+Damit ist zwar die Koppelbedingung nun mechanisch richtig formuliert, aber wenn die Verdrehungsfreiheitsgrade ansonsten keine Steifigkeit haben, wird die Querfederkonstante dadurch wirkungslos, bzw. es treten verschiebliche Systeme auf. Zum Teil kann man das Problem dadurch l\"{o}sen, dass man die Art der angrenzenden Elemente automatisch ber\"{u}cksichtigt, und den Rotationsfreiheitsgrad festsetzt, sofern er nicht anderweitig ben\"{o}tigt wird.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Elementformulierungen}}}\index{Elementformulierungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Ein fundamentales Problem entsteht nun dadurch, dass manche finite Elemente nicht alle Rotationsfreiheitsgrade benutzen. F\"{u}r Seil und Fachwerk erscheint dies noch unmittelbar einsichtig, kritischer ist der fehlende Freiheitsgrad bei Scheiben, Faltwerken oder Schalen bei Verdrehungen um die Fl\"{a}chennormale. Auch die modernen isogeometrischen Elemente \cite{Hughes3} verwenden ja nur noch die Verschiebungsfreiheitsgrade.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd1}
+\caption{L\"{a}ngskr\"{a}fte bei der Einleitung eines Einzelmoments in einen Kragtr\"{a}ger} \label{Katz2nd1}
+\end{figure}%%
+%----------------------------------------------------------
+Die Angelegenheit wird nun problematisch, wenn Lasten in Form von Momenten aufgebracht werden m\"{u}ssen oder Kopplungen an Stabelemente erfolge{\em \/}n. Hier muss man entweder den Stab um einen oder mehrere Knoten ins Kontinuum verl\"{a}ngern oder mit speziellen Koppelbedingungen die Rotation aus Verschiebungsdifferenzen modellieren.
+
+In der Geschichte der Finiten Elemente wurde zuerst einfach ein Strafterm (Federelement) auf diesen Freiheitsgrad, dann eine k\"{u}nstliche Steifigkeit verwendet, die \"{u}ber entsprechende Nebendiagonalglieder zumindest Starrk\"{o}rper-Rotationen nicht behindert hat.
+
+Es war daher nicht verwunderlich, dass man versucht hat, mit h\"{o}heren Ansatzfunktionen diese {\em drilling degrees \/} in die Elementformulierung einzubinden. Gelegentlich wurde die Theorie des {\em Cosserat Kontinuums\/} benutzt, was sich aber nicht durchgesetzt hat. Erste Versuche im klassischen Umfeld bestanden darin, bei einem Element mit quadratischem Ansatz die Verschiebungen der Knoten in den Seitenmitten aus den Verformungen der Eckknoten abzuleiten \cite{Allman2}. Diese Elemente erwiesen sich aber alle f\"{u}r den praktischen Einsatz als nicht so geeignet.
+
+Heute ist das Problem technisch gel\"{o}st: Entweder man benutzt die {\em \"{A}quivalente Spannungs Transformation\/} von {\em Werkle\/}, s. S. \pageref{AST}, oder man benutzt bei der Herleitung der Elemente eine {\em gemischte Formulierung\/} wie das {\em Hughes\/} und {\em Brezzi\/} \cite{Hughes4} vorgeschlagen haben.
+
+Bei der gemischten Formulierung werden die Verschiebungen $\vek u$ und die Verdrehungen $\vek \omega$ (ein $2 \times 2$ Tensor) als getrennte Gr\"{o}{\ss}en behandelt
+\begin{align}\label{Eq19}
+\Pi(\vek u, \vek  \omega) &= \frac{1}{2} \int_{\Omega} \vek \nabla \vek u^S \dotprod \vek C \dotprod  \vek \nabla \vek u^S\,d\Omega + \frac{1}{2} \int_{\Omega} | \vek \nabla \vek u^A- \vek \omega|^2 \,d\Omega \nn \\ &- \int_{\Omega} \vek u \dotprod \vek f \,d\Omega\,,
+\end{align}
+wobei
+\begin{align}
+\vek \nabla \vek u^S = \frac{1}{2} (\vek \nabla u + \vek \nabla u^T) \qquad \vek \nabla \vek u^A = \frac{1}{2} (\vek \nabla u - \vek \nabla u^T)
+\end{align}
+die Aufspaltung des Gradienten $\vek \nabla \vek u = \vek \nabla \vek u^S + \vek \nabla \vek u^A$ ist.
+
+Der erste Ausdruck ist quasi die normale Steifigkeitsmatrix aus dem symmetrischen Anteil des Gradienten $\vek \nabla \vek u$ des Verschiebungsfelds. Der zweite Teil ist ein zus\"{a}tzlicher Strafterm, der die Rotation des Verschiebungsfeldes mit dem Feld der Verdrehungen in \"{U}bereinstimmung bringt.
+
+Leider ist es aber so, dass die normalen Elemente beim Hinzuf\"{u}gen weiterer Steifigkeitsterme steifer werden, die L\"{o}sung der ohnehin schon zu steifen konformen Elemente dadurch schlechter wird. {\em Hughes\/} wies jedoch schon darauf hin, dass der Einsatz von nichtkonformen Elementen oder von Elementen mit {\em assumed strains\/} zu brauchbareren Elementen f\"{u}hren sollte.
+
+In der Tat ergibt ein 4-knotiges Element, das die beiden Techniken kombiniert, in den klassischen Benchmarks immer eine korrekte L\"{o}sung \cite{Pimpinelli}. In Abb. \ref{Katz2nd1} ist die Verteilung der L\"{a}ngskraft bei der Einleitung eines Einzelmoments in einen Kragarm mit diesem Elementansatz dargestellt. Die vertikale Verschiebung wird dabei bis auf  2.4 \permil\ genau ermittelt, die lokale Verdrehung ist aber gegen\"{u}ber der Stabl\"{o}sung 3.7 fach gr\"{o}{\ss}er.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd2N}
+\caption{Platte mit Unterzug} \label{Katz2nd2}
+\end{figure}%%
+%----------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Lasteinleitung}}}\index{Lasteinleitung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Dieses Beispiel zeigt auch, dass man die in der Stabstatik \"{u}blichen Lasten wie Einzelkr\"{a}fte und Einzelmomente bei einer FE-L\"{o}sung mit gr\"{o}{\ss}ter Zur\"{u}ckhaltung einsetzen sollte. Da diese konzentrierten Lasten die Idealisierung einer in Wirklichkeit verteilten Last darstellen, wird man immer dann unsinnige Ergebnisse erhalten, wenn man das Netz feiner macht als die reale Lastfl\"{a}che. Bei einer Platte ist es z.B. bekannt, dass man die Lastfl\"{a}che mit einem Ausbreitungskegel von 45 Grad in der Mittelebene der Lastfl\"{a}che ermittelt. Bei der Einleitung einer transversalen Querkraft in einen Stab w\"{u}rde man jedoch eine quadratische Schubspannungsverteilung modellieren m\"{u}ssen, um mit der Stabtheorie konform zu gehen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Steifigkeit im Gesamtsystem}}}\index{Steifigkeit im Gesamtsystem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Es sei nun ein Vergleich der Ergebnisse an einem 8 m langen Kragarm aus einem U-Profil unter Eigengewicht dargestellt. Der Querschnitt des Stabmodells (Stabtheorie) wie auch das FE-Schalenmodell werden mit Platten der Dicke  20 mm, einer H\"{o}he von 300 mm und einer Breite von 100 mm modelliert. Da der Schubmittelpunkt und der Schwerpunkt nicht zusammenfallen, muss sich der Querschnitt tordieren.  Die folgende Tab. \ref{EVergleich} stellt die Verschiebungen am Kragarmende gegen\"{u}ber.
+
+%--------------------------------------------------------------------------------------
+\begin{table}[h] \centering
+\caption{ Ergebnisvergleich} \label{EVergleich}
+\begin{tabular}{|r|  @{\hspace{5mm}}r @{\hspace{5mm}}r @{\hspace{5mm}}r  @{\hspace{5mm}}|}
+\noalign{\hrule\smallskip}
+  Modellierung & $u-z$  & $u-yy$ & $u-xx$ \\
+           &         mm &     mrad  &      mrad  \\ \noalign{\hrule\smallskip}
+         Klassische Stabtheorie &   74.483 &       -11.814 &       -62.025 \\
+         Stabtheorie mit W\"{o}lbkrafttorsion &   74.071 &       -11.814 &       -54.296 \\
+        FE-Modell konform &   59.711 &       -9.629$^*$&        -43.935 \\
+    FE-Modell mit assumed strains &  74.119 &       -11.835$^*$ &        -63.151 \\
+       FE-Modell drilling degrees &   74.825 &       -11.877 &       -63.796 \\ \noalign{\hrule\smallskip}
+\end{tabular}
+\end{table}
+%--------------------------------------------------------------------------------------
+
+Die mit einem Asterisk * markierten Verdrehungen sind \"{u}ber die beschriebene kleine Steifigkeit nur interpoliert, ein Moment kann man dort nicht aufbringen. Die Biegeverdrehungen sind mit den {\em drilling degrees\/} recht gut abgebildet. Bei der Torsionsverdrehung fehlen im Stabmodell zwar die Anteile aus der Schubverformung der Verw\"{o}lbung, aber das FE-Modell scheint trotz deutlich erkennbarer W\"{o}lbbehinderung f\"{u}r die Saint-Venant'sche Torsion doch etwas zu weich zu sein.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd3}
+\caption{St\"{u}tzmomente der Platte entlang des Unterzugs} \label{Katz2nd3}
+\end{figure}%%
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd4}
+\caption{Stabmomente der Platte mit Unterzug} \label{Katz2nd4}
+\end{figure}%%
+\vspace{-0.3cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Beispiel Unterzug}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Das abschlie{\ss}ende Beispiel, s. Abb. \ref{Katz2nd2} war Gegenstand eines Benchmarks, der von der Vereinigung der Pr\"{u}fingenieure in Rheinland-Pfalz durchgef\"{u}hrt wurde. Die Ergebnisse von 23 Einsendungen wurden 1989 auf der 1. FEM-Tagung in Kaiserslautern vorgestellt \cite{Zimmermann}, und danach in weiteren Ver\"{o}ffentlichungen vertieft \cite{Katz1}, \cite{Wu1}.
+
+Es ergaben sich damals Schnittgr\"{o}{\ss}en zwischen 50 \% und 130 \%  der Referenzwerte aus einer Positions-Statik ohne Ber\"{u}cksichtigung der Steifigkeitsverh\"{a}ltnisse, bei der erst ein Durchlauftr\"{a}ger \"{u}ber die kurze Spannweite gerechnet wurde und anschlie{\ss}end der Unterzug mit dessen Auflagerlast als Einfeldtr\"{a}ger berechnet wurde.
+
+Die folgenden Ergebnisse sind an einem System mit FE-Plattenelementen und modifizierten FE-Plattenbalken \cite{Katz1} mit einer mitwirkenden Breite von $L/3 = 3.0$ m berechnet worden. Technisch gesehen wird der Querschnitt also zun\"{a}chst -- gem\"{a}{\ss} der Bernoulli-Hypothese -- wie ein  FE-Stabelement behandelt, aber im n\"{a}chsten Schritt wird diese Hypothese fallen gelassen und der Querschnitt an sich wird in 3D-FE-Solids aufgel\"{o}st.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{St\"{u}tzmoment der Platte}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd5}
+\caption{Plattenmomente $m_{xx}$ der Platte mit Unterzug} \label{Katz2nd5}
+\end{figure}%%
+
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd7}
+\caption{3D-Faltwerk-Modell  } \label{Katz2nd7}
+\end{figure}%%
+
+
+Die klassische L\"{o}sung liefert konstant 67.4 kNm/m. Infolge der nachgiebigen Lagerung durch den Unterzug wird das St\"{u}tzmoment in der Mitte auf 77 \% reduziert, in den R\"{a}ndern jedoch auf 121 \% erh\"{o}ht, s. Abb. \ref{Katz2nd3}. Bildet man das Integral, so ist der mittlere Wert nur noch um ca. 8 \% geringer. Daran kann man aber auch erkennen, dass die klassische Berechnung nicht auf der unsicheren Seite liegt, obwohl die FE-Beanspruchung am Rande h\"{o}her ist, da ein Gleichgewichtszustand mit der eingelegten mittleren Bewehrung m\"{o}glich ist.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Feldmomente der Platte in L\"{a}ngsrichtung}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Die Gesamt-Unterzugsmomente sind in Abb. \ref{Katz2nd4} dargestellt. Der Maximalwert betr\"{a}gt 82 \% der klassischen L\"{o}sung.
+
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd6}
+\caption{Modellierung des Unterzugs } \label{Katz2nd6}
+\end{figure}%%
+
+
+Das maximale Feldmoment der Platte in Querrichtung ist mit 42.6 kNm/m um 12 \% gr\"{o}{\ss}er als bei der klassischen Rechnung. Die Abb. \ref{Katz2nd5} zeigt die Verteilung der Plattenmomente in der L\"{a}ngsrichtung des Unterzugs. Der maximale Wert  von 11.6 kNm/m liegt geringf\"{u}gig h\"{o}her als erwartet. Bei n\"{a}herer Betrachtung sieht man aber auch, dass \"{u}ber den Punktlagern, bzw. kurz davor ein negatives Moment von -15.8 kNm/m entstanden ist. Das entspricht ziemlich genau dem 0.2 fachen Querbiegungsanteil aus dem St\"{u}tzmoment. Am freien Rand ist dieses Moment zwar Null, aber die Steifigkeit des Unterzugs erzeugt ein schnelles Anwachsen des Wertes. Dieser aus der Querdehnung r\"{u}hrende Anteil wird dann in der Feldmitte durch das dort wirkende Feldmoment \"{u}berdr\"{u}ckt. Die Frage, die sich stellt ist, ob die Verdrehung der Platte, die diesem Moment zu Grunde liegt, sich \"{u}berhaupt in dieser Form einstellen wird.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{3D-Faltwerk-Modell }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Bei der  3D-Faltwerks-Modellierung, s. Abb. \ref{Katz2nd7}, gibt es zwei m\"{o}gliche Varianten, s. Abb. \ref{Katz2nd6}.
+
+Die linke Variante ist die klassische Variante, die Platte l\"{a}uft quasi oben zentrisch durch, die Stabknoten werden mit einer Starrk\"{o}rperbedingung gekoppelt. Dabei bleibt au{\ss}er acht, dass die Biegesteifigkeit in Querrichtung \"{u}ber dem Unterzug erh\"{o}ht ist, was bei breiten Unterz\"{u}gen von Bedeutung ist.
+
+Die rechte Variante ist so zu verstehen, dass alle Elemente exzentrisch an die oben liegenden Knoten gekoppelt werden. Damit werden die Biegesteifigkeiten besser erfasst, aber die Normalsteifigkeit der dicken Unterzugsplatte in Querrichtung erzeugt \"{u}ber die Exzentrizit\"{a}t eine viel zu hohe Biegesteifigkeit. Diesen Anteil sollte man unterdr\"{u}cken.
+
+Genau dieser Effekt, die Einkopplung der Normalsteifigkeit in das Biegetragverhalten ist extrem sensitiv. In \cite{Rombach} wird gezeigt, dass die Verlagerung der horizontalen Lager aus der Schwerlinie eines Einfeldtr\"{a}gers mit Rechteckquerschnitt an die Unterseite des Querschnitts das Feldmoment um den Faktor 2 reduziert
+
+Wenn wir im vorliegenden Fall das System horizontal statisch bestimmt lagern, ergeben sich fast die gleichen Ergebnisse. Lediglich die Schnittgr\"{o}{\ss}en im Stab ($N, M_y$) sind jetzt nur noch der Anteil des untergeh\"{a}ngten Balkens mit dem typischen S\"{a}gezahn, s. Abb. \ref{Katz2nd8}.
+
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd8}
+\caption{Stabschnittgr\"{o}{\ss}en am 3D-Modell } \label{Katz2nd8}
+\end{figure}%%
+
+Wenn man nun die Lager des Unterzugs in einer Grenzwertbetrachtung horizontal festsetzt, so \"{a}ndern sich die Schnittgr\"{o}{\ss}en des Unterzugs dramatisch, s. Abb. \ref{Katz2nd11}. Das Gesamtmoment betr\"{a}gt nun $87.3+0.50 \cdot 359=267$ kNm, das sind nur noch 31 \%  gegen\"{u}ber den 853 kNm der L\"{o}sung mit verschieblichen Lagern!
+
+Das negative Plattenmoment im Auflagerbereich bleibt jedoch auch in diesem Falle, so dass der n\"{a}chste Schritt eine Untersuchung am 3D-Volumen-Modell, s. Abb. \ref{Katz2nd9}, darstellt. Damit wird dann die Bernoulli-Hypothese fallen gelassen. F\"{u}r die Modellierung kann man h\"{o}herwertige Hexaeder-Elemente mit {\em assumed strains\/} verwenden, die in der Lage sind, Biegezust\"{a}nde exakt zu erfassen. Abb. \ref{Katz2nd10} zeigt die mit diesem Modell ermittelten Spannungen in zwei Schnitten am Auflager und in der Feldmitte.
+%------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd11}
+\caption{Stabschnittgr\"{o}{\ss}en am horizontal gehaltenen Unterzug} \label{Katz2nd11}
+\end{figure}%%
+%------------------------------------------------------------------------------------
+
+Wenn wir im vorliegenden Fall das System horizontal statisch bestimmt lagern, ergeben sich fast die gleichen Ergebnisse. Lediglich die Schnittgr\"{o}{\ss}en im Stab ($N, M_y$) sind jetzt nur noch der Anteil des untergeh\"{a}ngten Balkens mit dem typischen S\"{a}gezahn, s. Abb. \ref{Katz2nd8}).
+
+%------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd9}
+\caption{Modellierung des Unterzugs als 3D-Kontinuum} \label{Katz2nd9}
+\end{figure}%%
+%------------------------------------------------------------------------------------
+
+Das negative Plattenmoment im Auflagerbereich bleibt jedoch auch in diesem Falle, so dass der n\"{a}chste Schritt eine Untersuchung am 3D-Volumen-Modell darstellt, s. Abb. \ref{Katz2nd9}. Damit wird dann die Bernoulli-Hypothese fallen gelassen. F\"{u}r die Modellierung kann man h\"{o}herwertige Hexaeder-Elemente mit {\em assumed strains\/} verwenden, die in der Lage sind, Biegezust\"{a}nde exakt zu erfassen. Abb. \ref{Katz2nd10} zeigt die mit diesem Modell ermittelten Spannungen in zwei Schnitten am Auflager und in der Feldmitte.
+
+%------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2nd10}
+\caption{L\"{a}ngsspannungsverteilung am Auflagerrand und Feldmitte} \label{Katz2nd10}
+\end{figure}%%
+
+%------------------------------------------------------------------------------------
+
+
+

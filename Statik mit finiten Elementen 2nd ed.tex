@@ -1,0 +1,89 @@
+\documentclass[envcountchap,monohd,sectrefs]{svmonoFH}
+
+\newcommand{\Fpath}{d:/astatikbilder/pdf}
+\newcommand{\Springerpath}{"d:/astatik5 Modern 3rdEd/springer"}
+
+\usepackage{\Springerpath/cropmark}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{type1cm}
+\usepackage[makeindex]{imakeidx}
+\usepackage{multicol}
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+\usepackage{german}
+\usepackage[]{graphicx}
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{wasysym}
+\usepackage{rotate}  % FH
+\usepackage[T1]{fontenc}
+\usepackage{calligra}
+\usepackage{color}
+\usepackage{blindtext}
+\usepackage{german}
+\usepackage{deutengi}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage[bookmarksnumbered, hyperindex]{hyperref}
+
+\definecolor{chapterTitleBlue}{rgb}{.0,.2,.8}
+\definecolor{sectionTitleBlue}{rgb}{.25,.5,1.0}  % helleres blau
+%\definecolor{sectionTitleBlue}{rgb}{.0,.2,.8}
+\definecolor{highlightBlue}{rgb}{.85,.964,1.0}
+
+% Make @ behave as per catcode 13 (active).  TeXbook p. 155.
+\mathcode`@="8000
+{\catcode`\@=\active\gdef@{\mkern1mu}}
+
+\input{macrofh}
+\input{abild}
+\makeindex
+%\setlength{\parindent}{0pt}% 25.11.2000
+
+%\includeonly{engivorg}
+%\includeonly{a5,aref}
+%\includeonly{avor,a1,a2,a3,a4,a5,a6,a7,a8,aref}
+%\includeonly{a4,aref}
+
+\begin{document}
+\sloppy
+\author{F. Hartmann, C. Katz}
+\title{Statik mit finiten Elementen\\
+\begin{large}{Last edit: \today}\end{large}}
+\maketitle
+
+\pagenumbering{Roman}
+\setcounter{page}{5}
+
+\hyphenation{Gleich-ge-wicht Aus-gangs-punkt w\"{a}hr-end L\"{a}ngs-richtung ge-trost Gleich-ge-wichts-be-ding-ungen auf-ad-diert Nor-mal-ab-leit-ung
+selbst-ver-st\"{a}ndlich Wechsel-wir-kungs-ener-gie Steif-ig-keiten Dif-feren-tial-gleich-ung Dif-fer-ential-gleich-ungen
+Ein-fluss-funk-ti-onen Ein-fluss-funk-ti-on}
+
+\include{aavor}
+\include{aavor2}
+
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+\include{aa1}
+\include{aa2}
+\include{aa3}
+\include{aa4}
+\include{aa5}
+\include{aa6}
+%\include{aa7}
+%\appendixx
+
+%\include{aa8}
+\include{aaref}
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Index}
+
+\flushbottom
+\printindex
+\end{document}

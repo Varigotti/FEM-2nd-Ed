@@ -1,0 +1,135 @@
+%  Bildobjekte
+
+\newsavebox{\quadratbox}
+\newsavebox{\rechteckbox}
+\newsavebox{\doppeldreieckoben}
+\newsavebox{\doppeldreieckunten}
+\newsavebox{\dreiecklinksoben}
+\newsavebox{\dreiecklinksobenKurz}
+\newsavebox{\dreiecklinksunten}
+\newsavebox{\dreieckrechtsoben}
+\newsavebox{\rampelinks}
+\newsavebox{\ramperechts}
+\newsavebox{\dreieckrechtsunten}
+\newsavebox{\knickk}
+\newsavebox{\knickksmall}
+\newsavebox{\versetzungg}
+\newsavebox{\seilecka}
+\newsavebox{\rechtecklanga}
+
+\sbox{\quadratbox}{%
+\begin{picture}(12,10)%
+  \put(0,0){\framebox(10,10){}}%
+\end{picture}}
+
+\sbox{\rechteckbox}{%
+\begin{picture}(22,10)%
+  \put(0,0){\framebox(20,10){}}%
+\end{picture}}
+
+\sbox{\doppeldreieckoben}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(0,0){\line(0,1){10}}
+  \put(30,0){\line(0,-1){10}}
+  \put(0,10){\line(3,-2){30}}
+\end{picture}}
+
+\sbox{\doppeldreieckunten}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(0,0){\line(0,-1){10}}
+  \put(30,0){\line(0,1){10}}
+  \put(0,-10){\line(3,2){30}}
+\end{picture}}
+
+\sbox{\dreiecklinksoben}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(0,0){\line(0,1){10}}
+  \put(0,10){\line(3,-1){30}}
+\end{picture}}
+
+\sbox{\dreiecklinksunten}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(0,0){\line(0,-1){10}}
+  \put(0,-10){\line(3,1){30}}
+\end{picture}}
+
+\sbox{\dreieckrechtsoben}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(30,0){\line(0,1){10}}
+  \put(0,0){\line(3,1){30}}
+\end{picture}}
+
+\sbox{\rampelinks}{%
+\begin{picture}(12,10)%
+  \put(0,0){\line(1,0){10}}
+  \put(10,0){\line(0,1){10}}
+  \put(0,0){\line(1,1){10}}
+\end{picture}}
+
+\sbox{\ramperechts}{%
+\begin{picture}(12,10)%
+  \put(0,0){\line(1,0){10}}
+  \put(10,0){\line(-1,1){10}}
+  \put(0,0){\line(0,1){10}}
+\end{picture}}
+
+\sbox{\dreieckrechtsunten}{%
+\begin{picture}(32,10)%
+  \put(0,0){\line(1,0){30}}
+  \put(30,0){\line(0,-1){10}}
+  \put(0,0){\line(3,-1){30}}
+\end{picture}}
+
+\sbox{\knickk}{%
+\begin{picture}(20,10)%
+\thicklines  \put(0,10){\line(1,-1){10}}
+  \put(10,0){\line(1,1){10}}
+\end{picture}}
+
+\sbox{\knickksmall}{%
+\begin{picture}(12,12)%
+ \put(0,6){\line(1,-1){6}}
+  \put(6,6){\line(-1,-1){6}}
+%\thicklines  \put(0,8){\line(1,-1){8}}
+%  \put(8,0){\line(1,1){8}}
+\end{picture}}
+
+\sbox{\versetzungg}{%
+\begin{picture}(20,10)%
+\thicklines  \put(0,5){\line(1,1){10}}
+  \put(10,15){\line(0,-1){20}}
+  \put(10,-5){\line(1,1){10}}
+\end{picture}}
+
+\sbox{\rechtecklanga}{%
+\begin{picture}(52,10)%
+  \put(0,0){\framebox(50,12.5){}}%
+\end{picture}}
+
+\sbox{\seilecka}{%
+\begin{picture}(52,10)%
+  \put(0,0){\line(1,0){50}}
+  \put(50,0){\line(-2,-1){25}}
+  \put(25,-12.5){\line(-2,1){25}}
+\end{picture}}
+
+\newcommand{\quadrat}{\usebox{\quadratbox}}
+\newcommand{\cross}{\usebox{\rechteckbox}}
+\newcommand{\doppeldo}{\usebox{\doppeldreieckoben}}
+\newcommand{\doppeldu}{\usebox{\doppeldreieckunten}}
+\newcommand{\dreiecklo}{\usebox{\dreiecklinksoben}}
+\newcommand{\dreiecklu}{\usebox{\dreiecklinksunten}}
+\newcommand{\dreieckro}{\usebox{\dreieckrechtsoben}}
+\newcommand{\rampeL}{\usebox{\rampelinks}}
+\newcommand{\rampeR}{\usebox{\ramperechts}}
+\newcommand{\dreieckru}{\usebox{\dreieckrechtsunten}}
+\newcommand{\knick}{\usebox{\knickk}}
+\newcommand{\knicks}{\usebox{\knickksmall}}
+\newcommand{\versetzung}{\usebox{\versetzungg}}
+\newcommand{\seileck}{\usebox{\seilecka}}
+\newcommand{\rechtecklang}{\usebox{\rechtecklanga}}

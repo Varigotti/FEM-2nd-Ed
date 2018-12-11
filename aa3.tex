@@ -1,0 +1,1456 @@
+{\textcolor{blue}{\chapter{Stabtragwerke}}}
+\label{sec:drei}
+{\textcolor{sectionTitleBlue}{\section{Einleitung}}}
+
+In ihren Grundz\"{u}gen ist die Methode der finiten Elemente in der Stabstatik mit dem Drehwinkelverfahren identisch. Es ist die klassische Baustatik des Weggr\"{o}{\ss}enverfahrens in modernem Gewand. Die FEM geht aber \"{u}ber die klassischen Methoden insofern hinaus, als sie in der Lage ist, auch Probleme n\"{a}herungsweise zu l\"{o}sen, die einer direkten Behandlung nicht zug\"{a}nglich sind. Allerdings ist schon das Drehwinkelverfahren\index{Drehwinkelverfahren} eine Methode, bei der Einfl\"{u}sse wie z.B. Normalkraft- und Schubverformungen vernachl\"{a}ssigt werden. Den gr\"{o}{\ss}ten gedanklichen Fehler, den machen kann, ist also die Stabstatik als eine exakte Methode im Gegensatz zur Methode der finiten Elemente anzusehen. Einerseits ist die Stabstatik an sich schon eine Vereinfachung, und die Exaktheit gewinnt man nur dadurch, dass man viele Effekte unter den Tisch fallen l\"{a}sst.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.5\textwidth]{\Fpath/KATZN1}
+\caption{Torsionsbelastung}
+\label{KatzN1}%
+\end{figure}%%
+%----------------------------------------------------------------------------------------------------------
+
+Ein interessantes Beispiel daf\"{u}r, wie die Stabstatik einen Effekt ausblendet, ist das Beispiel eines exzentrisch angreifenden Moments an einem beidseitig eingespannten Stab, s. Abb. \ref{KatzN1}.
+
+Nach der klassischen Balkentheorie ist der Momenten-Vektor l\"{a}ngs seiner Achse beliebig verschiebbar, der L\"{a}ngstr\"{a}ger erh\"{a}lt somit ausschlie{\ss}lich Biegemomente. Bei der Ermittlung von Einflusslinien ist ein exzentrisch wirkendes Moment dieser Art nach dem {\em Satz von Land\/} aber auch die Ableitung der Einflusslinie einer exzentrisch wirkenden Kraft, die nat\"{u}rlich ver\"{a}nderliche Torsionsmomente erzeugt. Daraus kann man folgern, dass im L\"{a}ngstr\"{a}ger Torsionsmomente der Gr\"{o}{\ss}e $M \cdot a/L$ auftreten m\"{u}ssen.
+
+Wenn man die gleiche Last statt am Stabwerk an einer kompletten FE-Struktur betrachtet, so sieht man, s. Abb. \ref{KatzN2}, dass die Verbiegung der Fahrbahnplatte eine gegenseitige Verwindung der L\"{a}ngsachse erzeugt, die somit Torsionsmomente erzeugen muss. Tats\"{a}chlich ergibt sich bei der Aufsummierung aller Schnittgr\"{o}{\ss}enkomponenten der FE-L\"{o}sung ein resultierendes Torsionsmoment in der vorhergesagten Gr\"{o}{\ss}enordnung.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/KATZN2}
+\caption{Torsionsbelastung}
+\label{KatzN2}%
+\end{figure}%%
+%----------------------------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Der verallgemeinerte FE-Ansatz}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Stabstatik hat seit Galilei sehr viel Zeit gehabt, sich kontinuierlich weiter zu entwickeln. Es \"{u}berrascht daher nicht, dass viele Ingenieure sie f\"{u}r endg\"{u}ltig gekl\"{a}rt halten, weil eigentlich alle Probleme der Stabstatik gel\"{o}st seien. Neue Erkenntnisse werden nicht erwartet, komplexe Systeme werden gleich  mit finiten Elementen berechnet, und die Berechtigung von Stabwerks\-pro\-gram\-men wird generell hinterfragt. Der gro{\ss}e Vorteil der Stab\-elemente liegt jedoch in der ingenieurgem\"{a}{\ss}en anschaulichen Anwendung, da die Ergebnisse unmittelbar in integraler Form anfallen. Dies hat aber auch zu zwei Ansichten gef\"{u}hrt, die eher in den Bereich des Aberglaubens geh\"{o}ren:\\
+\begin{itemize}
+\item   Stabelemente sind exakt.
+\item   Stabelemente sind einfach.
+\end{itemize}
+Je mehr Effekte man bei einem Stabelement mitnehmen muss, um so mehr entfernt man sich
+aber von der einfachen Darstellung. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{Die Programmierung eines Fl\"{a}chenelements ist sehr
+viel einfacher als die eines Stabelements}}\\
+
+
+\noindent und mit der Methode der finiten Elemente hat man
+ein Werkzeug an der Hand, dessen M\"{o}glichkeiten bei \"{u}berschaubarem Aufwand \"{u}ber die klassische Formulierung weit hinausgehen.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.37\textwidth]{\Fpath/KATZN3}
+\caption{Schnittgr\"{o}{\ss}en an einem Balken}
+\label{KatzN3}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Ein Stab ist zwar ein 3D-Kontinuum, aber die L\"{a}nge dominiert gegen\"{u}ber den Querschnittsabmessungen, und deshalb werden f\"{u}r die Verformungen und somit die Dehnungen im Stab \glq nur\grq\ speziell angepasste Ansatzfunktionen oder interne Freiheitsgrade benutzt. So gesehen sind komplexere Stabelemente eigentlich nur eine besondere Form der Substrukturtechnik.
+
+Gem\"{a}{\ss} DIN 1080 wird die $x$-Achse als die L\"{a}ngsachse bezeichnet, $y$ und $z$ sind dann die dazu senkrecht gerichteten  Querschnittsordinaten. Verschiebungen und Verdrehungen bzw. Kr\"{a}fte und Momente in Richtung der Achsen ergeben sich dann entsprechend, s. Abb. \ref{KatzN3}.
+\vspace{-0.1cm}
+{\textcolor{sectionTitleBlue}{\subsubsection*{Sich \"{a}ndernde Schwerpunktslage}}}
+
+Ein nicht unwesentlicher Aspekt ist, dass einfache Formeln f\"{u}r Stabwerke nur erreichbar sind, wenn man die Beschreibung auf besonders ausgesuchte Punkte und Achsen bezieht. Dass Schnittgr\"{o}{\ss}en auf den Schwerpunkt bezogen werden, ist uns allen in Fleisch und Blut \"{u}bergegangen. Wenn man nun aber Bauzust\"{a}nde z.B. mit Ortbetonerg\"{a}nzung untersuchen will, so \"{a}ndert sich die Schwerpunktslage und h\"{a}ufig auch die Neigung der Schwerachse.
+
+Bei der Eingabe eines solchen Systems hat man dann von einem Lastfall zum n\"{a}chsten unterschiedliche Stabl\"{a}ngen, und die Normal- und Querkr\"{a}fte weisen in unterschiedliche Richtungen. Der Ingenieur oder das Programm muss entweder umrechnen oder eine mittlere Lage definieren. Beim \"{U}bergang vom CAD-Modell zum statischen Modell m\"{u}ssen also neue Linien oder Fl\"{a}chen erzeugt werden, die nicht mit den gegebenen Strukturlinien \"{u}bereinstimmen.
+
+Wir wollen deshalb die Lage des Schwerpunkts und des Schubmittelpunktes von vorne herein nicht mit der Stabachse verkn\"{u}pfen und die Abweichungen der Lage \"{u}ber Exzentrizit\"{a}ten einf\"{u}hren.
+
+Es ist au{\ss}erdem zweckm\"{a}{\ss}ig, die Ergebnis-Schnittgr\"{o}{\ss}en auf die vom Benutzer verwendeten Achsen $y$ und $z$ zu beziehen und nicht die Hauptachsen der Querschnitte daf\"{u}r zu w\"{a}hlen. Dies vor allem deswegen, weil die Lage der Hauptachsen sich innerhalb eines gevouteten Stabes auch drehen kann. %, sondern bei Schubverformungen auch ungeeignet sein kann.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{M\"{o}gliche Referenzsysteme}}}
+
+Betrachten wir nun den Fall eines Biegestabes mit beidseitigen Vouten, s. Abb. \ref{Katz31}. Wir k\"{o}nnen unsere Schnittgr\"{o}{\ss}en auf mindestens drei verschiedene Koordinatensysteme beziehen. Am vertrautesten ist uns der Bezug auf die Schwerelinie. Dies ist der Fall in Abb. \ref{Katz31} a, dort haben wir die klassische Betrachtung mit Normalkraft und Querkraft, die sich bei klassischen Stabelementen ergeben w\"{u}rde, die in Form einer geknickten Stabachse beschrieben werden. Dies sind auch die Komponenten, die in einem Bemessungsprogramm f\"{u}r die Ermittlung von Spannungen herangezogen werden m\"{u}ssen.
+
+Eleganter und effektiver ist es jedoch, die aus der Theorie II. Ordnung bekannten Longitudinal- und Transversalkr\"{a}fte zu verwenden, die auf das unverformte Referenzsystem bezogen werden, s. Abb. \ref{Katz31} b und c.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/KATZ31N}
+\caption{M\"{o}gliche Referenzsysteme}
+\label{Katz31}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{\"{U}berlagerung}}}
+
+Eine \"{U}berlagerung von Beanspruchungen bei wechselndem Schwerpunkt ist nur im Fall c) trivial m\"{o}glich, denn in den anderen F\"{a}llen muss die \"{U}berlagerung die Lage des Schwerpunkts bzw. im Fall a) auch die Neigung der Stabachse kennen.
+
+\"{U}berlagerungen von Schnittgr\"{o}{\ss}en zur Ermittlung von Spannungen machen aber nur Sinn, wenn sich der Querschnitt nicht \"{a}ndert. Die Longitudinal- und Transversalkr\"{a}fte sollte man deshalb besser auf den Schwerpunkt des Querschnitts wie in Abb. \ref{Katz31} b beziehen, da der Bezug auf einen beliebigen Referenzpunkt wie in Abb. \ref{Katz31} c die Anschaulichkeit der Ergebnisse stark beeintr\"{a}chtigt. Auch w\"{u}rde bei der grafischen Darstellung von sch\"{o}nen glatten Schnittgr\"{o}{\ss}enverl\"{a}ufen z.B. au{\ss}er dem Moment auch die Transversalkraft, die Longitudinalkraft und die Neigung der Stabachse aus Verformung nach Theorie II. Ordnung ben\"{o}tigt.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Lokale Gr\"{o}{\ss}en}}}
+
+Am Stabanfang und am Ende hat man je einen Knoten, der nicht im Schwerpunkt liegen muss, und einen Stabknoten im Schwerpunkt des Querschnitts, die je sieben Freiheitsgrade besitzen k\"{o}nnen:\\
+\begin{enumerate}
+\item  Die Longitudinalverformung $u_x$ im Schwerpunkt des Querschnitts
+\item  Lokale Transversalverformungen  $u_y, u_z$ sowie Verdrehungen $\Np_y, \Np_z$
+\item  Die Torsionsverdrehung $\varphi_x$ und die Verwindung $\Np_x'$\,.
+\end{enumerate}
+Die Verschiebungen und Verdrehungen der Stabknoten ergeben sich aus einer Rotation der globalen Verschiebungen ($u_X$, $u_Y$ und $u_Z$) und Verdrehungen ($\Np_X, \Np_Y, \Np_Z$), sowie einer Transformation der lokalen Exzentrizit\"{a}ten zwischen der Schwerpunktslage der Stabknoten und den Knoten des FE-Systems, s. Abb. \ref{Katz32}
+\begin{align}
+u_{0i} &= u_i + \Np_{yi} \,\Delta\,z_i - \varphi_{zi}\,\Delta\,y_i \,,\\
+u_{0j} &= u_j + \Np_{yj} \,\Delta\,z_j - \varphi_{zj}\,\Delta\,y_j\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/KATZ32X}
+\caption{Verlauf der Schwereachse}
+\label{Katz32}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Die Verwindung ist hingegen eine lokale Gr\"{o}{\ss}e, f\"{u}r die in Ecken und Anschl\"{u}ssen entsprechende \"{U}bergangsbedingungen zu formulieren sind. Die Auswahl der Komponenten ist insofern willk\"{u}rlich, als man nat\"{u}rlich auch noch h\"{o}here Ableitungen der Verformungen als Knotenwerte verwenden k\"{o}nnte, die aber praktisch wohl kaum zu handhaben w\"{a}ren. L\"{a}ngs des Stabes werden diese Verformungen mit Ansatzfunktionen interpoliert:
+\pagebreak
+\begin{enumerate}
+\item Lineare Interpolation der Longitudinalverformung $u_x$
+\item Gekoppelte Interpol. der Transversalverschiebung $u_y$ und Verdrehung $\Np_z$
+\item  Gekoppelte Interpol. der Transversalverschiebung $u_z$ und Verdrehung
+$\Np_y$
+\item  Gekoppelte Interpol. der Verdrehung
+$\Np_x$ und Verwindung $\theta_x$ (lineare Interpol. der Verdrehung $\Np_x$ falls
+ohne Ber\"{u}cksichtigung der W\"{o}lbkrafttorsion)
+\end{enumerate}
+\vspace{-0.5cm}
+{\textcolor{sectionTitleBlue}{\subsubsection*{Gekoppelte Interpolation}}}
+
+Die gekoppelte Interpolation kann entweder mittels kubischer Splines erfolgen, bei denen die Verdrehung bzw. Verwindung unmittelbar als Ableitung der Verschiebung bzw. Verdrehung angesehen wird. Dann verwendet man sinnvollerweise die sogenannten {\em Hermitschen Funktionen\/}, die den Randwert 1.0 jeweils nur f\"{u}r genau eine Knotenverformung oder deren Ableitung haben
+\begin{subequations}
+\begin{alignat}{2}
+H_1 &= (1 - \xi^2)\,( 1 + 2\,\xi) \qquad &&H_2= L\,(1 - \xi^2)\,\xi \\
+H_3 &= \xi^2(3 - 2\,\xi) \qquad && H_4= - L\,(1 - \xi)\,\xi^2\,.
+\end{alignat}
+\end{subequations}
+Die Kopplung kann aber auch mit Schubverformungen nach {\em Mar\-gu\-erre/Timo\-shen\-ko\/} erfolgen
+z.B
+\begin{align}
+\theta_y = \frac{V_z}{G\,A_z}\,, \qquad \varphi_y &= w,_x + \theta_y \,.
+\end{align}
+Die Verschiebungen innerhalb des Querschnitts ergeben sich nun aus einem Produktansatz, indem aus den Verformungskenngr\"{o}{\ss}en an einem Schnitt des Stabes die drei Verschiebungen im Querschnitt errechnet werden
+\begin{subequations}
+\begin{align}
+u_j &= \sum_{i = 1}^7 N_{ij}(y,z) \cdot u_i(x) \\
+u_j &= \sum_{k = 1}^2\,\sum_{i = 1}^7 N_{ij}(y,z) \cdot H_{ik}(x) \cdot u_i(x)\,.
+\end{align}
+\end{subequations}
+Dabei sind im Allgemeinen die folgende Ansatzfunktionen $N_{ij}$ f\"{u}r die Verformungen
+inklusive der h\"{o}heren Anteile nach Theorie II. Ordnung vorgesehen
+\begin{subequations}
+\begin{align}
+u_x(y,z) &= u_{x0} + \varphi_y \cdot (z - z_s) - \Np_z \cdot (y - y_s) \nn  \\
+&+ U_w \cdot (\theta_x - \Np_y'\,\Np_z + \Np_y\,\Np_z') + U_y \cdot \theta_y + U_z \cdot \theta_z + U_{w2} \cdot \theta_{t2}\,, \\
+u_y(y,z) &= u_{y0} - \vartheta \cdot ( z - z_m) - \frac{1}{2}\,(\Np_x^2 + \Np_z^2) \cdot
+(y - y_m)\,, \\
+u_z(y,z) &= u_{z0} - \vartheta \cdot ( y - y_m) - \frac{1}{2}\,(\Np_x^2 + \Np_y^2) \cdot
+(z - z_m)\,.
+\end{align}
+\end{subequations}
+Die Verformungen in L\"{a}ngsrichtung sind in den ersten drei Gliedern durch das Ebenbleiben der Querschnitt im Sinne der {\em Bernoulli-Hypothese\/} gegeben, dann kommen die Anteile der Einheitsverw\"{o}lbung hinzu, und schlie{\ss}lich die Anteile, die Abweichungen infolge der Querschnittsverformung durch Querkr\"{a}fte und sekund\"{a}res Torsionsmoment beschreiben. Diese sind komplexe Verteilungen der Querschnittsverw\"{o}lbung, die im allgemeinen Fall nicht elementar ermittelt werden k\"{o}nnen.
+
+Die Verschiebungen quer zur Achse sind lediglich Starrk\"{o}rperbewegungen. Der Querschnitt des Stabes wird somit als gestaltstreu angesetzt. Ver\"{a}nderung der Querschnittsgeometrie zu ber\"{u}cksichtigen, ist in der Regel so komplex, dass man dies entweder an einem echten geometrisch nichtlinearen 3D-Modell aus Schalen oder Faltwerkselementen untersuchen sollte, oder entkoppelt untersuchen muss.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Schnittgr\"{o}{\ss}en}}}
+
+Die Verzerrungen ergeben sich aus der Ableitung der Verformungen. Wir wollen jetzt hier die h\"{o}heren Beitr\"{a}ge der Theorie II. Ordnung bei der weiteren Behandlung ausblenden. Drei der sechs m\"{o}glichen Komponenten verschwinden infolge der Starrk\"{o}rperbewegungen senkrecht zur Stabachse
+\begin{subequations}
+\begin{align}
+\sigma_x &= E\,\varepsilon_x = E\,u,_x = E\,[u,_x + \Np_y,_x (z - z_s) \nn \\
+& - \Np_z,_x\,(y - y_s) - z_s,_x \varphi_y + y_s,_x \,\Np_z + \sum(U_i,_x
+\cdot \theta_i + U_i \cdot \theta_i,_x x) ]\,,\\
+\tau_{xy} &= G\,\gamma_{xy} = G [ u_x,_y +
+u_y,_x] = G\,[(u_{y0},_x - \varphi_z)\nn \\
+&+ \sum (U_i,_y\cdot \theta_i - (z - z_m)
+\vartheta,_x + z_m,_x\,\vartheta ]\,,\\ \nn
+\tau_{xz} &= G\,\gamma_{xz} = G [ u_x,_z +
+u_z,_x] = G\,[(u_{z0},_x - \varphi_y) \nn\\
+&+ \sum ( U_i,_z \cdot \theta_i - (y - y_m) \vartheta,_x
+- y_m,_x\,\vartheta ]\,,\\
+\sigma_y &= \sigma_z = \tau_{yz} = 0\,.
+\end{align}
+\end{subequations}
+Bei dieser Ableitung ist zu beachten, dass streng nach der Produktregel vorgegangen wird, und deshalb Terme auftauchen, die bei einem prismatischen Stab sofort verschwinden w\"{u}rden, da die Lage der Schwerachse und der Schubmittelpunktsachse entlang des Stabes konstant sind. Diese sollten bei einem gevouteten Stab jedoch ber\"{u}cksichtigt werden, denn sie erzeugen ein ausgesprochen m\"{a}chtiges Stabelement.
+
+Bei den Schubspannungen sind zwei unterschiedliche Betrachtungen m\"{o}g\-lich. Mit dem Ansatz von
+{\em Timoshenko\/} bzw. {\em Mindlin\/} ergibt sich mit der ersten Klammer ein konstanter Ansatz der Schubspannung \"{u}ber den gesamten Querschnitt, wobei der Querschnitt prinzipiell eben bleibt. Eine Schubspannungsverteilung, die das Gleichgewicht auch differentiell erf\"{u}llt, muss sich hingegen aus der Querschnittsverw\"{o}lbung ergeben. Diese kann aber auch f\"{u}r den klassischen Biegestab verwendet werden (wenn die erste Klammer null wird). Die Schubspannungen ergeben sich dann ausschlie{\ss}lich aus den Einheitsverw\"{o}lbungen, die so skaliert werden m\"{u}ssen, dass das Gleichgewicht mit der Gesamt-Querkraft erf\"{u}llt wird. Bei Stabwerken denkt und arbeitet man nat\"{u}rlich immer mit den Integralen der Spannungen, den sogenannten Schnittgr\"{o}{\ss}en
+\begin{align}
+N &= \int_A \sigma_x\,dA = EA\,(u,_x - z_s,_x\,\Np_y +
+y_s,_x\,\Np_z) + EA_z \Np_y,_x - EA_y\,\varphi_y,_x \\
+M_y &= \int_A z\,\sigma_x\,dA = EA_z\,(u,_x - z_s,_y\,\Np_y + y_s,_x\,\Np_z)\nn \\
+ & +
+EA_{zz}\,\Np_y,_x - EA_{yz} \Np_y,_x \\
+M_z &= \int_A y\,\sigma_x\,dA = EA_y\,(u,_x - z_s,_x\,\Np_y + y_s,_x\,\Np_z) \nn \\
+& +
+EA_{yz}\,\Np_y,_x - EA_{yy} \Np_y,_x
+\end{align}
+und
+\begin{align}
+V_y &= \int_A \tau_{xy}\,dA  \qquad V_z = \int_A \tau_{xz}\,dA \\
+M_t &= \int_A [(y - y_m)\,\tau_{xz} - (z - z_m)\,\tau_{xy}]\,dA\,.
+\end{align}
+Der Schwerpunkt des Querschnitts ist dadurch definiert, dass die ersten Fl\"{a}chenintegrale $EA_y$ und $EA_z$ verschwinden. Des weiteren werden die Einheitsverw\"{o}lbungen $U_i$ alle so eingestellt, dass sie in den ersten drei Integralen verschwinden. Das Zentrifugalmoment $EA_{yz}$ hingegen sollte in jedem Falle ber\"{u}cksichtigt werden, da eine Transformation des Querschnitts in die Hauptachsen weder zeitgem\"{a}{\ss} noch bei Vorliegen von Schubverformungen uneingeschr\"{a}nkt m\"{o}glich ist.
+
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Querschnittswerte}}}
+%-------------------------------------------------------------------------------
+Die Querschnittswerte sind als Integrale der Fl\"{a}chenwerte relativ einfach auch f\"{u}r komplexere Querschnittsgeometrien ermittelbar, z.B. kann man die Fl\"{a}che eines beliebigen Polygons als Summe der Trapeze ermitteln, s. Abb. \ref{KatzN4}
+\begin{align}
+A &= \sum_{i = 0}^n \frac{1}{2}\,(z_{i+1} + z_i)\,(y_{i+1} - y_i) \\
+I_y &= \sum_{i = 0}^n \frac{1}{12}\, (z_{i+1} + z_i)\,(y_{i+1} - y_i)\,(z_{i+1}^2 +
+z_i^2)\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.4\textwidth]{\Fpath/KATZN4}
+\caption{Querschnitt}
+\label{KatzN4}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Bei komplexeren Querschnittswerten sollte man sich vor Augen halten, dass es Integrals\"{a}tze gibt, die das Integral einer Fl\"{a}che in das eines Randes umwandeln. Somit k\"{o}nnen alle Fl\"{a}chenwerte \"{u}ber formelm\"{a}{\ss}ig bekannte Funktionen aus dem Rande allein ermittelt werden. Dabei kann man effektive und weniger effektive Umwandlungen verwenden. Bei den eventuell sehr komplexen Formeln kann eine numerische Integration auf dem Rand nicht nur leichter zu programmieren sein, sondern auch in der Ausf\"{u}hrung schneller sein.
+
+In den F\"{a}llen, in denen die {\em Bernoulli-Hypothese\/} nicht so ganz stimmt, verwendet man eine Korrektur in der Form von mitwirkenden Breiten. Diese sind allerdings, je nachdem was mit ihnen ber\"{u}cksichtigt werden soll, unterschiedlich f\"{u}r die Querschnittswerte/Steifigkeiten sowie f\"{u}r die Bemessung. Man muss bei der Bearbeitung solcher Querschnitte gut aufpassen, dass man die richtigen Schwerpunktslagen mit den richtigen Querschnittswerten zusammen verwendet. Zum Beispiel ist es g\"{a}ngige Praxis, die Schnittgr\"{o}{\ss}en im Bereich des Spannbetonbaus an einem anderen Querschnitt zu ermitteln als den, den man dann bei der Spannungsberechnung zu Grunde legt.
+
+Ob es Schubspannungen wirklich gibt, ist durchaus Anschauungssache. Schlie{\ss}lich sind im Gegensatz zu den Hauptspannungen, die nicht von der Richtung des Koordinatensystems abh\"{a}ngig sind, Schubspannungen nur durch die Wahl einer Schnittrichtung entstanden, die nicht senkrecht zur Hauptspannungsrichtung ist. Im Stahlbetonbau wird auf diesen Sachverhalt besonders gro{\ss}er Wert gelegt.
+
+Da die Schubspannungen in der klassischen Stabtheorie keine Rolle spielen, muss man sie sich auf andere Weise verschaffen. \"{U}blich ist die Ermittlung \"{u}ber das Gleichgewicht
+\begin{align}
+\tau,_s &=  \sigma,_x \qquad
+\tau = \frac{V\,S}{I\,b}\,.
+\end{align}
+Leider hat diese Formel eigentlich nur gravierende Nachteile:\\
+
+\begin{itemize}
+\item  Die Querkraft $V$ ist nur dann richtig, wenn die Normalkraft konstant ist, und es keine
+Voute gibt.
+\item  Das statische Moment $S$ ist nur dann richtig, wenn der Querschnitt einfach
+zusammenh\"{a}ngend ist.
+\item  Die Schubspannungen m\"{u}ssen eigentlich auch nicht konstant \"{u}ber
+die Breite sein.
+\item  Statt $I$ kann die {\em Swain'sche\/} Formel f\"{u}r schiefe Biegung ben\"{o}tigt
+werden.
+\end{itemize}
+Vor allem der zweite Punkt ist das grundlegende Problem, das dadurch entsteht, dass das Verfahren ein Kraftgr\"{o}{\ss}enverfahren ist, das f\"{u}r Computerprogramm wenig geeignet ist. Statt dessen bietet sich nat\"{u}rlich ein Weggr\"{o}{\ss}enverfahren an. Die gesuchte Weggr\"{o}{\ss}e ist dabei die Verw\"{o}lbung des Querschnitts. Die Bestimmungsgleichungen sind wieder das Minimum der Form\"{a}nderungsenergie bzw. das Gleichgewicht
+\begin{subequations}\label{U501}
+\begin{align}
+\tau_{xy} &= G \,(w,_y - z\,\theta_x,x) \\
+\tau_{xz} &= G \,(w,_z + y\,\theta_x,x) \\
+G\,\Delta w &= G\,(w,_{xx} + w,_{yy}) = - \sigma_x,_x\\
+\tau_{xy}\,n_y &+ \tau_{xz}\,n_z = 0 \qquad \mbox{auf dem Rand}\,.
+\end{align}
+\end{subequations}
+Das Problem kann man entweder als Ganzes oder aufgeteilt in vier Teilprobleme bearbeiten:
+\begin{itemize}
+\item  Das prim\"{a}re Torsionsproblem:  $d\theta/dx$ = Verw\"{o}lbung ; $\sigma_x = 0$
+\item  Die zwei Querkraft-Schubprobleme: $d\theta/dx = 0$; $\sigma_x$ = aus Querkraft $V$
+\item  Das sekund\"{a}re Torsionsproblem: $ d\theta/dx = 0$ ; $\sigma_x$ = aus W\"{o}lbmoment
+\end{itemize}
+F\"{u}r d\"{u}nnwandige Querschnitte, bei denen man die Spannungen \"{u}ber die Breite eines Elements konstant halten kann, ist das Problem mit einem einfachen Gleichungssystem \"{a}hnlich wie bei einem Fachwerksystem quasi geschlossen l\"{o}sbar. Bei einem allgemeinen dickwandigen Querschnitt muss man nat\"{u}rlich die Laplace-Gleichung wiederum numerisch z.B. mit der Methode der finiten Elemente oder der Methode der Randelemente l\"{o}sen.
+
+Das Ergebnis ist eine detaillierte Schubspannungsverteilung, die sowohl zum Nachweis von Spannungen, als auch zur Ermittlung der Schubverformungsfl\"{a}chen \"{u}ber die \"{A}quivalenz der inneren Arbeit verwendet werden kann. Sie definiert auch die Einheitsverw\"{o}lbungen des Querschnitts, die wir bei den Ansatzfunktionen als $U_i$ eingef\"{u}hrt haben.
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Steifigkeitsmatrix}}}
+%-------------------------------------------------------------------------------
+Die Energie der Normalspannungen des Stabes erh\"{a}lt man unter Vernachl\"{a}ssigung der gemischten Glieder der Normalspannungsanteile mit den Einheitsverw\"{o}lbungen dann aus dem Term
+\begin{align}
+\Pi_i = \frac{1}{2}\,\int E\,\varepsilon^2\,dV &= \frac{1}{2}\,\int ( EA
+\,\left[(u_0')^2 -
+2\,u_0'\,[\varphi_y\,z_s' - \varphi_z\,y_s'] \right] \nn \\
+&+ EA\,\left[\varphi_y^2\,(z_s')^2 + \varphi_z^2\,(y_s')^2 -
+2\,\varphi_y\,z_s'\,\varphi_z\,y_s'\right] \nn \\
+&+ EI_y\,(\varphi_y')^2 + EI_z\,(\varphi_z')^2 -
+2\,EI_{yz}\,\varphi_y'\,\varphi_z')\,dx\,.
+\end{align}
+Dieses Integral entlang der Stabachse unter Ber\"{u}cksichtigung der Ansatzfunktionen ergibt eine Steifigkeitsmatrix, die nicht nur die Normalkraftverformung und die Biegesteifigkeit erfasst, sondern auch die Sprengwerkwirkungen von geneigten Vouten.
+
+Sofern die Ans\"{a}tze der Stabdifferentialgleichung gen\"{u}gen, ist das Problem exakt gel\"{o}st. Wenn dies nicht der Fall ist, wie es z.B. bei elastischer Bettung, Vouten oder Theorie II. Ordnung der Fall ist, so muss man die L\"{o}sung durch Unterteilung der St\"{a}be in mehrere Elemente so weit verbessern, bis die gew\"{u}nschte Genauigkeit erreicht wird.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/KATZN5}
+\caption{Gevouteter Tr\"{a}ger}
+\label{KatzN5}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Im Falle eines gevouteten Sprengwerks, s. Abb. \ref{KatzN5}, sind die Ergebnisse f\"{u}r unterschiedliche Elementeinteilungen z.B. in der folgenden Tabelle ablesbar. Sie enth\"{a}lt die an den verschiedenen Systemen gewonnen Ergebnisse einmal bei einer Unterteilung in ein einziges Element und bei einer Unterteilung in 8 Elemente.\\
+
+{\small
+\begin{tabular}{r c c c c c }
+\noalign{\hrule\smallskip}
+           &      w[mm] &     $N_e$[kN] &     $N_m$ [kN] &   $M_{ye}$ [kNm] &   $M_{ym}$[kNm] \\
+\noalign{\hrule\smallskip}
+geneigte Stab-Achse &            &            &            &            &            \\
+\noalign{\hrule\smallskip}
+1/EI Interpolation  1 Element &      0,397 &      -80,5 &        -78 &     -73.58 &      31,91 \\
+\noalign{\hrule\smallskip}
+1/EI Interpolation  8 Elemente &      0.208 &      -46,3 &      -43,8 &     -94,87 &      19,17 \\
+\noalign{\hrule\smallskip}
+EI Interpolation  1 Element &      0,172 &      -39,8 &      -37,3 &     -93,65 &         22 \\
+\noalign{\hrule\smallskip}
+EI Interpolation  8 Elemente &      0.206 &      -45,8 &      -43,3 &     -95,02 &      19,14 \\
+\noalign{\hrule\smallskip}
+Horizontale Referenzachse &            &            &            &            &            \\
+\noalign{\hrule\smallskip}
+ 1 Element &      0.168 &      -37,9 &      -37,9 &     -93.01 &      22,52 \\
+\noalign{\hrule\smallskip}
+8 Elemente &      0.204 &      -44,2 &      -44,2 &     -94.85 &       19,1 \\
+\noalign{\hrule\smallskip}
+\end{tabular}
+}
+\vspace{0.5cm}
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Schubspannungen und Schubverformungen}}}
+%-------------------------------------------------------------------------------
+Schubverformungen sind beim klassischen Ansatz der Balkentheorie nicht vorgesehen. Es w\"{a}re v\"{o}llig falsch, einfach weitere Energieterme mit den Schubverformungsfl\"{a}chen hinzuzuf\"{u}gen, da diese ja eine zus\"{a}tzliche Steifigkeit und keine Nachgiebigkeit einf\"{u}hren w\"{u}rden. Das w\"{u}rde nur in einer Formulierung mit der Komplement\"{a}renergie funktionieren.
+
+Der h\"{a}ufigste Weg ist der, die Biegesteifigkeit so zu reduzieren, dass die gleichen Verformungen herauskommen. Dies kann man aber nur f\"{u}r einen prismatischen Stab und eine bestimmte Belastung durchf\"{u}hren. Eine einfache \"{U}bertragung auf gevoutete St\"{a}be funktioniert z.B. nicht so einfach.
+
+Eine andere L\"{o}sung ist die von {\em Timoshenko\/}, bei der man die Kopplung der Verdrehungen und der Ableitung der Verschiebungen mit einem Lagrange-Strafterm beschreibt. Statt der Beziehungen
+\begin{align}
+M &= - EI\,w'' \qquad V = - EI\,w'''\,,
+\end{align}
+hat man dann zwei entkoppelte Beziehungen
+\begin{align}
+M &= - EI\,\Np,_x  \qquad V = - GA\,\theta = GA\,(\Np - u,_x)\,.
+\end{align}
+Da in unserem Falle mit vier Knotenfreiheitsgraden die Verdrehung und die Verschiebung jeweils linear interpoliert werden, ist der Verlauf des Moments konstant und der Querkraft linear. Damit hat man sich aber zwei neue Probleme eingehandelt, die einer besonderen Behandlung bed\"{u}rfen:\\
+
+\begin{enumerate}
+\item Bei gro{\ss}en Werten von $GA$ insbesondere im Falle der schubstarren Balken wird die Numerik infolge des {\em locking\/} so schlecht, dass die L\"{o}sung unbrauchbar wird. Hier kann Abhilfe dadurch getroffen werden, dass man einen sogenannten diskreten {\em Kirchhoff-Mode\/}\index{  Kirchhoff-Mode} einf\"{u}hrt. Darunter versteht man, dass man in einem Punkt des Stabes sicherstellt, dass die Ableitung des Momentes gleich der Querkraft ist. Diese Bedingung f\"{u}hrt dann zu einer Beziehung zwischen $u$ und $\varphi$, die unmittelbar in die Ansatzfunktionen eingebaut wird. Folgt man dem Ansatz von {\em Hughes\/} \cite{Hughes}, so schreibt man unmittelbar
+\begin{align}
+M &= - EI\,\Np,_x  \qquad
+V = - GA\,\theta = GA\,[\frac{\Np_i + \Np_j}{2} - \frac{u_j - u_i}{L}]\,.
+\end{align}
+\item Zum zweiten ist das Element nicht mehr in der Lage, die einfachen F\"{a}lle wie z.B. einen Kragarm mit einer Einzellast richtig zu beschreiben. Man erh\"{a}lt zwar die richtigen Verdrehungen und Schnittgr\"{o}{\ss}en, aber eben nicht die richtigen Durchbiegungen, so dass man mehrere Elemente nehmen m\"{u}sste, was dem normalen Anwender kaum vermittelbar ist. In diesem Falle hilft der Einbau einer nichtkonformen zus\"{a}tzlichen quadratischen Funktion $\Np_m$ f\"{u}r die Verdrehung. Unter Beachtung der Kirchhoff-Bedingung erh\"{a}lt man
+\begin{subequations}
+\begin{align}
+\varphi &= \Np_i \,(1 - \xi) + \Np_j\,\xi + \Np_m\,(4\,\xi\,(1-\xi))\,,\\
+M &= - \frac{EI}{L}\, [(\varphi_j - \Np_i) + 1.5\,\varphi_m\,(8\,\xi - 4)]\,, \\
+V &= - GA\,\theta = - GA\,[\frac{\Np_i + \Np_j}{2} + \Np_m - \frac{u_j - u_i}{L}]\,.
+\end{align}
+\end{subequations}
+Die Funktion erzeugt genau die fehlende lineare Variation der Momente. Bei der Querkraft wird der Maximalwert konstant eingesetzt, was einen Korrektur-Faktor der Gr\"{o}{\ss}e 1.5 beim Moment erfordert.
+\end{enumerate}
+Aber auch beim {\em Timoshenko-Balken\/} gibt es noch einen Effekt, der durch diese Formulierung nicht abgedeckt werden kann. Bei Vergleichsrechnungen mit gedrehten Koordinatensystemen ergaben sich bei manchen Querschnittsformen unterschiedliche Ergebnisse. Wenn man n\"{a}mlich sowohl die Vektoren der Querkraft als auch die der Gleitwinkel transformiert, so erh\"{a}lt man einen Tensor der inversen Schubfl\"{a}chen
+\begin{align}
+\left[\begin{array}{c}   \theta_y \\   \theta_x \end{array}\right] =\left[
+\begin{array}{cc}
+  1/GA_y & 1/GA_{yz} \\
+  1/GA_{yz} & 1/GA_z
+\end{array}\right] \left[ \begin{array}{c}   V_y \\   V_z \end{array} \right]\,.
+\end{align}
+Die Einf\"{u}hrung einer gemischten Schubverformungsfl\"{a}che $1/A_{yz}$ beseitigt zwar die Inkonsistenz der Ergebnisse. Die Existenz dieser deviatorischen Schubfl\"{a}che kann aber nicht einfach als zus\"{a}tzliche Steifigkeit im {\em Timoshenko-Balken\/} eingef\"{u}hrt werden, da sie in den meisten F\"{a}llen unendlich gro{\ss} ist und eine unzul\"{a}ssige Kopplung der Biegung in den zwei Achsen erzeugen w\"{u}rde.
+
+Die einzige M\"{o}glichkeit diese Fl\"{a}che zu ber\"{u}cksichtigen besteht darin, dass man die Flexibilit\"{a}t des Stabelements erg\"{a}nzt und dann diese zu einer Steifigkeit invertiert. Unabh\"{a}ngig davon erzeugt eine solche Fl\"{a}che eine Kopplung der Schubverformungen, die eine entkoppelte Behandlung auch in den Hauptachsrichtungen nicht erlaubt.
+
+Die Schubspannungen \"{u}ber den Querschnitt sind nach dem {\em Timoshenko\/}-Ansatz konstant. Tats\"{a}chlich verlaufen sie aber f\"{u}r einen Rechteckquerschnitt z.B. parabelf\"{o}rmig. Die Schubfl\"{a}chen f\"{u}r die Verformung und f\"{u}r die maximale Spannung sind deshalb im allgemeinen nicht identisch
+\begin{alignat}{2}
+\theta &= \frac{V}{GA} \qquad &&(A = 0.833\,bh\,\,\mbox{f\"{u}r ein Rechteck})\,, \\
+\tau &= \frac{V}{A} \qquad &&(A = 0.666\,bh\,\,\mbox{f\"{u}r ein Rechteck}) \,.
+\end{alignat}
+Es soll hier das Augenmerk noch auf einen ganz anderen Sachverhalt geleitet werden: Die Ermittlung der Schubspannungen erfolgt ja normalerweise an einem prismatischen Stab. Mit der gr\"{o}{\ss}ten Selbstverst\"{a}ndlichkeit nehmen wir an, dass die Schubspannungen am Rand verschwinden. Bei Vouten ist dies aber nicht der Fall.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/KATZ34D}
+\caption{Schubspannungen am Rand}
+\label{Katz34}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Am Rande eines gevouteten Tr\"{a}gers erh\"{a}lt man eine nicht verschwindende Schubspannung, s. Abb. \ref{Katz34} und \ref{Katz36}. Im Schnitt senkrecht zur Referenzachse ist die Verteilung der Schubspannungen unsymmetrisch, s. Abb. \ref{Katz37}, w\"{a}hrend sich in einem Schnitt senkrecht zur Schwerachse ein wesentlich sympathischeres, ausgewogeneres Bild einstellt, s. Abb. \ref{Katz39}.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/KATZ36}
+\caption{Schubspannung $\tau_{xy}$}
+\label{Katz36}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/KATZ37}
+\caption{Schubspannung $\tau_{xy}$ im vertikalen Schnitt}
+\label{Katz37}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/KATZ39}
+\caption{Schubspannung $\tau_{nq}$ senkrecht zur Achse}
+\label{Katz39}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+ 
+Im Schnitt $x=1.0$ ergibt sich eine Transversalkraft von 40 kN und somit eine Querkraft von 39.95 kN. Diese erg\"{a}be am prismatischen Stab mit einer Querschnittsh\"{o}he von 93.75 cm eine Schubspannung von 63.92 kN/m$^2$. Auf Grund des Moments 52.6 kNm in diesem Schnitt ergibt sich eine Abminderung der Querkraft $M/d \cdot\tan\,\alpha$ von 5.6 kN und damit eine reduzierte Schubspannung von 54.9 kN/m$^2$. Die Ergebnisse der FE-Berechnung betragen 53 kN/m$^2$ in der Mitte und 30 kN/m$^2$ am Rande. Diese Reduktion der Querkraft erfasst also den Maximalwert ganz gut, aber die Verteilung eben nicht ganz richtig, und es stellt sich die berechtigte Frage, ob die Berechnung von Hauptzug- oder maximalen Vergleichsspannungen in allen F\"{a}llen richtig ist. 
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Einfluss des Schubmittelpunkts, W\"{o}lbkrafttorsion}}}
+%-------------------------------------------------------------------------------
+Wenn man jetzt noch W\"{o}lbkrafttorsion ber\"{u}cksichtigen will, ergeben sich bei einer ver\"{a}nderlichen Schubmittelpunktsachse derart viele Glieder bei der Quadrierung der Dehnungsanteile, dass derzeit wohl noch keine vollst\"{a}ndige Ableitung vorliegt. F\"{u}r den einfacheren Fall, dass die Referenzachse gleich der Drehachse ist, kann man aber auf die z.B. von {\em Schroeter\/} \cite{Schroeter2} dargestellten Formeln des inneren Potentials zur\"{u}ckgreifen 
+\begin{align}
+\Pi_{i2} &= \frac{1}{2}\,\int_0^{\,l} \big(E\,C_M \,(\vartheta'')^2 + G\,I\,(\vartheta')^2 \nn\\
+&+ N\,[ 2\,\vartheta'\,z_m\,v_m' + 2\,\vartheta'\,y_m\,w_m' + (v_m')^2 + (w_m')^2 +
+i_m\,(\vartheta')^2] \nn\\
+&+ M_y\,[- 2\,\vartheta\,w_m'' + r_{M_y}\,(\vartheta')^2] + M_t\,[2\,\vartheta\,v_m''
++ r_{M_z}\,(\vartheta')^2] \nn\\
+&+ M_b\,[r_{M_w}\,(\vartheta')^2] + M_t\,[v_m'\,w_m'' - v_m''\,w_m']
+ \big)\,dx\,.
+\end{align}
+Hinzu kommen noch ein paar Anteile aus \"{a}u{\ss}eren Lasten. F\"{u}r das Torsionsmoment gibt es nun zwei Komponenten. Das nach au{\ss}en wirksame Gesamtmoment spaltet sich in einen Saint-Venantschen Anteil und einen Anteil aus sekund\"{a}rer Torsion auf
+\begin{align}
+M_t = M_{tv} + M_{t2} = G\,I_T\,\vartheta' - E\,C_M\,\vartheta'''\,.
+\end{align}
+Damit man diese Schnittgr\"{o}{\ss}en auch so erh\"{a}lt, ist also mindestens ein kubischer Ansatz f\"{u}r die Verdrehung der Stabachse erforderlich. Dies wird am einfachsten durch die Einf\"{u}hrung je eines zus\"{a}tzlichen Freiheitsgrades f\"{u}r die Verwindung erreicht. Dann werden die gleichen Hermitschen Funktionen 2. Grades auch f\"{u}r die Torsion verwendet. \"{A}hnlich wie die Querkraft ergibt sich im Element dann auch ein konstanter bzw. insgesamt treppenf\"{o}rmiger Verlauf des sekund\"{a}ren Torsionmoments. Die Formeln sind \"{u}brigens auch g\"{u}ltig f\"{u}r w\"{o}lbfreie Querschnitte $C_M = 0$. F\"{u}r die W\"{o}lbschubverformungen gelten die gleichen Bemerkungen wie bei den Querkraftverformungen. Man kann sie unmittelbar einkoppeln oder mit einem zum {\em Timoshenko-Balken\/} analogen Einsatz einbinden.
+
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Der allgemeine Stab}}}
+%-------------------------------------------------------------------------------
+Wenn man das Stabelement mit v\"{o}llig beliebigen Lasten, Bettungen oder Querschnitten behandeln will, so kann man zum Reduktionsverfahren oder dem Verfahren der \"{U}bertragungsmatrizen greifen. Die \"{U}bertragungsmatrix lautet formal z.B. f\"{u}r einachsige Biegung
+\begin{align}
+\left[\begin{array}{c}
+  w \\
+  \varphi  \\
+  M \\
+  V
+\end{array}\right] = \left[\begin{array}{cccc}
+  a_{11} & a_{12} & a_{13} & a_{14} \\
+  a_{21} & a_{22} & a_{23} & a_{24} \\
+  a_{31} & a_{32} & a_{33} & a_{34} \\
+  a_{41} & a_{42} & a_{43} & a_{44}
+\end{array} \right] \,\left[\begin{array}{c}
+  w \\
+  \varphi  \\
+  M \\
+  V
+\end{array}\right] + \left[\begin{array}{c}
+  p_1 \\
+  p_2 \\
+  p_3 \\
+  p_4
+\end{array}\right]\,.
+\end{align}
+Methodisch kann man diese Beziehung als die (direkte oder numerische) Integration der Differentialgleichung beschreiben. F\"{u}r die numerische Integration ist das vierstufige {\em Runge-Kutta-Fehlberg-Verfahren\/} wohl am besten geeignet. In einfachen F\"{a}llen ist die L\"{o}sung bereits im ersten Schritt exakt, dann ist der Mehraufwand verschwindend gering. Im schlimmsten Fall erh\"{a}lt man sogenannte steife Differentialgleichungen, die numerisch aufwendiger sind, und die notfalls nur dadurch in den Griff zu bekommen sind, dass man sein Element wieder in mehrere kurze Elemente unterteilt. Der Vorteil dieser Methode gegen\"{u}ber dem Variationsansatz ist nicht nur der, dass man mit der \"{U}bertragungsmatrix eine Flexibilit\"{a}tsmatrix ermittelt, die dem Minimum der Komplement\"{a}renergie entspricht. Dies ist z.B. ein wichtiger Pluspunkt, wenn es darum geht, die Schubverformungen richtig zu ber\"{u}cksichtigen. Ein weiterer Vorteil dieses Verfahrens ist, dass die Differentialgleichung weniger fehleranf\"{a}llig bei der Programmierung ist.
+
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Plastische Nachweise}}}
+%-------------------------------------------------------------------------------
+Es gibt noch andere Bereiche, wo eine Verallgemeinerung der bestehenden Ans\"{a}tze ganz neue M\"{o}glichkeiten er\"{o}ffnet. F\"{u}r den Nachweis nach neueren Verfahren der DIN 18800 oder des EC3 sind plastische Traglasten des Querschnitts verwendbar. Auch hier ergibt sich prinzipiell die M\"{o}glichkeit, dass man entweder mit finiten Elementen und elastoplastischem Materialgesetz an die Sache herangeht, oder dass man auf Querschnittsebene entsprechende Betrachtungen anstellt. F\"{u}r d\"{u}nnwandige Querschnitte ist eine vollst\"{a}ndige Beschreibung der Interaktion aller Schnittgr\"{o}{\ss}en m\"{o}glich, \cite{Katz7}. Wenn man auf der Basis der Flie{\ss}zonentheorie rechnen will, so ben\"{o}tigt man au{\ss}er einer iterativen statischen Rechnung mit ver\"{a}nderlichen Steifigkeiten eben auch ein Rechenverfahren, dass die Interaktion auf Querschnittsebene an Hand der Spannungen auch im teilplastifizierten Bereich behandeln kann. Vorhanden sind bei einer Stabwerksberechnung:\\
+
+\begin{itemize}
+\item Eine linearelastische Verteilung der Normalspannungen inkl. W\"{o}lbkrafttorsion
+\item Eine linearelastische Verteilung der Schubspannungen aus Querkraft /Torsion
+\item Ein Dehnungszustand in Form einer Ebene plus Einheitsverw\"{o}lbung
+\item Eine Flie{\ss}bedingung
+\end{itemize}
+F\"{u}r den linearen Schubspannungsverlauf im Querschnitt sind meist aufwendigere Rechenverfahren erforderlich, die nach dem Weg- oder Kraftgr\"{o}{\ss}enverfahren die Schubfl\"{u}sse berechnen k\"{o}nnen.
+
+In einem ersten Schritt kann man dann unter einer gegebenen Beanspruchungskombination eine lineare Vergleichsspannung in allen beliebigen Punkten des Querschnitts ermitteln und diese ins Verh\"{a}ltnis zur Flie{\ss}spannung des Materials setzen.
+
+In einem zweiten Schritt k\"{o}nnte man diese Spannungen \glq irgendwie\grq\ reduzieren. Dabei gibt es au{\ss}er dem Spezialfall, der die Querkraft vorab abdeckt, noch andere Verfahren.
+
+In einem dritten Schritt kann man dann aus den Spannungen durch numerische Integration resultierende Schnittgr\"{o}{\ss}en und daraus nichtlineare Steifigkeiten ermitteln. Die Schnittgr\"{o}{\ss}en werden schlie{\ss}lich im Zuge eines Iterationsprozesses \"{u}ber die Steifigkeiten wie in \cite{Katz3} beschrieben ins globale Gleichgewicht gebracht.
+
+F\"{u}r die Flie{\ss}bedingung kann man sich auf die Normalspannung $\sigma_x$ und die Schubspannungen $\tau_{xy}$ bzw. $\tau_{xz}$  beschr\"{a}nken, da Schubspannungen $\tau_{yz}$  und Spannungen $\sigma_y$ bzw. $\sigma_z$ nur in Lasteinleitungspunkten auftreten k\"{o}nnen und dann von der \"{A}nderung von Steifigkeiten des Querschnitts kaum beeinflusst sein d\"{u}rften. Zur Ermittlung der lokalen Traglast von solchen Diskontinuit\"{a}tsbereichen ist die Stabtheorie generell nicht geeignet. Hier muss man auf Versuche oder aufwendigere FE-Berechnungen ausweichen, bei denen der ganze Querschnitt einschlie{\ss}lich aller Steifen mit Faltwerkselementen abgebildet wird.
+
+F\"{u}r die gew\"{u}nschte Reduzierung der Spannungen sind im Prinzip drei Verfahren denkbar, denen allen gemein ist, dass jeder Spannungspunkt unabh\"{a}ngig von den benachbarten Punkten bleibt. Plastische Dehnungen, die in $y$ oder $z$-Richtung so behindert werden, dass zus\"{a}tzliche Spannungserh\"{o}hungen entstehen k\"{o}nnten, bleiben somit unber\"{u}cksichtigt und stellen eventuell noch eine Tragreserve gegen\"{u}ber Versuchsergebnissen dar. Dies entspricht formal durchaus anderen Ans\"{a}tzen der Ingenieurmechanik wie z.B. dem Bettungszifferverfahren. Man hat die Wahl zwischen:
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Prandtl-L\"{o}sung}}}\index{Prandtl-L\"{o}sung}
+%-------------------------------------------------------------------------------
+Man wendet die Flie{\ss}regel nach {\em Prandtl\/} an und ermittelt sich plastische Dehnungen, die auf die Flie{\ss}fl\"{a}che senkrecht stehen. Dazu wird wie in vielen FE-B\"{u}chern beschrieben, \cite{Kiener1}, zuerst der Beginn der Plastifizierung mit einer gleichm\"{a}{\ss}igen Reduktion nach der ersten Methode ermittelt, und dann f\"{u}r das verbleibende plastische Dehnungsinkrement eine elastoplastische Elastizit\"{a}tsmatrix aus der elastischen Matrix $\vek C$ berechnet
+\begin{align}
+\sigma = \left[C - \frac{q\cdot C\cdot q'}{q'\cdot C \cdot q}\right] \cdot \varepsilon\,,
+\qquad q = \frac{\partial F}{\partial \sigma}\,.
+\end{align}
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Isotrope Reduktion}}}\index{isotrope Reduktion}
+%-------------------------------------------------------------------------------
+Schub- und Normalspannung werden im gleichen Verh\"{a}ltnis abgemindert, so dass die Vergleichsspannung gerade die Flie{\ss}spannung erreicht
+\begin{align}
+\sigma = \left[\frac{f_y}{\sigma_{v,\,\mbox{\small elastisch}}} \right]\cdot
+\,\sigma_{v,\,\mbox{\small elastisch}}\,, \qquad \tau =
+\left[\frac{f_y}{\sigma_{v,\,\mbox{\small elastisch}}} \right]\cdot
+\,\tau_{v,\,\mbox{\small elastisch}}\,.
+\end{align}
+%-------------------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Vorrang Schub}}}
+%-------------------------------------------------------------------------------
+Die Schubspannung wird in voller Gr\"{o}{\ss}e aufgenommen, die maximale Normalspannung wird dadurch reduziert. Das ist der herk\"{o}mmliche Ansatz bei Handrechnungen. Er bleibt unbefriedigend bei starken Schubbeanspruchungen, da er dann zu numerisch unvorteilhaften Situationen f\"{u}hrt, bei denen eine Vergr\"{o}{\ss}erung der Kr\"{u}mmung keine Auswirkungen mehr hat.
+\begin{align}
+\tau = \mbox{min}\,\left\{\frac{f_y}{\sqrt{3}}, \tau_{\,\mbox{\small elastisch}}
+\right\}\,, \qquad \sigma = \mbox{min}\,\left\{\sqrt{f_y^2 - 3\,\tau^2},
+\sigma_{\,\mbox{\small elastisch}} \right\}\,.
+\end{align}
+Mit einem dieser Verfahren kann man jetzt resultierende Schnittgr\"{o}{\ss}en berechnen. Man kann dabei durchaus numerische Integrationsverfahren verwenden, die die Spannungen ja nur in diskreten Gausspunkten ben\"{o}tigen.
+
+Wenn diese Schnittgr\"{o}{\ss}en gr\"{o}{\ss}er als die vorhandenen Schnittgr\"{o}{\ss}en sind, ist im Prinzip der Nachweis erbracht, dass die Schnittgr\"{o}{\ss}en aufnehmbar sind. Bei einem elastisch-plastischen Nachweis ist unter Ber\"{u}cksichtigung von Grenzwerten f\"{u}r eine maximale Erh\"{o}hung des Moments auf das 1.25-fache des elastischen Grenzmoments der Nachweis damit bereits erbracht. Wenn die Beanspruchung hingegen gr\"{o}{\ss}er ist, so muss f\"{u}r die gew\"{u}nschten Umlagerungen sich eine iterative Berechnung des Tragwerks anschlie{\ss}en.
+
+Wenn Plastifizierungen im Querschnitt auftreten, ver\"{a}ndern sich auch die Steifigkeiten. Wer den sich daraus ergebenden Umlagerungseffekt ber\"{u}cksichtigen will, muss eine Reduzierung der Steifigkeiten oder eine plastische Dehnung, \cite{Brandes}, in eine iterative Berechnung des statischen Systems einbringen. F\"{u}r die Biegebeanspruchung ist dies relativ einfach definierbar, indem man die folgende Bestimmungsgleichung entweder nach den plastischen Kr\"{u}mmungen $\kappa_0$ aufl\"{o}st oder sich daraus Sekantensteifigkeiten ermittelt
+\begin{align}
+\left[\barr{c} M_y \\ M_z \earr \right] = \left[\barr {c c} E\,I_y & E\,I_{yz} \\
+E\,I_{yz} & E\,I_z \earr \right] \,\left[\barr{c} \kappa_y \\ \kappa_z \earr \right] +
+\left[\barr{c} \kappa_{y0} \\ \kappa_{z0} \earr \right]\,.
+\end{align}
+Bei der Schubbeanspruchung ist zu unterscheiden, ob eine Umlagerung der Schubbeanspruchung \"{u}berhaupt m\"{o}glich bzw. erw\"{u}nscht ist. In einigen F\"{a}llen f\"{u}hrt schon die Reduzierung der Biegesteifigkeit zu kleineren Schubbeanspruchungen, im allgemeinen Fall muss man jedoch die statische Berechnung mit Schubverformungen durchf\"{u}hren, nur dann kann man die Schubsteifigkeiten entsprechend reduzieren. Im Gegensatz zur Biegebeanspruchung gibt es jedoch keine einfach zu ermittelnden nichtlinearen Schubgleitungen. Man kann aber einfach auch die Schubsteifigkeit im Verh\"{a}ltnis von innerer zu \"{a}u{\ss}erer Querkraft reduzieren. Zu beachten ist dabei, dass im Zuge der Iteration die Steifigkeit auch wieder ansteigen k\"{o}nnen muss, wenn die Querkr\"{a}fte kleiner werden.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Steifigkeitsmatrizen}}}\index{Steifigkeitsmatrizen bei Stabtragwerken}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Steifigkeitsmatrizen spielen eine zentrale Rolle in der Methode der finiten Elemente und so wollen wir hier ihre prinzipielle Herleitung am Beispiel eines Stabes, s. Abb. \ref{EvStab}, erl\"{a}utern.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/EVSTAB}
+\caption{Einheitsverformungen $\Np_i^e$ eines Stabelements. Die horizontale Verschiebungen sind nach unten
+abgetragen}
+\label{EvStab}%
+\end{figure}%%
+%----------------------------------------------------------------------------------------------------------
+
+Zun\"{a}chst ben\"{o}tigt man die Differentialgleichung, die die horizontale Belastung $p$ mit der Verformung -- der L\"{a}ngsverschiebung $u(x)$ der Stabachse -- verkn\"{u}pft
+\begin{align}
+ -EA u''(x) = p(x)\,.
+\end{align}
+Weiter ben\"{o}tigt man die allgemeine homogene L\"{o}sung dieser Differentialgleichung
+$ u_0(x) = a_0 + a_1 x $
+mit deren Hilfe man die beiden Einheitsverformungen bestimmt
+\begin{align}\label{Eq15}
+\barr{l l l}
+\Np_1(x) = {\displaystyle \frac{1 - x}{l}} \qquad &\Np_1(0) = 1\,, \qquad &\Np_1(l) = 0\,, \\[0.3cm]
+\Np_2(x) = {\displaystyle \frac{x}{l}}  \qquad &\Np_2(0) = 0\,, \qquad &\Np_2(l) = 1\,.
+\earr
+\end{align}
+Ferner braucht man noch die {\em Wechselwirkungsenergie}\index{Wechselwirkungsenergie}, die virtuelle innere Energie $\delta A_i$. Sie steht in der Ersten Greenschen Identit\"{a}t, die zu der Differentialgleichung geh\"{o}rt, \cite{HaJa2},
+\begin{align}
+\text{\normalfont\calligra G\,\,}(u, \delta u) = \underbrace{\int_0^{\,l} -EA u'' \delta u dx + \left [N \delta u\right
+]_{\,0}^{\,l}}_{\delta A_a} - \underbrace{\int_0^{\,l} EA u'\, \delta u' dx}_{\delta A_i} = 0 \quad N
+= EA u'\,.
+\end{align}
+Das Element $k_{\,ij}$ der Steifigkeitsmatrix $\vek K$ ist dann die {\em Wechselwirkungsenergie} zwischen den Einheitsverformungen
+$\Np_i$ und $\Np_j$\\
+\begin{align}
+\boxed{
+k_{\,ij} = \int_0^{\,l} EA\, \Np_i' \Np_j' \,dx = \int_0^{\,l} \frac{N_i N_j}{EA}\, dx
+}
+\end{align}
+Insgesamt also
+\begin{align}
+\vek K = \frac{EA}{l} \left [\barr {r r} 1 & -1 \\ -1 & 1 \earr \right ] \,.
+\end{align}
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/STABUNGLEICH}
+\caption{Ver\"{a}nderliche Dehnsteifigkeit $EA = EA(x)$}
+\label{Stabungleich}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+{\flushleft {\em Beispiel}\,\, Weitet sich der Querschnitt des Stabs auf}
+\begin{align}
+A(x) = A_0 + A_1 x\,,
+\end{align}
+so hat die Differentialgleichung f\"{u}r die L\"{a}ngsverschiebung $u(x)$ die Gestalt
+ \begin{align}
+  - EA(x) u''(x) -EA'(x) u'(x) = p(x) \,.
+\end{align}
+Die allgemeine homogene L\"{o}sung lautet
+\begin{align}
+u_0(x) = c_2 + c_1\,\frac{\ln A(x)}{A_1}\,,
+\end{align}
+und damit bestimmen sich die Einheitsverformungen zu
+\begin{align}
+\Np_1(x) = \frac{\ln A(x) - \ln A(l)}{\ln A(0) - \ln A(l)}\,, \qquad
+\Np_2(x) = \frac{\ln A(0) - \ln A(x)}{\ln A(0) - \ln A(l)}\,.
+\end{align}
+Setzt man diese in die Wechselwirkungsenergie ein
+\begin{align}
+ k_{\,ij} = \int_0^{\,l} EA(x)\, \Np_i' \Np_j' \, dx\,,
+\end{align}
+so ergibt sich die Steifigkeitsmatrix zu
+\begin{align}
+ \vek K = k \left [\barr {r
+r} 1 & -1 \\ -1 & 1 \earr \right ] \qquad k = A_1\,E\,\frac{\ln A(l) - \ln A_0}{(\ln A_1
+- \ln A_0)^2}\,.
+\end{align}
+Die \"{a}quivalenten Knotenkr\"{a}fte aus einer Streckenlast $p$ sind
+\begin{align}
+f_1 = \il p\, \,\Np_1\, dx\,, \qquad f_2 = \il p\, \,\Np_2\, dx\,\,
+\end{align}
+und aus einer Einzelkraft $P$ sind sie daher
+\begin{align}
+ f_1 = P\,
+\Np_1(x_P) \qquad f_2 = P\, \Np_2(x_P) \qquad{} \mbox{$x_P$ = Angriffspunkt von $P$} \,.
+\end{align}
+Die Summe der Lagerkr\"{a}fte muss gleich $P$ sein, $f_1 + f_2 = P$, und daher muss
+in jedem Punkt $x$ die Summe aus $\Np_1(x)$ und $\Np_2(x)$ gleich 1 sein
+\begin{align}
+ \Np_1(x) + \Np_2(x) = 1 \qquad{} \mbox{(100 \%)} \quad  \text{{\em Partition of unity\/}} \,.
+\end{align}
+Verl\"{a}uft die Aufweitung des Querschnitts wie
+\begin{align}
+A(x) = A_0 + A_1 \cdot  x = 1 + 1\cdot x \qquad{} \mbox{L\"{a}nge $l = 1$}
+\end{align}
+und greift die Einzelkraft $P$ in der Mitte an, s. Abb. \ref{Stabungleich}, dann
+gehen wegen
+\begin{align}
+ \Np_1(0.5) = 0.415 \qquad{} \Np_2(0.5) =
+0.585
+\end{align}
+rund 41 \% von $P$ in das linke Lager und 59 \% in das kr\"{a}ftigere rechte Lager.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.5\textwidth]{\Fpath/STABBALKEN2}
+\caption{Die vier Einheitsverformungen eines Balkens}
+\label{StabBalken2}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Diese Technik zur Herleitung von Steifigkeitsmatrizen l\"{a}sst sich sinngem\"{a}{\ss} auf alle anderen Verformungsanteile eines Balkens \"{u}bertragen, seien dies nun die {\em Rotation} $\Np(x)$ aus Torsion, die {\em Schubverformung} $w_s(x)$ oder einfach die {\em Durchbiegung\/} $w(x)$. So ist die allgemeine homogene L\"{o}sung der Balkengleichung
+\begin{align}
+EI w^{IV}(x) = p(x)
+\end{align}
+ein Polynom dritten Grades
+\begin{align}
+w_0(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3\,,
+\end{align}
+und damit ergeben sich die vier Einheitsverformungen, s. Abb. \ref{StabBalken2}, zu
+\bfo\label{Phi1Bis4}
+\parbox{5cm}{
+\begin{align}
+\Np_1 &= 1 - \frac{3x^2}{l^2} + \frac{2x^3}{l^3} \nn \\
+\Np_2 &= - x + \frac{2x^2}{l} - \frac{x^3}{l^2} \nn
+\end{align}
+}
+%\hfill
+\parbox{5cm}{
+\begin{align}
+\Np_3 &= \frac{3x^2}{l^2} - \frac{2x^3}{l^3}\nn \\
+\Np_4 &= \frac{x^2}{l} - \frac{x^3}{l^2}\,.\nn  \label{Einheitsverformungen}
+\end{align}
+}
+\efo
+Deren Momente und Querkr\"{a}fte lauten
+\begin{subequations}\label{Eq219X}
+\begin{alignat}{3}
+M_1(x) &=   (\frac{6}{\ell^2} - \frac{12x}{\ell^3}) \cdot EI  &\qquad  M_2(x) &=  (\frac{6 x}{\ell^2}-\frac{4}{\ell}) \cdot EI \\
+M_3(x) &= (\frac{12x}{\ell^3}-\frac{6}{\ell^2})\cdot EI &\qquad M_4(x) &= (\frac{6 x}{\ell^2}-\frac{2}{\ell})\cdot EI \\
+V_1(x) &=   - \frac{12}{\ell^3} \cdot EI &\qquad V_2(x) &=  \frac{6}{\ell^2} \cdot EI \\
+V_3(x) &=  \frac{12}{\ell^3}\cdot EI &\qquad  V_4(x) &= \frac{6 }{\ell^2}\cdot EI\,.
+\end{alignat}
+\end{subequations}
+Die erste Greensche Identit\"{a}t (das ist einfach zweimalige partielle Integration) des Balkens ist der Ausdruck
+\begin{align}
+ \text{\normalfont\calligra G\,\,}(w,\delta w) =
+\underbrace{\int_0^{\,l} EI w^{IV} \,\delta w\,dx + \left [V \delta w - M \delta w' \right
+]_0^l}_{\delta A_a} - \underbrace{ \int_0^{\,l} EI
+w'' \delta w'' dx}_{\delta A_i} = 0\,,
+\end{align}
+und das Element $k_{\,ij}$ der Steifigkeitsmatrix $\vek K$,  die {\em
+Wechselwirkungsenergie} zwischen den Einheitsverformungen $\Np_i$ und $\Np_j$, lautet daher
+\begin{align}
+ k_{\,ij} = \int_0^{\,l} EI\, \Np_i'' \Np_j''\, dx \,.
+\end{align}
+also insgesamt
+\begin{align}\label{K1}
+\vek K = \frac{EI}{l^3} \left[
+\begin{array}{r r r r}
+ 12 & -6l & -12 &-6l \\
+ -6l & 4l^2 & 6l &2l^2 \\
+ -12 & 6l & 12 & 6l \\
+ -6l &2l^2 &6l &4l^2
+ \end{array}
+  \right]\,.
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textcolor{chapterTitleBlue}{\subsection{Die Dimension der $f_i$}}\label{Dimensionsbetrachtung}
+Gelegentlich wird \"{u}ber die Dimension der $f_i$ in dem Vektor $\vek K\,\vek w = \vek f$ beim Balken diskutiert. Sind es Kr\"{a}fte oder Arbeiten? Die korrekte Antwort lautet -- je nachdem. Wenn man die Eintr\"{a}ge $k_{ij}$ der Steifigkeitsmatrix mit der Formel
+\begin{align}\label{Eq1280}
+k_{ij } = a(\Np_i,\Np_j) = EI\,\int_0^{\,l} \Np_i''\,\Np_j''\,dx = \text{kNm$^2$ } \frac{1}{\text{m}}\frac{1}{\text{m}}\,\text{m} = \text{kNm}
+\end{align}
+berechnet, wie man das bei finiten Elementen tut, dann sind die $k_{ij}$ Arbeiten, die $u_i$ sind dimensionslos und so sind die $f_i$ Arbeiten.
+
+Zur Erl\"{a}uterung von (\ref{Eq1280}): wenn $\Np_1(x)$ die Dimension Meter hat, dann haben die Ableitungen die Dimension
+\begin{align}
+\Np_1(x) \,\,\text{[m]} \qquad \Np_1'\,\,[\,] \qquad\Np_1'' = [\frac{1}{\text{m}}] \qquad\Np_1''' = [\frac{1}{\text{m$^2$}}]\,,
+\end{align}
+weil bei jeder Ableitung $d/dx$ durch Meter dividiert wird.
+
+Man kann die Matrix $\vek K$ aber auch auf statischem Wege herleiten, indem man die  Balkenendkr\"{a}fte und -momente der Einheitsverformungen $\Np_i(x)$, s. (\ref{Eq219X}) berechnet und diese Werte in die jeweilige Spalte $i$ eintr\"{a}gt. Wenn man so vorgeht, dann sind die $k_{ij}$ der Dimension nach Kr\"{a}fte  bzw. Momente pro Auslenkung/Verdrehung $w_i = 1$ und das Ergebnis, $\vek K\,\vek w = \vek f$, sind dann die Kr\"{a}fte und Momente, die zur Auslenkung $\vek w$ geh\"{o}ren, $\vek K\,\vek w = \vek f$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{N\"{a}herungen f\"{u}r Steifigkeitsmatrizen}}}\index{N\"{a}herungen f\"{u}r Steifigkeitsmatrizen}\index{Steifigkeitsmatrizen, N\"{a}herungen f\"{u}r}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/BALKENUNGLEICH}
+\caption{Tr\"{a}ger mit ver\"{a}nderlicher H\"{o}he}
+\label{BalkenUngleich}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Zur Berechnung von exakten Steifigkeitsmatrizen muss man  die exakten Einheitsverformungen in die richtige Wechselwirkungsenergie einsetzen
+\begin{align}
+a(\Np_i,\Np_j) = \int_0^{\,l} \frac{M_i\,M_j}{EI}\,dx\,.
+\end{align}
+Die Wechselwirkungsenergie steht in der ersten Greenschen Identit\"{a}t. Schwieriger ist es in der Regel, die allgemeine homogene L\"{o}sung der zu Grunde liegenden Differentialgleichung zu finden. Auf dieser L\"{o}sung bauen ja die Einheitsverformungen auf.
+
+N\"{a}herungen f\"{u}r Steifigkeitsmatrizen beruhen meist darauf, dass gen\"{a}herte Einheitsverformungen in die richtige Wechselwirkungsenergie
+eingesetzt werden.
+
+Weil bei dem gevouteten Tr\"{a}ger in Abb. \ref{BalkenUngleich} die Biegesteifigkeit $E\,I(x)$ vom Ort $x$
+abh\"{a}ngt, wird die Differentialgleichung f\"{u}r die Biegelinie l\"{a}nglich
+\begin{align}\label{EIVariabel}
+\underbrace{EI''(x) w''(x) + 2 EI'(x) w'''(x)}_{Zusatzglieder} + EI(x) w^{IV}(x) = p(x)\,,
+\end{align}
+w\"{a}hrend die \"{A}nderung bei der Wechselwirkungsenergie eigentlich nur der ist, dass jetzt
+das $I(x)$ vom Ort abh\"{a}ngt
+\begin{align}\label{EIEnergie}
+a(w, \delta w) = \int_0^{\,l} \frac{M\,\delta M}{EI(x)}\,dx = \int_0^{\,l}
+EI(x)\,w''\,\delta w''\,dx\,.
+\end{align}
+Bei linear ver\"{a}nderlicher Tr\"{a}gerh\"{o}he
+\begin{align}
+EI(x) = E\, \frac{b h^3(x)}{12} \qquad h(x) = a_0 + a_1\,x
+\end{align}
+kann man noch die allgemeine homogene L\"{o}sung der Differentialgleichung
+(\ref{EIVariabel}) angeben, \cite{Ramm2}. Bei anderen Verl\"{a}ufen von $h(x)$, wie etwa bei
+einem Fischbauchtr\"{a}ger, d\"{u}rfte das jedoch nicht mehr m\"{o}glich sein.
+
+Als Ausweg bleibt dann nur mit der richtigen Wechselwirkungsenergie (\ref{EIEnergie}),
+aber eigentlich falschen Ans\"{a}tzen, n\"{a}mlich den Einheitsverformungen des Balkens mit konstantem
+$EI$, eine N\"{a}herung $\tilde{ \vek K}$ zu bestimmen
+\begin{align}
+\tilde k_{\,ij} = \int_0^{\,l} EI(x) \,\Np_i''\, \Np_j'' \,dx\,,
+\end{align}
+oder aber die Spalten der Steifigkeitsmatrix direkt zu berechnen, indem man die
+Balkenendkr\"{a}fte ermittelt, die zu den Verformungsf\"{a}llen $\vek u = \vek e_i$ geh\"{o}ren.
+
+Wenn man die echten Einheitsverformungen nicht kennt, sind nat\"{u}rlich auch die \"{a}quivalenten Knotenkr\"{a}fte nur N\"{a}herungen
+\begin{align}
+\tilde f_{\,i} = \int_0^{\,l} p \,\, \Np_i(x)\, dx\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/GEBETTETERBALKEN}
+\caption{Elastisch gebetteter Balken}
+\label{GebetteterBalken}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Zwar kennt man bei elastisch gebetteten Tr\"{a}gern, s. Abb. \ref{GebetteterBalken},
+\begin{align}\label{EGT}
+EI w^{IV}(x) + c \,w(x) = p(x) \,,
+\end{align}
+die Einheitsverformungen, aber die Programmautoren bleiben oft lieber bei den Ans\"{a}tzen f\"{u}r den ungebetteten Balken, weil dies die Programmpflege einfacher macht, und sie berechnen daher die Elemente der Steifigkeitsmatrix
+\begin{align}
+k_{\,ij} = \int_0^{\,l} [\frac{M_i M_j}{EI } + c\, \Np_i\, \Np_j \,]\, dx
+\end{align}
+mit den Einheitsverformungen $\Np_i(x)$ des ungebetteten Biegebalkens
+\begin{align}\label{N1}
+\tilde{\vek K} = \frac{EI}{l^3} \left[
+\begin{array}{r r r r}
+ 12 & -6l & -12 &-6l \\
+ -6l & 4l^2 & 6l &2l^2 \\
+ -12 & 6l & 12 & 6l \\
+ -6l &2l^2 &6l &4l^2
+ \end{array}
+  \right] + \frac{c}{420}
+\left[ \begin{array}{r r r r}
+ 156l  & -22l^2  & 54l  &13 l^2  \\
+ -22l^2 & 4l^3  & -13 l^2 &-3l^3  \\
+ 54l & 13 l^2 & 156l  & 22l^2  \\
+ 13 l^2 &-3l^3 &22l^2 &4l^3
+ \end{array}  \right]\,,
+\end{align}
+was eine N\"{a}herung aus der normalen Balkenmatrix plus der mit dem Faktor $c$ gewichteten {\em Gramschen Matrix\/}\index{Gramsche Matrix} oder auch {\em Massenmatrix}\index{Massenmatrix} \begin{align}
+m_{\,ij} = \int_0^{\,l} \Np_i \,\Np_j \,dx\,,
+\end{align}
+darstellt.
+
+Die N\"{a}herung  bedeutet, dass das FE-Programm die ausgelenkten Balkenenden (Endverformungen $u_i$) durch eine Kurve $w$ verbindet, die sich aus den vier Einheitsverformungen des ungebetteten Balkens zusammensetzt,
+\begin{align}\label{F2}
+ w(x) = \sum_{i
+= 1}^4 w_i \, \Np_i(x) \,.
+\end{align}
+Diese Kurve weicht von der \glq Ideallinie\grq\ ab, denn sie ist keine homogene L\"{o}sung
+von (\ref{EGT}). Es bleibt vielmehr ein Rest,
+\begin{align}
+ EI w^{IV}(x) + c \,w(x) = c
+(w_1 \Np_1(x) + w_2 \Np_2(x) + w_3 \Np_3(x) + w_4 \Np_4(x) )\,,
+\end{align}
+der gerade die Streckenlast $p$ ist, die man zus\"{a}tzlich braucht, um den Tr\"{a}ger in die
+Form $w(x)$, s. (\ref{F2}), zu bringen.
+
+Genauso kann man bei der Theorie II. Ordnung vorgehen. Zu der Differentialgleichung
+\begin{align}\label{IIGL}
+EI w^{IV}(x) + P \,w''(x) =  p
+\end{align}
+geh\"{o}rt die Wechselwirkungsenergie
+\begin{align}\label{IIWeak}
+a(w,\hat{w}) = \int_0^{\,l}( EI w'' \hat{w}'' - P \,w' \hat{w}') \, dx\,,
+\end{align}
+und wenn man in diesen Ausdruck  mit den Einheitsverformungen $\Np_i(x)$ des Biegebalkens nach Theorie I. Ordnung geht, so erh\"{a}lt man die N\"{a}herung
+\begin{align}\label{IIN} \tilde{ \vek K} =
+\frac{EI}{l^3}\left[ \begin{array}{r r r r}
+ 12 & -6l & -12 &-6l \\
+ -6l & 4l^2 & 6l &2l^2 \\
+ -12 & 6l & 12 & 6l \\
+ -6l &2l^2 &6l &4l^2
+ \end{array}
+  \right] - \frac{P}{30\,l}
+ \left[ \begin{array}{r r r r}
+ 36 & -3\,l & -36 & -3\,l \\
+ -3\,l & 4l^2 & 3\,l &-l^2 \\
+ -36 & 3l & 36 & 3\,l \\
+ -  3\,l &-l^2 &3\,l &4\,l^2
+ \end{array}
+  \right]\,,
+\end{align}
+die die Summe aus der Steifigkeitsmatrix nach Theorie I. Ordnung ist und der sogenannten {\em geometrischen Matrix}\index{geometrische Matrix} $\vek K_G$. Die Matrix $\tilde{\vek K}$ entspricht einer Taylor-Entwicklung der exakten Steifigkeitsmatrix $\vek K = \vek K(P)$ um den Punkt $P = 0$, wobei $\vek K(0)$ die Steifigkeitsmatrix nach Theorie I. Ordnung ist.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Temperatur, Vorspannung und Lagersenkung}}}\label{Temperatur und Lagersenkung}\index{Temperatur}\index{Lagersenkung}\index{Vorspannung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Den Umgang mit Temperatur, Vorspannung und Lagersenkung kennen wir vom Drehwinkelverfahren. Wir berechnen die Kr\"{a}fte, mit denen der beidseitig eingespannte Stab gegen die Lager dr\"{u}ckt bzw. an ihnen zieht (Vorspannung) und wir bringen diese Kr\"{a}fte, das sind ja die $f_i$,
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.4\textwidth]{\Fpath/U486}
+\caption{LF Temperatur} \label{Temperatur}
+\end{figure}%
+%---------------------------------------------------------------------------------------------------------
+\begin{align}
+f_1 = - EA\,\alpha_T\,T \qquad f_2 = + EA\,\alpha_T\,T
+\end{align}
+als Knotenkr\"{a}fte auf, s. Abb. \ref{Temperatur},
+\begin{align}
+\frac{EA}{l}\left[\barr{r r} 1 & - 1 \\ - 1 & 1 \earr\right]\left[\barr{c} 0 \\u_2 \earr \right] = \left[\barr{c} - EA\,\alpha_T\,T \\ + EA\,\alpha_T\,T \earr \right]
+\end{align}
+und so ergibt sich die L\"{a}ngsverschiebung zu $u_2 = \alpha_T\,T\,l$.
+
+Bei dieser Gelegenheit sei darauf hingewiesen, dass man Spannungen aus Temperatur, die
+mit einem anderen Programm ermittelt wurden, nur mit dem Ansatzgrad einf\"{u}hren kann, der
+zum Element geh\"{o}rt. Lineare Temperaturspannungen muss man f\"{u}r ein CST-Element also z.B.
+auf konstante Spannungen herunterrechnen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Stabilit\"{a}tsprobleme}}}\index{Stabilit\"{a}tsprobleme}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Verzweigungsprobleme im Wortsinn gibt es in der Praxis nicht, weil auch \glq perfekte\grq\ Tragwerke
+noch Ausmitten besitzen, aber auch bei Spannungsproblemen tritt der Bruch schlie{\ss}lich
+ein, weil die kritische Knicklast erreicht wird wie bei dem {\em Euler-Stab
+I}\index{Euler-Stab I} in Abb. \ref{Pkrit}.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/PKRIT}
+\caption{Stabilit\"{a}tsproblem links und Spannungsproblem rechts}
+\label{Pkrit}%
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+Ohne Horizontalschub $H$ ist es ein Stabilit\"{a}tsproblem, mit Horizontalschub $H$ wird
+daraus ein Spannungsproblem. Aber die kritische Knicklast
+\begin{align}
+P_{krit} = \frac{\pi^2}{4}\,\frac{EI}{l^2}
+\end{align}
+dominiert auch das Spannungsproblem, denn bei Erreichen von $P_{krit}$, entsprechend
+einer {\em Stabkennzahl}\index{Stabkennzahl} $ \varepsilon = \pi/2$, wird das Moment im
+Fu{\ss}punkt unendlich gro{\ss}
+\begin{align}
+M = - \frac{H\,l}{\varepsilon} \,\tan \,\varepsilon\,, \qquad \varepsilon^2 = l^2
+\,\frac{|P|}{EI}\,,
+\end{align}
+denn $\tan\,\varepsilon = \infty$ f\"{u}r $\varepsilon = \pi/2$.
+
+Bei {\em echten Stabilit\"{a}tsproblemen} gibt es keine Streckenlast, keine Querbelastung
+$p$. Die einzige \"{a}u{\ss}ere Kraft, die Druckkraft $P$, geht ja \"{u}ber die Differentialgleichung
+in die Problembeschreibung ein. Sie z\"{a}hlt formal nicht zu den \"{a}u{\ss}eren Kr\"{a}ften. Sie ist ein Koeffizient der Differentialgleichung.
+
+Die potentielle Energie $\Pi$ besteht bei diesen Problemen also nur aus der inneren Energie, $\Pi(w) =
+1/2\,a(w,w)$, aber auch diese ist im ausgeknickten Zustand null (!)
+\begin{align}
+\Pi(w_{krit}) = \frac{1}{2}\, a(w_{krit},w_{krit}) = \frac{1}{2}\,\int_0^{\,l}
+\big(\frac{M^2_{krit}}{EI} - P\,(w'_{krit})^2\big)\,dx = 0 \,,
+\end{align}
+so dass man $w_{krit}$ nicht finden kann, indem man die potentielle Energie minimiert.
+Ebenso macht es keinen Sinn, einen arbeits\"{a}quivalenten FE-Lastfall $p_h$ zu suchen, weil
+bei Stabilit\"{a}tsproblemen ja $p = 0$ ist. Statt dessen verwendet man das {\em
+Galerkin-Verfahren\/}\index{Galerkin-Verfahren} ({\em Methode der gewichteten
+Residuen\/}). \index{Methode der gewichteten Residuen} Die Knickfigur $w_{krit}$ des
+Balkens muss der Differentialgleichung
+\begin{align}\label{DGLThIIh}
+EI w^{IV}(x) + P \,w''(x) = 0
+\end{align}
+gen\"{u}gen und homogene Lagerbedingungen wie $w(0) = 0$ und/oder $w'(0) = 0$, etc.
+erf\"{u}llen. Alle m\"{o}glichen Knickfiguren $w$, die den Lagerbedingungen gen\"{u}gen, bilden
+wieder den Verformungsraum $\mathcal{V}$.
+
+Wir unterteilen den Balken in $m$ finite Elemente und erlauben ihm somit unter Druck nur
+noch die Knickfiguren anzunehmen, die sich durch die $n$ Einheitsverformungen der freien
+Knoten darstellen lassen, d.h. wir machen f\"{u}r die Knickfigur den \"{u}blichen Ansatz $w_h =
+\sum_i\,w_i \Np_i$ mit den Einheitsverformungen des Balkens nach Theorie I. Ordnung (!).
+All diese Ans\"{a}tze bilden den Unterraum $\mathcal{V}_h \subset V$.
+
+Nun gilt f\"{u}r die exakte Knickfigur $w = w_{krit}$ wegen (\ref{DGLThIIh}), dass ihre
+rechte Seite orthogonal ist zu allen Ansatzfunktionen $\Np_i \in \mathcal{V}_h$
+\begin{align}
+\int_0^{\,l} (EI w^{IV}(x) + P \,w''(x))\,\Np_i\,dx =  0\,.
+\end{align}
+Wird dieses Integral partiell integriert, so folgt, weil die Ansatzfunktionen $\varphi_i
+\in \mathcal{V}_h$ die Lagerbedingungen erf\"{u}llen, dass auch die Wechselwirkungsenergie zwischen
+$w$ und den Ansatzfunktionen null sein muss
+\begin{align}\label{WeakKnickA21}
+a(w,\Np_i) = \int_0^{\,l}[ EI w'' \Np_i'' - P \,w' \Np_i'] \, dx = 0\qquad i =
+1,2,\ldots,n\,.
+\end{align}
+Dies versuchen wir mit der FE-L\"{o}sung $w_h$ nachzubilden: Wir stellen die FE-L\"{o}sung so
+ein, dass dies auch f\"{u}r die FE-Knickfigur gilt, und wir werden so auf das
+lineare Gleichungssystem
+\begin{align}
+(\vek K - P \cdot \vek K_G)\,\vek w = \vek 0
+\end{align}
+f\"{u}r die Knotenverformungen $w_i$ gef\"{u}hrt mit den Matrizen
+\begin{align}
+k_{\,ij} = \int_0^{\,l} EI\,\Np_i''\,\Np_j''\,dx \qquad k^G_{\,ij} = \int_0^{\,l}
+\Np_i'\,\Np_j'\,dx\,.
+\end{align}
+Die triviale L\"{o}sung w\"{a}re $\vek w = \vek 0$, was bedeuten w\"{u}rde, dass der Balken nicht
+ausknickt. Da auf der rechten Seite der Nullvektor steht, kann es eine L\"{o}sung $\vek w
+\neq \vek 0$ nur dann geben, wenn die Determinante des Gleichungssystems null ist
+\begin{align}\label{GlgDet21}
+\det\,(\vek K - P\cdot\vek K_G)=0 \,.
+\end{align}
+Die kleinste positive Zahl $P > 0$, f\"{u}r die dies gilt, ist die gen\"{a}herte {\em
+kritische Knicklast\/} $P_{krit}^h$.
+
+Dass die Knicklast $P_{krit}^h$ auf der unsicheren Seite liegt, also zu hoch ausf\"{a}llt, folgt aus der Tatsache, dass die Knickfigur $w_{krit}$ den {\em Rayleigh-Quotienten}\index{Rayleigh-Quotient} auf $\mathcal{V}$ zum Minimum macht und das Minimum gerade $P_{krit}$ ist
+\begin{align}
+P_{krit} = \frac{{\displaystyle \int_0^{\,l} EI (w_{krit}'')^2\,dx}}{ {\displaystyle
+\int_0^{\,l} (w_{krit}')^2 \, dx} }\,.
+\end{align}
+Bildet man diesen Quotienten mit dem FE-Ansatz nach, so f\"{u}hrt dies genau auf
+(\ref{GlgDet21}). Weil aber das Minimum auf der Teilmenge $\mathcal{V}_h$ immer gr\"{o}{\ss}er ist,
+als das Minimum auf der ganzen Menge $\mathcal{V}$, ist $P_{krit}^{h} > P_{krit}$.
+
+Der zu dem Eigenwert $P_{krit}^h$ geh\"{o}rige Eigenvektor $\vek w$ wird meist so normiert, dass $ |w_i|
+\leq 1$. Setzt man die zugeh\"{o}rige Eigenform
+\begin{align}\label{knick5}
+w_h=\sum w_i\,\Np_i
+\end{align}
+elementweise in die Differentialgleichung $EI w^{IV}(x) + P w''(x)$ ein, und beachtet
+die Spr\"{u}nge in den Schnittgr\"{o}{\ss}en an den Knoten, so kann man sich ein Bild von dem
+FE-Lastfall $p_h$ machen, der zu $w_h$ geh\"{o}rt. Er ist wieder eine Entwicklung nach den
+Einheitslastf\"{a}llen $p_{\,i}$
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/KNICKGRAETSCH}
+\caption{{\small Die Knicklast und die erste Eigenform}}\label{KnickGraetsch}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+\begin{align}
+p_h=\sum w_i\,p_i\,.
+\end{align}
+Weil die Einheitsverformungen $\Np_i$ des Balkens nach Theorie I. Ordnung keine
+homogenen L\"{o}sungen der Differentialgleichung II. Ordnung sind,
+geh\"{o}ren zu den FE-Knickfiguren Streckenlasten. Es sind also keine echten Knickfiguren,
+sondern L\"{o}sungen von Spannungsproblemen. Allerdings mit der bemerkenswerten
+Eigenschaft, dass sie wie echte Knickfiguren energetisch orthogonal sind zu allen
+$\Np_i \in \mathcal{V}_h$. Bei normalen FE-Anwendungen w\"{u}rden wir solche Verformungen {\em
+spurious modes\/} nennen, weil sie mit den $\Np_i$ nicht wechselwirken.
+
+{\em Die Knickfigur eines Druckstabes oder die Beulfl\"{a}che einer Platte stellt sich so ein, dass der FE-Lastfall $p_h$, der die Knickfigur/Beulfl\"{a}che erzeugt, orthogonal zu allen Knotenverformungen ist.}
+
+W\"{u}rden wir die Einheitsverformungen $\Np_i$ nach Theorie II. Ordnung als Ansatzfunktionen
+w\"{a}hlen, dann w\"{a}re das FE-Programm praktisch eine Implementierung des Drehwinkelverfahrens
+nach Theorie II. Ordnung, und dann w\"{a}re die FE-L\"{o}sung die exakte Knickfigur und auch die
+kritische Knicklast w\"{a}re exakt, weil dann $w_{krit}$ in $\mathcal{V}_h$ l\"{a}ge.\\
+
+  Eine FE-Berechnung des Tragwerks in Abb. \ref{KnickGraetsch}.
+mit zwei Elementen liefert die kritische Knicklast\footnote{Die exakte Knicklast betr\"{a}gt
+$P_{krit}\simeq 12.7\,EI/l^2$.}
+\begin{align}
+P_{krit}=\frac{16.48\,EI}{l^2}
+\end{align}
+und die zugeh\"{o}rige Eigenform
+\begin{eqnarray}
+\left[ \begin{array}{r}
+ w_4\\
+ w_6
+ \end{array}
+  \right]= \left[ \begin{array}{c}
+ -0.707\\
+1
+ \end{array}
+  \right].
+\end{eqnarray}
+Setzen wir die FE-L\"{o}sung $w_h$ in die Differentialgleichung ein und beachten noch die
+Spr\"{u}nge in den Schnittgr\"{o}{\ss}en an den Knoten, so erhalten wir den in Abb. \ref{phknick}
+dargestellten Lastfall $p_h$. Dieses Bild ist allerdings nur eine Momentaufnahme, gibt
+nur einen qualitativen Eindruck, denn der Lastfall $p_h$ ist im Grunde beliebig
+skalierbar, weil jedes Vielfache der \glq Knickfigur\grq\ $w_h$ auch wieder eine
+m\"{o}gliche \glq Knickfigur\grq\ ist.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/PHKNICK}
+\caption{Der zur ersten Eigenform geh\"{o}rige Lastfall $p_h$}\label{phknick}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/TUMBLE}
+\caption{Ein Vieleck ist nicht ganz so labil wie ein Kreis}\label{Tumble}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Wir erkennen an Abb. \ref{phknick}, dass Streckenlasten n\"{o}tig sind, um den Balken in der ausgeknickten Lage zu halten. Das ist gleichbedeutend damit, dass der unverformte Balken von den gegengleichen Kr\"{a}ften am Ausknicken gehindert wird. So kann man sich erkl\"{a}ren, dass die Knicklast gr\"{o}{\ss}er ist als bei der exakten L\"{o}sung, wo ja keine Haltekr\"{a}fte zu \"{u}berwinden sind, \cite{Petersen1}. Sinngem\"{a}{\ss} dasselbe Ph\"{a}nomen erleben zwei Artisten, s. Abb. \ref{Tumble}. Der Artist auf dem Kreis befindet sich im labilen Gleichgewicht, w\"{a}hrend sein Kollege davon profitiert, dass die Ecken des Vielecks eine Drehung behindern und damit seine Lage etwas stabilisieren.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Stabilit\"{a}tsnachweise komplexer Tragstrukturen }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\`{O}%%%%%%%%%%%%%w%%%%
+\vspace{-0.5cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Die Stabtheorie }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Die Stabtheorie findet ihre Beschr\"{a}nkungen unter anderem bei gro{\ss}en Querschnittsbreiten, wo die Schubverformungen nicht mehr vernachl\"{a}ssigt werden k\"{o}nnen. Im Eurocode EN 1993-1-5 findet man dazu zwei Passagen. Im Absatz 3.2.1 stehen Regelungen, bei denen eine mitwirkende Breite $b_{eff}$ definiert wird, die mit einer konstanten Spannung die gleiche Steifigkeit bzw. Tragf\"{a}higkeit haben soll, wie der reale Querschnitt, s. Abb. \ref{Katz2ndStabi1} und Abb. \ref{Katz2ndStabi2}.
+
+In der Praxis wird jedoch -- soweit uns bekannt -- die Spannung auf die mitwirkende Breite gleichm\"{a}{\ss}ig verteilt angesetzt, wie es auch im Massivbau \"{u}blich ist.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi1N}
+\caption{Mitwirkende Breiten nach Eurocode EN 1991-1-5} \label{Katz2ndStabi1}
+\end{figure}%%
+%----------------------------------------------------------
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi2N}
+\caption{Spannungen bei mitwirkenden Breiten nach Eurocode EN 1991-1-5} \label{Katz2ndStabi2}
+\end{figure}%%
+%----------------------------------------------------------
+
+F\"{u}r die Behandlung der mitwirkenden Breite muss man sich vor Augen halten, dass \"{u}blicherweise die Normalkraft auf dem ganzen Querschnitt wirkt und nur die Biegespannungen auf den reduzierten effektiven Querschnitt. Damit gelten folgende Regeln, s. auch Abb. \ref{Katz2nd13}:\\
+\begin{itemize}
+  \item Eine gleichm\"{a}{\ss}ige zentrische Dehnung darf bezogen auf den elastischen Schwerpunkt des Gesamtquerschnitts kein resultierendes Moment erzeugen.
+  \item Die \"{a}u{\ss}ere Normalkraft wirkt also immer im elastischen Schwerpunkt des Gesamtquerschnitts; die einwirkenden Momente werden auf diesen Punkt bezogen.
+  \item Die Momente werden dann jedoch gedanklich in den elastischen Schwerpunkt des mitwirkenden Querschnitts verschoben und erzeugen Spannungen auf dem mitwirkenden Querschnitt. Da der Hebelarm f\"{u}r die Spannungen sich nun auf diesen Punkt bezieht, ergeben sich keine resultierenden Normalkr\"{a}fte.
+  \item Die nicht mitwirkenden Fl\"{a}chen sind f\"{u}r Haupt- und Querbiegung unterschiedlich anzusetzen.
+\end{itemize}
+Unabh\"{a}ngig davon sind Lochabz\"{u}ge (EN 1993-1-1 6.2.2.2) oder nicht mitwirkende Teile der Querschnittsklasse 4 zu sehen. Diese L\"{o}cher sind real, also auch nicht f\"{u}r die Normalkraft wirksam und ver\"{a}ndern daher die Lage des elastischen Schwerpunkts, was bei der Berechnung der Schnittgr\"{o}{\ss}en ber\"{u}cksichtigt werden muss, s. Abb. \ref{Katz2ndStabi3}. Wenn beide Effekte kombiniert werden, hat man drei verschiedene elastische Schwerpunkts- und Querschnittswerte zu ber\"{u}cksichtigen.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2nd13}
+\caption{$S_b$ ist das elastische Zentrum des gesamten (Brutto) Querschnitts. Eine zentrische Spannung erzeugt eine Normalkraft an dieser Stelle. \"{A}u{\ss}ere Momente m\"{u}ssen sich daher auf diesen Punkt beziehen. Die Spannungsverteilung aus dem Moment hat ihren Nullpunkt aber im elastischen Zentrum des mitwirkenden Querschnitts, denn nur dann entsteht keine weitere Normalkraft im Querschnitt. Das Moment wird quasi im Querschnitt an eine andere Stelle verschoben, die Normalkraft muss im Punkt $S_b$ bleiben.} \label{Katz2nd13}
+\end{figure}%%
+%----------------------------------------------------------
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi3N}
+\caption{Mitwirkende Breiten f\"{u}r Querschnitte der Klasse 4 nach Eurocode EN 1991-1-5} \label{Katz2ndStabi3}
+\end{figure}%%
+%----------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Querschnittswerte }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In allen F\"{a}llen braucht man Querschnittswerte f\"{u}r Steifigkeiten und Widerst\"{a}nde f\"{u}r elastische und plastische Bemessungen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{D\"{u}nnwandige Querschnitte }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+F\"{u}r die vereinfachte Berechnung, insbesondere f\"{u}r die W\"{o}lbkrafttorsion ist es h\"{a}ufig so, dass man d\"{u}nnwandige Querschnitte benutzt. Die Elemente eines solchen Querschnitts zeichnen sich dadurch aus, dass die Dicke im Vergleich zur L\"{a}nge so klein ist, dass die Variation der Normalspannungen \"{u}ber die Dicke und damit auch das Tr\"{a}gheitsmoment um die L\"{a}ngsachse vernachl\"{a}ssigbar ist. Der einfachen Berechenbarkeit stehen jedoch auch Un\-ge\-nauigkeiten gegen\"{u}ber. So ergeben sich entweder \"{U}berlappungen der Elemente oder Vernachl\"{a}ssigungen der Ausrundungen. Besonders sei darauf hingewiesen, dass beim Torsionswiderstand die Ausrundungen einen erheblichen Anteil haben k\"{o}nnen. In der Abb. \ref{Katz2ndStabi4} sind f\"{u}nf Idealisierungen und in der Tabelle in Abb. \ref{Katz2ndStabiTabBild4} die Unterschiede bei den Querschnittswerten f\"{u}r einen HEB 300 mit $fy,d=218.2$ MPa gegen\"{u}ber gestellt.\\
+
+\noindent\hspace*{4mm} a)	Tabellenwerte nach Stahlbau kompakt (R. Kindmann et. al.) \\
+\noindent\hspace*{4mm} b)	Modellierung als vollst\"{a}ndiger Querschnitt \\
+\noindent\hspace*{4mm} c)	d\"{u}nnwandig \"{u}berlappend\\
+\noindent\hspace*{4mm} d)	d\"{u}nnwandig mit stumpfem Sto{\ss} (mit Schubverbindung)\\
+\noindent\hspace*{4mm} e)	d\"{u}nnwandig mit stumpfem Sto{\ss} und korrekter Fl\"{a}che hochkant\\
+\noindent\hspace*{4mm} f)	d\"{u}nnwandig mit stumpfem Sto{\ss} und korrekter Fl\"{a}che quer\\
+ %----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi4N}
+\caption{Verschiedene Modellierungen eines HEB 300} \label{Katz2ndStabi4}
+\end{figure}%%
+%----------------------------------------------------------
+
+ %----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabiTabBild4NN}
+\caption{Verschiedene Modellierungen (b bis f) eines HEB 300} \label{Katz2ndStabiTabBild4}
+\end{figure}%%
+%----------------------------------------------------------
+
+\noindent Dazu sind nun einige Anmerkungen zu machen:\\
+\begin{itemize}
+  \item Die richtige Erfassung der Fl\"{a}che sollte selbstverst\"{a}ndlich sein. F\"{u}r eine EDV-Berechnung sollten daher die Varianten c) und d) eher nicht in Betracht gezogen werden. Wenn das Tragwerk aber mit finiten Schalenelementen modelliert wird, d\"{u}rfte Variante c die dominierende Modellierung darstellen.
+       %----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi5}
+\caption{Spannungen aus prim\"{a}rer Torsion in den Ausrundungen (linear und plastifiziert)} \label{Katz2ndStabi5}
+\end{figure}%%
+%----------------------------------------------------------
+  \item Analoge Gedanken f\"{u}r die Biegetr\"{a}gheitsmomente lassen die Variante e) als nicht optimal erscheinen.
+  \item Das Torsionstr\"{a}gheitsmoment wird in den Varianten c) bis e) deutlich untersch\"{a}tzt. Der Anteil der Ausrundungen ist offenbar bedeutend. Dies hei{\ss}t aber auch, dass bei der Ermittlung der maximalen Torsionsspannung die h\"{o}here Dicke dieser Teile ma{\ss}gebend wird, s. Abb. \ref{Katz2ndStabi5}. (Elastische Torsionsspannungen =$ M_t \cdot t_{max}/I_t$, der Wert von 14.09 in Spalte 1 ergab sich aus einer anderen Literaturquelle).
+  \item Auch die Stelle der maximalen Schubspannung aus $V_y$ ist nicht im Voraus erkennbar, s. Abb. \ref{Katz2ndStabi6}.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi6}
+\caption{Spannungen aus prim\"{a}rer Torsion in den Ausrundungen (linear und plastifiziert)} \label{Katz2ndStabi6}
+\end{figure}%%
+%----------------------------------------------------------
+  \item Die plastischen Grenzschnittgr\"{o}{\ss}en der Biegemomente folgen tendenziell den Aussagen bei den Fl\"{a}chentr\"{a}gheitsmomenten.
+      \item Deutlich erkennbar ist aber der zu niedrige Wert der tabellierten Grenzquerkraft $V_{z,pl}$. Die angesetzte Stegfl\"{a}che ist gem\"{a}{\ss} DIN 18800 nur 3091 mm$^2$, das sind 11 $\times$ 281 mm, also die H\"{o}he aus den Mittelfl\"{a}chen der Gurte ohne den Ansatz der Ausrundungen wie er im Eurocode ja vorgesehen ist. Dort ist die Stegfl\"{a}che mindestens $A-2 \cdot A_{Gurt}$ = 3510 mm$^2$ oder als ganzer Knochen 4745 mm$^2$, s. Abb. \ref{Katz2ndStabi7}.
+
+\end{itemize}
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/Katz2ndStabi7N}
+\caption{Unterschiedlicher Ansatz der Stegfl\"{a}chen im Eurocode} \label{Katz2ndStabi7}
+\end{figure}%%
+%----------------------------------------------------------
+Die Behandlung eines Querschnitts als Kontinuum erlaubt die genauere Abbildung einiger Details, aber einige Aufgaben werden dadurch auch erschwert. So k\"{o}nnen zwar die $c/t$-Nachweise noch \"{u}ber fiktive Bleche gef\"{u}hrt werden, aber die automatische Ber\"{u}cksichtigung nicht mitwirkender Fl\"{a}chen wird um einiges komplexer. Weiter ist zu vermerken, dass im Kontinuum Spannungsspitzen deutlicher abgebildet werden und Nachweisverfahren, die mit zul\"{a}ssigen Spannungen arbeiten dann eventuell nicht mehr gef\"{u}hrt werden k\"{o}nnen.
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Schubspannungen }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+F\"{u}r die Ermittlung der Schubspannungen in Querschnitten kennt man die klassische Formel
+\begin{align}
+\tau_{xz} = \frac{T}{b} = \frac{V_z \cdot S_z}{I_y \cdot b}\,.
+\end{align}
+Diese entspricht aber dem Kraftgr\"{o}{\ss}enverfahren. Sie wurde aus der Gleichgewichtsbedingung
+\begin{align}
+\frac{\partial \tau_{xy}}{\partial y} + \frac{\partial \tau_{xz}}{\partial z} + \frac{\partial \sigma_x}{\partial x} = 0
+\end{align}
+durch Integration der Ableitungen der Schubspannungen ermittelt
+\begin{align}
+\sigma_{x} &= \frac{M_y\,I_z + M_z\,I_{yz}}{I_y\,I_z - I_{yz}^2} \cdot z - \frac{M_z\,I_y + M_y\,I_{yz}}{I_y\,I_z - I_{yz}^2} \cdot y \\
+T &= \int - \frac{ \partial \sigma_x}{\partial x}\,dA = \int\frac{V_z\,I_z + V_y\,I_{yz}}{I_y\,I_z - I_{yz}^2} \cdot z + \frac{V_y\,I_y + V_z\,I_{yz}}{I_y\,I_z - I_{yz}^2} \cdot y) \,dA + T_0\,.
+\end{align}	
+Die Integrationskonstante $T_0$ kann bei offenen Querschnitten durch eine geschickte Wahl des Anfangspunktes zu Null angenommen werden, bei geschlossenen Querschnitten muss sie durch eine statisch-unbestimmte Rechnung \"{u}ber die Verformungen ermittelt werden.
+Computergerechter ist es daher ein Weggr\"{o}{\ss}enverfahren f\"{u}r die Verw\"{o}lbung bzw. Schubverformungen des Querschnitts aufzustellen, wie schon auf S. \pageref{U501} erw\"{a}hnt,
+\begin{align}
+\tau_{xy} &= G\,(\frac{\partial w}{\partial y} - z\,\frac{\partial \theta_x}{\partial x})
+ \qquad
+\tau_{xz} = G\,(\frac{\partial w}{\partial z} + y\,\frac{\partial \theta_x}{\partial x}) \\
+G\,\Delta w &= G\,(\frac{\partial^2 w}{\partial y^2} + \frac{\partial^2 w}{\partial z^2}) = - \frac{\partial \sigma_x}{\partial x}
+\end{align}
+mit der Randbedingung $\tau_{xy}\,n_y + \tau_{xz}\,n_z = 0$, \cite{Kraus}.
+
+F\"{u}r die L\"{o}sung dieser Differentialgleichung kann man FEM- oder BEM-Methoden verwenden. Bei d\"{u}nnwandigen Querschnitten reduziert sich die Komplexit\"{a}t \"{a}hnlich wie bei einem Stabwerk \cite{Schade}.
+
+Die Kenntnis der genaueren Spannungsverteilungen ergibt nicht immer die erwarteten Ergebnisse. So sind die Spannungen in einem Kreisquerschnitt weit davon entfernt \"{u}ber die Schnittbreite hinweg konstant zu sein, s. Abb. \ref{Katz2ndStabi8}.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.5\textwidth]{\Fpath/Katz2ndStabi8}
+\caption{Schubspannungen in einem Kreisquerschnitt} \label{Katz2ndStabi8}
+\end{figure}%%
+%----------------------------------------------------------
+
+Ein interessanter Aspekt ergibt sich im Zusammenhang mit nicht mitwirkenden Teilen. Selbst wenn ein echtes Loch im Querschnitt vorhanden ist, m\"{u}ssen Schubspannungen \"{u}bertragen werden. Denn die Annahme eines zusammenh\"{a}ngenden Querschnitts geht von einem Schubverbund aus. Wenn die Normalspannung entlang des Stabes konstant oder sogar null ist, folgt aus dem Gleichgewicht, dass die Ableitung der Schubspannung konstant ist und somit die Schubspannung selbst konstant sein muss. Dies wird insbesondere an einem Kastenquerschnitt deutlich, s. Abb. \ref{Katz2ndStabi9}.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi9N}
+\caption{ Schubspannungen aus $V_z$ und $V_y$ in einem Kastenquerschnitt mit mitwirkenden Bereichen konstanter Schubspannung} \label{Katz2ndStabi9}
+\end{figure}%%
+%----------------------------------------------------------
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=0.4\textwidth]{\Fpath/U550}
+\caption{Verbundtr\"{a}ger} \label{U550}
+\end{figure}%%
+%----------------------------------------------------------
+Die Tabelle in Abb. \ref{Katz2ndStabiTabSeite6} zeigt, wie die Schubweichheit der D\"{u}bel die Schubverformungsfl\"{a}chen in einem I-Profil mit Ortbeton wie in Abb. \ref{U550} immer st\"{a}rker reduziert.
+ %----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabiTabSeite6}
+\caption{Einfluss der D\"{u}belsteifigkeit auf die Schubverformungen eines Verbundtr\"{a}gers} \label{Katz2ndStabiTabSeite6}
+\end{figure}%%
+%----------------------------------------------------------
+
+Wenn der Querschnitt keine Schubverbindung h\"{a}tte, w\"{a}re seine Schubsteifigkeit unendlich klein, die Schubverformungen also unendlich gro{\ss}. Bei einer reinen Biegebeanspruchung ergeben sich aber auch keine Schubverformungen. Tats\"{a}chlich w\"{a}re bei einem zweigeteilten Rechteckquerschnitt die Summe der Biegesteifigkeiten aber nur ein Viertel so gro{\ss} wie beim ganzen Querschnitt. Und dieser Fehler in der Annahme kann nachtr\"{a}glich nicht mehr \"{u}ber Schubverformungen korrigiert werden. Hier hat man die Grenzen der G\"{u}ltigkeit der Balkentheorie \"{u}berschritten.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Nachweise am Querschnitt }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Linearer Spannungsnachweis }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Der Nachweis \"{u}ber Spannungen ist im Eurocode EN 1993-1-1 im Absatz 6.2.1 (5) geregelt: F\"{u}r den Nachweis nach Elastizit\"{a}tstheorie darf das folgende Flie{\ss}kriterium f\"{u}r den kritischen Punkt eines Querschnitts verwendet werden:
+\begin{align}
+\bigg(\frac{\sigma_{x,_{Ed}}}{f_y /\gamma_{M0}}\bigg)^2 + \bigg(\frac{\sigma_{z,_{Ed}}}{f_y /\gamma_{M0}}\bigg)^2 - \bigg(\frac{\sigma_{x,_{Ed}}}{f_y /\gamma_{M0}}\bigg)^2 \,\bigg(\frac{\sigma_{z,_{Ed}}}{f_y /\gamma_{M0}}\bigg)^2 + 3\,\bigg(\frac{\tau_{Ed}}{f_y/\gamma_{M0}}\bigg)^2 \leq 1
+\end{align}
+Es muss hier angemerkt werden, dass damit keine wirkliche Ausnutzung berechnet werden kann. Daf\"{u}r ist die Verwendung der Flie{\ss}spannung sinnvoller
+\begin{align}
+\sqrt{\sigma_{x,Ed}^2 + \sigma_{z,Ed}^2 - \sigma_{x,Ed} \cdot \sigma_{z,Ed} + 3\,\tau_{Ed}^2} < \frac{f_y}{\gamma_{M0}}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Interaktion von Grenzschnittgr\"{o}{\ss}en }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Der Nachweis \"{u}ber Spannungen ist h\"{a}ufig unwirtschaftlich, daher werden in modernen Normen Nachweise auf Basis der Grenztragf\"{a}higkeit des Querschnitts gef\"{u}hrt. Bei der Interaktion von Grenzschnittgr\"{o}{\ss}en ist im EN 1993-1-1 im Absatz 6.2.1 (5) eine einfache Interaktion angegeben
+\begin{align}
+\frac{N_{Ed}}{N_{Rd}} + \frac{M_{y,Ed}}{M_{y,Rd}} + \frac{M_{z,Ed}}{M_{z,Rd}} \leq 1\,.
+\end{align}
+Dabei m\"{u}ssen alle Tragf\"{a}higkeiten infolge der Querkr\"{a}fte gegebenenfalls reduziert werden. F\"{u}r die Torsion ist im Abschnitt 6.2.7. eine zus\"{a}tzliche Reduzierung der Querkrafttragf\"{a}higkeit definiert, die praktisch aber kaum anwendbar ist. Einfacher erscheint es, die Ausnutzungsgrade der prim\"{a}ren und sekund\"{a}ren Torsion einfach ebenfalls linear zu addieren.
+
+Analog wird ja bei Kranbahnen eine Ausnutzung des W\"{o}lbmoments addiert, obwohl diese Eigenspannungen im plastifizierten Zustand stark abgemindert werden.
+
+Bei der Ausnutzung der Querkraft wie auch bei der verbesserten Interaktion der Normalkraft ergeben sich in den Normen Bedingungen, die keinerlei R\"{u}ckschl\"{u}sse auf die relative Tragf\"{a}higkeit zulassen. So findet man z.B. im EN 1993-1-1 6.2.9.1
+\begin{align}
+\frac{M_y}{M_{y, V_{red}}} \cdot \frac{1 - 0.5\,\alpha}{(1 - N/N_{V,Rd})} \leq 1
+\end{align}
+Die Anwendbarkeit dieser Formel wird f\"{u}r $N$ gegen $N_{V,Rd}$ stark nichtlinear und versagt, wenn die Normalkraft dar\"{u}ber hinausgeht. Die mathematisch gleichwertige Formulierung
+\begin{align}\label{Eq23}
+\frac{M_y}{M_{y, V_{red}}} \cdot (1 - 0.5\,\alpha) + \frac{N}{N_{V,Rd}} \leq 1
+\end{align}	
+ist hingegen wesentlich klarer und hat keine Singularit\"{a}t mehr.
+
+Die h\"{a}rteste Nuss in diesem Zusammenhang ist sicher die Formel 6.41
+\begin{align}
+\bigg[\frac{M_{y,Ed}}{M_{N,y,Rd}}\bigg]^\alpha + \bigg[\frac{M_{z,Ed}}{M_{N,z,Rd}}\bigg]^\beta \leq 1\,.
+\end{align}
+Da es noch weitere F\"{a}lle gibt, die in einer allgemeinen Software modifiziert werden m\"{u}ssen, wurde bei den Musterbeispielen zur VDI-Richtlinie 6201-2 \cite{VDI} ein Beispiel aufgenommen, das die Abweichungen einer EDV-Implementierung zu den Regeln der Norm aufzeigt. Die Aufgabenstellung ist in Abb. \ref{Katz2ndStabiTabSeite8Oben} dargestellt und die einzelnen Schritte des Nachweises sind in der Tabelle in Abb. \ref{Katz2ndStabTabSeite8Unten} zusammengefasst.
+
+ %----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabiTabSeite8Oben}
+\caption{} \label{Katz2ndStabiTabSeite8Oben}
+\end{figure}%%
+%----------------------------------------------------------
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabTabSeite8UntenNN}
+\caption{Plastischer Querschnittsnachweis nach Norm} \label{Katz2ndStabTabSeite8Unten}
+\end{figure}%%
+%----------------------------------------------------------
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabiTabSeite9Oben}
+\caption{Alternative Rechnung mit einem allgemeing\"{u}ltigeren Ansatz in einer Bemessungssoftware} \label{Katz2ndStabiTabSeite9Oben}
+\end{figure}%%
+%----------------------------------------------------------
+
+Die Alternative in Tabelle in Abb. \ref{Katz2ndStabiTabSeite9Oben} entsteht dadurch, dass eine allgemeing\"{u}ltige Software, die f\"{u}r alle Querschnittstypen Ergebnisse liefern soll, nicht alle Spezialf\"{a}lle abdecken kann. Eine einheitliche Schubfl\"{a}che wird daher bevorzugt. Der Anwender kann sich dann idealerweise entscheiden, welchen der drei angesprochenen Ans\"{a}tze er bevorzugt.
+
+Der Ausnutzungsgrad von 0.846 ist ungenau. Steigert man die Last, wird ein Wert von 1.0 bereits bei einer Erh\"{o}hung um 2.6 \% erreicht. Die verbesserte Formel (\ref{Eq23}) liefert eine genauere Ausnutzung von 0.956 und die vereinfachte Gleichung EN 1993-1-1 (6.2) ergibt 1.04.
+
+Das Programm RUBSTAHL TSV-I \cite{Kindmann2} ignoriert nach DIN 18800 die Ausrundungen und ermittelt daher eine deutlich h\"{o}here Ausnutzung von 1.14.
+
+Eine Vergleichsberechnung mit einem Optimierungsverfahren von {\em Osterrieder\/} \cite{Osterrieder} ergibt die reale plastische Ausnutzung f\"{u}r die Schnittgr\"{o}{\ss}en $N$ = 5380 kN, $V_z$ = 1505 kN, $M_y$ = 483.9 kNm, und somit einen realen Ausnutzungsgrad von 0.93. Wenn man diese Schnittgr\"{o}{\ss}en in die modifizierten Interaktionsformeln einsetzt, ergibt sich eine Ausnutzung von 1.08, wohingegen die Originalformeln einen Wert von 2.7 ergeben.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Nichtlineare Verfahren }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Bevor man nun den n\"{a}chsten Schritt in die nichtlinearen Verfahren macht, muss man sich vor Augen halten, dass der traditionelle Stahlbau und Verbundbau mit plastischen Verfahren rechnet und daher einige Regeln der Normen darauf ausgelegt sind, dass keine Kontrolle der Verformungen stattfindet. Die nichtlinearen Verfahren sind jedoch nur im EN 1993-1-1 Anhang C beschrieben und so mancher glaubt, man k\"{o}nne diese daher nur f\"{u}r Platten anwenden. Da die dort beschriebenen Ans\"{a}tze wie auch die Flie{\ss}zonentheorie aber mit endlichen Dehnungen arbeitet, kann man sie auch allgemein mit einem Ansatz f\"{u}r die Verfestigung einsetzen.
+
+Wie weit die Vorstellungen der einzelnen Ingenieure aber mitunter auseinandergehen, mag man daran erkennen, dass bei Querschnitten der Klasse 4 der deutsche Text im EN 1993-1-5 4.2.(2) besagt, dass die Spannungen auf die Streckgrenze in der Mittelebene des Druckflansches zu begrenzen sind, w\"{a}hrend der englische Text besagt, dass die Flie{\ss}dehnung nicht \"{u}berschritten werden soll.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Interaktion von Schub- und Normalspannungen }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+F\"{u}r die Interaktion der einzelnen plastischen Grenzschnittgr\"{o}{\ss}en wird die Schubtragf\"{a}higkeit meistens dadurch ber\"{u}cksichtigt, dass ein Teil des Querschnitts f\"{u}r den Schub vorab reserviert wird und dann der Rest f\"{u}r Normalkraft und Biegung verwendet wird. Probleme bekommt man bei diesem Verfahren, wenn die Schubgrenzkr\"{a}fte {\em a priori\/} \"{u}berschritten sind.
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/Katz2ndStabi15N}
+\caption{ Normal-, Schub- und Vergleichsspannungen der kombinierten Beanspruchung bei nichtlinearer Analyse, $f = 1.080$
+} \label{Katz2ndStabi15}
+\end{figure}%%
+%----------------------------------------------------------
+Es sind jedoch auch andere Strategien denkbar, wie man die Tragf\"{a}higkeiten aufteilt \cite{Katz5}, somit:\\
+
+\begin{itemize}
+  \item Lineare Reduktion aller Spannungskomponenten
+\begin{align}
+f = \text{max} \bigg[ 1, \frac{\sqrt{\sigma_{x,Ed}^2 + \sigma_{z,Ed}^2- \sigma_{x,Ed}\,\sigma_{z,Ed} + 3\,\tau_{Ed}^2}}{f_y/\gamma_{M0}} \bigg]\,\, \Rightarrow\,\, \barr{l} \sigma_{nonl} = f \cdot \sigma_{lin} \\ \tau_{nonl} = f \cdot \tau_{lin} \earr
+\end{align}	 	
+  \item Anwendung der Prandtl'schen Flie{\ss}regel, bei der die Ableitung der Flie{\ss}funktion nach den Spannungskomponenten verwendet wird um eine elastoplastische Spannungsdehnungsmatrix aus der linearen Elastizit\"{a}tsmatrix zu berechnen
+\begin{align}
+\left[\barr{l} \Delta \sigma_x \\  \Delta \sigma_z \\  \Delta \tau \earr\right] = \bigg[ \vek C - \frac{\vek q \cdot \vek C \cdot \vek q^T}{\vek q^T \cdot \vek C \cdot \vek q} \bigg] \,\left[\barr{l} \Delta \varepsilon_x \\  \Delta \varepsilon_z \\  \Delta \gamma \earr\right] \qquad
+\vek q = \frac{\partial F}{\partial \vek \sigma}\,.
+\end{align}
+\end{itemize}
+Allgemeinere nichtlineare Verfahren m\"{u}ssen \"{u}ber Dehnungszust\"{a}nde definiert werden und die sich dabei ergebenden Spannungen m\"{u}ssen ins Gleichgewicht gesetzt werden. Ganz allgemein muss man dann den Querschnitt in einzelne finite Elemente unterteilen.
+
+Im Sinne einer Vereinfachung kann man aber auch die den Einheitsschubspannungen zugrundeliegenden Dehnungen als Ganzes skalieren. Damit ergeben sich in jedem Iterationsschritt aus den Gesamtdehnungen elastische Spannungen, die sich unter einem m\"{o}glichen Ansatz von Verfestigungen in plastische Spannungen korrigieren lassen.
+
+Das Beispiel aus der VDI 6201-2 ergibt nun eine L\"{o}sung mit den 1.08-fachen Schnittgr\"{o}{\ss}en und einer Dehnung von 0.0078; die Verfestigung wurde dabei mit der Zugfestigkeit bei einer Grenzdehnung von 0.025 angesetzt.
+
+Man erkennt die Reduktion der Normalspannungen im Flansch infolge der Schubspannungen und die Interaktion von Schub- und Normalspannungen im Steg, s. Abb. \ref{Katz2ndStabi15}.
+
+\vspace{-1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Stabilit\"{a}tsnachweise am Querschnitt }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Querschnitte der Klasse 4 }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Einteilung der Querschnitte erfolgt bekanntlich \"{u}ber die Schlankheit der Bleche, bzw. das Verh\"{a}ltnis $c/t$ in Anh\"{a}ngigkeit vom Einspanngrad. Da schlanke Bauteile unter geringen Beanspruchungen bemessbar sein sollen, wurde im EN 1991-1-1 5.5.2 (9) eine Erh\"{o}hung des Grenzwertes in Abh\"{a}ngigkeit von der wirkenden Spannung vorgesehen. Diese ist jedoch f\"{u}r den Nachweis der Gesamtstabilit\"{a}t nicht anwendbar.
+
+Dann muss ein effektiver Querschnitt benutzt werden, s. Abb. \ref{Katz2ndStabi11}. Diesen kann man vorab unter der Annahme einer maximalen Beanspruchung ermitteln oder iterativ aus den wirkenden Spannungen. Die Iteration ist etwas sperrig in der Handhabung, denn man muss erst die Querschnittswerte auf Grund der Spannungen ermitteln, f\"{u}r die man die reduzierten Querschnittswerte ja ben\"{o}tigt. Wenn man sich vor Augen h\"{a}lt, dass eine Ver\"{a}nderung der Querschnitte ja auch \"{A}nderungen in den Beanspruchungen ausl\"{o}sen, wird man entweder eine Iteration am Gesamtsystem machen m\"{u}ssen oder auf der sicheren Seite eine ung\"{u}nstigste zentrische Spannung in H\"{o}he der Flie{\ss}grenze ansetzen. Zur Verifikation der Berechnung ist es in jedem Falle erforderlich, die sich einstellenden effektiven Querschnittswerte ermitteln zu k\"{o}nnen.
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi11}
+\caption{ Normal-, Schub- und Vergleichsspannungen der kombinierten Beanspruchung
+} \label{Katz2ndStabi11}
+\end{figure}%%
+%----------------------------------------------------------
+
+Ein Hohlprofil SH 800 x 800 x 16 aus S 355 \"{u}berschreitet z.B. mit $c/t$ = 47.5 die Grenzwerte der Schlankheit f\"{u}r die Querschnittsklasse 3 im Druckgurt von $42.0\cdot 0.814 = 34.2$. Dieses Blech wird bei einer Gesamtbreite von 760 mm mit einer Schlankheit von $p=1.028 $ nur auf einer effektiven Breite von 604 mm angesetzt. Bei einer schiefen Biegung verschieben sich die nicht mitwirkenden Teile etwas zu der am st\"{a}rksten gedr\"{u}ckten Ecke hin, s. Abb. \ref{Katz2ndStabi12}).
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/Katz2ndStabi12}
+\caption{Beispiel zum wirksamen Querschnitt EN 1993-1-5
+} \label{Katz2ndStabi12}
+\end{figure}%%
+%----------------------------------------------------------
+
+Wenn man nur einseitig mitwirkende Fl\"{a}chen in der Druckzone ansetzt, \"{a}ndert sich der Schwerpunkt des Querschnitts. Dieser Versatz muss unbedingt ber\"{u}cksichtigt werden und kann bei stabilit\"{a}ts-gef\"{a}hrdeten Bauteilen einen erheblichen Einfluss haben. Die Frage ist, ob man die effektiven Querschnitte einer Lastkombination auch f\"{u}r andere Beanspruchungen verwenden kann. Wenn die Beanspruchungen \"{a}hnlich sind, ist das kein Problem, aber es muss diskutiert werden, inwieweit die freigeschnittenen mitwirkenden Bleche eigenst\"{a}ndig richtig behandelt werden k\"{o}nnen.
+
+Ausgangslage bei den Betrachtungen ist ein Blech, bei dem die Einspannstellen bekannt sind. In der Tabelle \ref{TabWirksam} sind Werte f\"{u}r den gesamten Steg aus S 355 mit $c$ = 674 mm und $t$ = 6.74 mm und verschiedenen Spannungsverh\"{a}ltnissen angegeben.
+
+%--------------------------------------------------------------------------------------
+\begin{table}[h] \centering
+\caption{ Beispiel zum wirksamen Querschnitt EN 1993-1-5} \label{TabWirksam}
+\begin{tabular}{|r  @{\hspace{5mm}}|r @{\hspace{5mm}}|r @{\hspace{5mm}}|r  @{\hspace{5mm}}|r  @{\hspace{5mm}}|r  @{\hspace{5mm}}|r  @{\hspace{5mm}}|}
+\noalign{\hrule\smallskip}
+  $\psi$ & $k \sigma $  & $\lambda-p$ & $\rho$  & $b_{eff}$ & $b_1$ & $b_2$\\
+\noalign{\hrule\smallskip}
+          1.00 &   4.00 &       2.164 &       0.4151 & 279.8 & 139.9 & 139.9 \\
+         0.50 &   5.29 &      1.882 &       0.4771 & 321.6 & 142.9 & 178.6 \\
+        0,00 &   7.81 &       1.549 &       0.5769 & 388.9 & 155.5 & 233.3 \\
+   -0.50 &  13.40 & 1.182 & 0.7475 & 335.9 & 134.3 & 201.5 \\
+    \noalign{\hrule\smallskip}
+\end{tabular}
+\end{table}
+%--------------------------------------------------------------------------------------
+Wenn automatisch nicht mitwirkende Teile ermittelt werden, so entstehen dadurch formal drei oder mehr Bleche, bei denen jedes einzelne auf die gleichen St\"{u}tzungen verweisen sollte.
+
+Denn wenn man die entstehenden Blechstummel als neue Elemente einseitig gest\"{u}tzt ansetzt, w\"{u}rden sich weitere signifikante Reduktionen der effektiven Breiten ergeben. Setzt man sie aber als zweiseitig gest\"{u}tzt, ergeben sich zu kleine Schlankheiten, so dass Ver\"{a}nderungen der Spannungen nicht korrekt ber\"{u}cksichtigt werden k\"{o}nnen.
+
+W\"{u}rde man die Bleche daher manuell als nicht mitwirkend beschreiben, k\"{o}nnte man die (elastische) St\"{u}tzung der mitwirkenden Teile nicht korrekt definieren, w\"{u}rde sie also vermutlich n\"{a}herungsweise als zweiseitig gest\"{u}tzt definieren. Eine Berechnung mit Querschnitten der Klasse 4 erscheint daher nur vollst\"{a}ndig korrekt im Gesamtsystem automatisch oder mit maximalen Druckspannungen auf der sicheren Seite liegend vertretbar.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Stabilit\"{a}tsnachweise am Gesamtsystem }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.2cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Neue Ans\"{a}tze -- international }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Jahrzehntelang waren quasi die Deutschen und \"{O}sterreicher die einzigen, die eine Theorie II. Ordnung in den Normen geregelt hatten. Viele andere Normen erw\"{a}hnten die Verfahren gar nicht oder stellten fest, dass dies nun nicht Gegenstand der Norm sein k\"{o}nne.
+
+Das hat sich aber ge\"{a}ndert. Die Begriffe {\em advanced analysis\/} im AS 4100, {\em inelastic analysis\/} im AISC 360, GMNIA ({\em geometryically and materially nonlinear analysis with imperfection included\/}) des Eurocodes werden zunehmend im englischen Sprachraum zitiert \cite{Chen}, \cite{Rasmussen} und die Reise scheint sogar noch weiter in Richtung einer probabilistischen Berechnung zu gehen.
+Einige grundlegende Anwendungen wurden bereits auf dem Stahlbau-Seminar \cite{Katz8} vorgestellt und sollen hier nicht mehr wiederholt werden.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Sicherheitsbeiwerte }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Ein kleines Problem f\"{u}r eine Software-Anwendung ist, dass der Sicherheitsbeiwert f\"{u}r die Beanspruchbarkeit von Querschnitten anders angesetzt werden kann als f\"{u}r den Nachweis der Bauteile bei Stabilit\"{a}tsversagen. Die empfohlenen Werte sind beide 1.0, in der DIN 18800 war das noch einheitlich 1.10, die Schweizer haben sich pragmatisch auf 1.05 geeinigt, nun ist es aber 1.00 und 1.10. Die Ursache des Problems ist im Wesentlichen, dass ein Programm zwar erkennen kann, ob man gerade einen Stabilit\"{a}tsnachweis macht, aber in der Regel nicht erkennen kann, ob es sich um ein Stabilit\"{a}tsversagen handelt. Ein weiterer Hinweis: bei nichtlinearen Verfahren k\"{o}nnen Sicherheitsbeiwerte nicht beliebig zwischen Widerstand- und Einwirkungsseite verschoben werden
+\begin{align}
+\gamma_r \cdot E(\gamma_f \cdot F) \leq R(\frac{f}{\gamma_M}) \neq E(\gamma_r \cdot \gamma_f \cdot F) \leq R (\frac{f}{\gamma_M})
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Imperfektionen }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Der Nachweis mit den allgemeinen Methoden ben\"{o}tigt eine Imperfektion. Diese ist eigentlich als spannungslose Vorverformung in die Gleichgewichtsbeziehungen einzuarbeiten. Aber auch im Eurocode stehen immer noch Ersatzkr\"{a}fte statt der Imperfektionen im Vordergrund.  Die Formulierung ist gleichwertig, wenn man nur die Momente und die Biegeverformungen ber\"{u}cksichtigt, es gibt jedoch Unterschiede in der Querkraft und damit auch in den Querkraftverformungen. Da die Querkr\"{a}fte bei stabilit\"{a}tsgef\"{a}hrdeten Bauteilen in der Regel klein sind, ist dies zwar h\"{a}ufig vernachl\"{a}ssigbar, aber eine Software sollte es auch in Grenzf\"{a}llen richtig berechnen.
+
+
+%----------------------------------------------------------
+\begin{figure}[tbp] \centering
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/Katz2ndStabi16}
+\caption{Druckstab} \label{Katz2ndStabi16}
+\end{figure}%%
+%----------------------------------------------------------
+
+Betrachten wir ein solches System ($L$ = 8 m) mit einer Einzellast von 2000 kN und einer quadratischen Vorverformung von $sk/200 = 80$ mm, s. Abb. \ref{Katz2ndStabi16}, so erhalten wir eine Gesamtverformung von 104.8 mm und ein Einspannmoment von 209.5 kNm. Die Transversalkraft ist identisch Null, die \"{A}nderung des Moments ergibt sich nur aus der Neigung der Biegelinie und der Normalkraft. Die Querkraft im Fu{\ss}punkt ist daher ebenfalls null und am Kopf hat sie den Wert 52.4 kN infolge einer Winkelverdrehung von insgesamt $1.5^\circ$.
+
+Rechnet man dies mit den Ersatzlasten, ergibt sich eine linear ver\"{a}nderliche Transversalkraft von 40 kN am Kopf, eine Verschiebung von 25.1 mm statt 24.8 mm und ein Einspannmoment von 210.3 kNm. Aus der kleineren Verdrehung von 0.36$^\circ$ ergibt sich die Querkraft am Kopf zu 52.5 kN ($40\cdot \cos(0.36)+2000\cdot \sin(0.36)$). Die beobachteten Unterschiede ergeben sich einmal aus den Abweichungen bei den Winkelfunktionen und aus dem Ansatz der Querkraftverformungen.
+Bei gr\"{o}{\ss}eren Systemen wird es zunehmend schwieriger, die richtige Wahl der Vorverformungen zu finden. Daher erscheint es sinnvoller, au{\ss}er dem Nachweis der Stabilit\"{a}t am Gesamtsystem auch noch Nachweise an einzelnen Bauteilen zu f\"{u}hren. Dies gilt insbesondere f\"{u}r den Nachweis des Biegedrillknickens, wenn man am Gesamtsystem die W\"{o}lbkrafttorsion vernachl\"{a}ssigt hat.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Zusammenfassung }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Man st\"{o}{\ss}t bei einer EDV-Berechnung immer wieder auf kleinere und gr\"{o}{\ss}ere Abweichungen in den Ergebnissen, die dem Fakt geschuldet sind, dass manche Regelungen entweder nicht eindeutig verst\"{a}ndlich sind, oder zu schwierig zu programmieren oder im Grenzfall auch gar nicht programmierbar sind. Es ist daher unumg\"{a}nglich mit einem wachen Geist auf unerwartete Ergebnisse zu reagieren.
+Verl\"{a}sst man die Modellierung als Stabwerk und beschreibt die Querschnitte durchgehend mit finiten Schalenelementen ergeben sich neue M\"{o}glichkeiten. Allerdings nicht nur bei der Erfassung der verschiedenen Effekte, sondern auch dabei wichtige Details zu \"{u}bersehen.
+

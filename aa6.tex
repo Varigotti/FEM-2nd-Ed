@@ -1,0 +1,595 @@
+\setcounter{chapter}{5}
+{\textcolor{blue}{\chapter{Schalen}}}\label{Schalen}\index{Schalen}
+Schalenelemente z\"{a}hlen zu den anspruchvollsten Elementen. Sie m\"{u}ssen Membran- und Biegespannungszust\"{a}nde gleicherma{\ss}en gut darstellen k\"{o}nnen und auch noch mit den Schwierigkeiten fertig werden, die aus der Kr\"{u}mmung der Elemente und aus der Kopplung dieser Spannungszust\"{a}nde resultieren, s. Abb. \ref{Schale1}. Das Thema ist so komplex, dass wir es in seiner ganzen F\"{u}lle hier nat\"{u}rlich nicht abhandeln k\"{o}nnen. Wir wollen uns vielmehr darauf beschr\"{a}nken, die charakteristischen Merkmale anzusprechen und die Verbindung mit der Statik der ebenen Fl\"{a}chentragwerke aufzuzeigen.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/SCHALE1}
+\caption{Schalendach}\label{Schale1}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Schalengleichungen}}}\label{Schalengleichungen}\index{Schalengleichungen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------------------------
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/SCHALE3}
+\caption{Darstellung der Schalenmittelfl\"{a}che durch eine Funktion $\vek
+x(\theta_1,\theta_2)$} \label{Schale3}
+\end{figure}
+%------------------------------------------------------------------------------------------
+Die Mittelfl\"{a}che der Schale wird durch den Ortsvektor dargestellt
+\begin{align}
+\vek x(\theta_1,\theta_2) = [\vek
+x_1(\theta_1,\theta_2),x_2(\theta_1,\theta_2),x_3(\theta_1,\theta_2)]^{T}\,.
+\end{align}
+H\"{a}lt man die Parameter $\theta_1$ bzw. $\theta_2$ fest, so entstehen Parameterlinien
+$\theta_i = c$ auf der Schalenmittelfl\"{a}che, s. Abb. \ref{Schale3}. Auf einer Kugel
+sind das z.B. die Meridiane und die Breitenkreise. Die beiden Tangentenvektoren
+\begin{align}
+\vek a_1 = \frac{\partial \vek x}{\partial \theta_1}\,,\qquad \vek a_2 = \frac{\partial
+\vek x}{\partial \theta_2}
+\end{align}
+bilden zusammen mit dem Normalenvektor
+\begin{align}
+\vek a_3 = \frac{\vek a_1 \times \vek a_2}{|\vek a_1 \times \vek a_2|}
+\end{align}
+die Basis eines krummlinigen Koordinatensystems. Der symmetrische Tensor
+\begin{align}
+a_{ik} = \vek a_i \dotprod \vek a_k \qquad \left[\barr{c@{\hspace{2mm}} c} a_{11} & a_{12} \\
+a_{21} & a_{22} \earr \right] = \left[\barr{c@{\hspace{3mm}} c} E & F \\
+F & G \earr \right]
+\end{align}
+hei{\ss}t die {\em Erste Fundamentalform\/}\index{Erste Fundamentalform} der Fl\"{a}che und der Tensor
+\begin{align}
+b_{\alpha \beta} = \frac{\partial \vek a_\alpha}{\partial  \theta_\beta} \dotprod \vek
+a_3 = \vek a_{\alpha,\beta} \dotprod \vek a_3
+\end{align}
+hei{\ss}t die {\em Zweite Fundamentalform\/}\index{Zweite Fundamentalform} der Fl\"{a}che (Kr\"{u}mmungstensor).
+
+Es gibt verschiedene Schalenmodelle, die sich durch die Annahmen unterscheiden, die bei der Herleitung gemacht werden. Die bekanntesten Modelle sind mit den Namen {\em Fl\"{u}gge\/}, {\em Vlasov\/}, {\em Koiter\/}, {\em Naghdi\/} verkn\"{u}pft. Unschwer erkennt man aber, wie etwa an den folgenden Gleichungen ({\em Koiter\/})
+\begin{align}\label{Koiter}
+- (\underset{\uparrow}{\bar{n}}^{\alpha\,\beta} -
+b_\lambda^\beta\,\bar{m}^{\lambda\,\alpha})|_\alpha +
+b^\beta_\alpha\,\bar{m}^{\lambda\,\alpha}|_\lambda &= p^\beta \qquad \beta = 1,2 \nn \\
+- b_{\alpha\,\beta}\,(\bar{n}^{\alpha\,\beta} -
+b_\lambda^\beta\,\bar{m}^{\lambda\,\alpha}) -
+\underset{\uparrow}{\bar{m}}^{\alpha\,\beta}|_{\alpha\,\beta} &= p^3\,,
+\end{align}
+dass sich in einer Schale die Scheiben- und die Plattentragwirkung \"{u}berlagern. Ohne die Kr\"{u}mmungsterme $b_{\alpha\,\beta}$ und $b_\alpha^\beta = b_{\beta\,\rho}\,a^{\rho\,\alpha}$ w\"{a}re das System entkoppelt. Insbesondere w\"{a}ren dann die Verschiebungen in der Mittelfl\"{a}che L\"{o}sung eines Differentialgleichungssystems zweiter Ordnung und die Durchbiegung $w$ -- bei diesem schubstarren Modell -- L\"{o}sung der biharmonischen Gleichung (${\bar{m}}^{\alpha\,\beta}|_{\alpha\,\beta}$ f\"{u}hrt auf $K\,\Delta \Delta w$). In anderen Schalenmodellen wird schubweich gerechnet, aber auch das geht konform mit der Erfahrung in der Plattenstatik. Insofern k\"{o}nnen wir viele Resultate aus der Scheiben- und Plattenstatik auf Schalen \"{u}bertragen. Insbesondere alles, was wir zu dem Thema Einzelkr\"{a}fte, Punktlager und Energie gesagt haben.
+
+Die Wechselwirkungsenergie
+\begin{align}
+a(\vek u,\hat{\vek u}) = \int_{S} \left[\bar{n}^{\alpha \beta}(\vek
+u)\,\gamma_{\alpha\,\beta}(\hat{\vek u}) + \bar{m}^{\alpha \beta}(\vek
+u)\,\rho_{\alpha\,\beta}(\hat{\vek u})\right]\,ds
+\end{align}
+besteht jetzt aus Dehnungstermen
+\begin{align}
+\gamma_{\alpha\,\beta} = \gamma_{\beta\,\alpha} = \frac{1}{2}\, (u_{\alpha}|_\beta +
+u_{\beta}|_\alpha) - b_{\alpha\,\beta}\,u_3
+\end{align}
+und Kr\"{u}mmungstermen
+\begin{align}
+\rho_{\alpha\,\beta} = \rho_{\beta\,\alpha} = - \left[u_3|_{\alpha\,\beta} -
+b_\alpha^\lambda\,b_{\lambda\,\beta}\,u_3 + b_\alpha^\lambda\,u_\lambda|_\beta +
+b_\beta^\lambda\,u_\lambda|_\alpha + b_\beta^\lambda|_\alpha\,u_\lambda\right]\,,
+\end{align}
+die mit den dazu konjugierten Schnittkr\"{a}ften
+\begin{align}
+\bar{n}^{\alpha\,\beta} = t\,C^{\alpha\,\beta\,\lambda\,\delta}
+\,\gamma_{\lambda\,\delta} \qquad \bar{m}^{\alpha\,\beta} =
+\frac{t^3}{12}\,C^{\alpha\,\beta\,\lambda\,\delta} \rho_{\lambda\,\delta}
+\end{align}
+\"{u}berlagert werden, $t$ = Schalendicke. Der Elastizit\"{a}tstensor
+\begin{align}
+C^{\alpha\,\beta\,\lambda\,\delta} = C^{\lambda\,\delta\,\alpha\,\beta} = \mu \left[
+a^{\alpha\,\lambda}\,a^{\beta\,\delta} + a^{\alpha\,\delta}\,a^{\beta\,\lambda} +
+\frac{2\,\nu}{1 - \nu} \,a^{\alpha\,\beta}\,a^{\lambda\,\delta}\right]
+\end{align}
+h\"{a}ngt, wie auch die Verzerrungen und Kr\"{u}mmungen, von dem Metriktensor $a^{ik} = \vek
+a^i\dotprod \vek a^k$ der Schalenmittelfl\"{a}che ab.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.3\textwidth]{\Fpath/HYP}
+\caption{Der Membranspannungszustand des Hyperboloid  wird durch eine hyperbolische
+Differentialgleichung beschrieben}\label{Hyp}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\textcolor{sectionTitleBlue}{\subsection{Membranspannungszustand}}}\index{Membranspannungszustand}
+Die Differentialgleichungen der Statik sind in der Regel elliptisch. Eine Ausnahme bilden
+die {\em Membranspannungszust\"{a}nde\/} der Schalen, wenn also die Lasten allein durch
+Normalkr\"{a}fte abgetragen werden
+\begin{align}
+n_{xx} = \int_{-t/2}^{t/2} \sigma_{xx}\,dz \qquad n_{yy} = \int_{-t/2}^{t/2} \sigma_{yy}\,dz
+\qquad n_{xy} = \int_{-t/2}^{t/2} \sigma_{xy}\,dz \,.
+\end{align}
+In jedem Punkt einer Schalenmittelfl\"{a}che gibt es zwei zueinander senkrechte Richtungen,
+bez\"{u}glich derer die Kr\"{u}mmung $\kappa = 1/R$ maximal bzw. minimal ist. Bezeichne $R_1$
+und $R_2$ die zugeh\"{o}rigen Kr\"{u}mmungskreisradien, dann entscheidet die {\em Gau{\ss}sche
+Kr\"{u}mmung\/}\index{Gau{\ss}sche Kr\"{u}mmung}
+\begin{align}
+K = \mbox{det}\,b^\beta_\alpha = \frac{1}{\kappa_1\,\kappa_2}
+\end{align}
+\"{u}ber den Typ der Differentialgleichung, der im Membranspannungszustand die
+Verschiebungen mit der Belastung verkn\"{u}pft, \cite{Kraetzig0} S. 265.
+
+Zum Beispiel ist die Differentialgleichung von K\"{u}hlt\"{u}rmen wie in Abb. \ref{Hyp} wegen $K
+< 0$ vom hyperbolischen Typ, von Zylinderschalen, wegen $K = 0$, von parabolischem Typ
+und nur bei einer Kugelschale ist die Differentialgleichung elliptisch, s. Tab.
+\ref{gauss}.
+%----------------------------------------------------------------------------------------------------------
+\begin{table}[h]\caption{{\small Zusammenhang zwischen Gau{\ss}scher Kr\"{u}mmung und Typ der Differentialgleichung}}\label{gauss} \vspace{0.3cm}
+\begin{tabular}{l  l  l}
+\noalign{\hrule\smallskip} Gau{\ss}sche Kr\"{u}mmung & Typ der DGL &
+Beispiel\\\noalign{\hrule\smallskip}
+positiv & elliptisch & Kugelschale\\
+null & parabolisch & Zylinderschale\\
+negativ & hyperbolisch & K\"{u}hlturmschale\\\noalign{\hrule\smallskip}
+\end{tabular}
+\end{table}
+%----------------------------------------------------------------------------------------------------------
+Nur f\"{u}r elliptische Differentialgleichungen gilt das {\em Prinzip von St. Venant\/}. Bei
+K\"{u}hlt\"{u}rmen pflanzen sich dagegen lokale St\"{o}rungen vom unteren Rand theoretisch l\"{a}ngs der
+Erzeugenden bis zum oberen Rand fort. (In Wirklichkeit sind K\"{u}hlt\"{u}rme keine reinen
+Hyperboloidschalen).
+
+All diese Bemerkungen gelten f\"{u}r den Membranspannungszustand. Die Differentialgleichungen, die die Biegezust\"{a}nde beschreiben, sind {\em alle\/} elliptisch, \cite{Pit}. F\"{u}r Biegezust\"{a}nde gilt also das Prinzip von St. Venant.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Rotationsschalen}}}\label{Rotationsschalen}\index{Rotationsschalen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/Shell}
+\caption{Rotationsschale}  \label{Shell}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Bei rotationssymmetrischen Verformungs- und Spannungszust\"{a}nden sind die Verschiebungen $v$ in Umfangsrichtung der Breitenkreise null, und es verbleiben nur die Verformungen senkrecht zum Meridian, $w$, und tangential an den Meridian, $u$, s. Abb. \ref{Shell}. Die Elementierung geschieht so, dass der Meridian (= die Erzeugende) st\"{u}ckweise in Elemente zerlegt wird. Die Elemente k\"{o}nnen gerade sein, wie bei Zylinderschalen oder Kegelst\"{u}mpfen oder gekr\"{u}mmt wie etwa bei Wasser- oder Gasbeh\"{a}ltern.
+
+Die Beziehungen zwischen der Bogenl\"{a}nge $s$ auf einem Element und den Bestimmungsgr\"{o}{\ss}en
+des Rotationsk\"{o}rpers lauten, s. Abb. \ref{Shell},
+\begin{align}
+R_\vartheta = \frac{r}{\cos\,\varphi} \qquad R_s = - \frac{d s}{d \varphi } \qquad \sin
+\varphi = \frac{dr}{ds} \qquad cos\,\varphi = - \frac{dz}{ds}\,.
+\end{align}
+Hierbei sind $R_\vartheta$ und $R_s$ die Hauptkr\"{u}mmungskreisradien. Bei geradlinigen Elementen wie sie bei Kegelschalen oder Zylinderschalen verwendet werden, ist der Kr\"{u}mmungskreisradius in der Ebene des Meridians unendlich, $R_s = \infty$. Die Dehnungen lauten
+\begin{alignat}{2}
+\varepsilon_{s} &= \frac{d\,u}{d\,s} + \frac{w}{R_s} \qquad& \varepsilon_{\vartheta} &=
+\frac{u\,\sin \varphi
++ w\,\cos \varphi}{r}\\
+\kappa_s &= \frac{d}{ds} \left(\frac{u}{R}\right) - \frac{d^2 w}{d\,s^2}\qquad
+&\kappa_\vartheta &= \frac{\sin\,\varphi  }{r}\,\left(\frac{u}{R_s} - \frac{d\,w}{d\,s}
+\right)\,,
+\end{alignat}
+wobei $\varepsilon_{s}$ und $\varepsilon_{\vartheta}$ die Verzerrungen der Mittelfl\"{a}che in Richtung eines Meridians (Bogenl\"{a}nge $s$) bzw. in Umfangsrichtung ($\vartheta$) sind und $\kappa_s$ und $\kappa_\vartheta$ die Kr\"{u}mmungen. Schubdehnungen werden vernachl\"{a}ssigt.
+
+Die Verzerrungsenergie in einem Element ergibt sich zu
+\begin{align}
+a(u,u) = \int_0^{\,l} \vek \varepsilon^T \left[ \barr {c c} \vek D_M & \vek 0 \\ \vek 0 &
+\vek D_K \earr \right] \,\vek \varepsilon\,2\,\pi\,r\,ds
+\end{align}
+mit, $C = E\,t/(1-\nu^2)$, $D = E\,t^3/(12(1-\nu^2))$
+\begin{align}
+\vek D_M = C\,\left[ \barr {c@{\hspace{2mm}} c@{\hspace{2mm}}} 1 &\nu \\ \nu & 1 \earr
+\right] \qquad \vek D_K = D\,\left[ \barr {c@{\hspace{2mm}} c@{\hspace{2mm}}} 1 &\nu \\
+\nu & 1 \earr \right] \qquad \vek \varepsilon = \left[ \barr{ c} \varepsilon_s \\
+\varepsilon_\vartheta \\ \kappa_s \\ \kappa_\vartheta \earr \right]\,,
+\end{align}
+und die Schnittgr\"{o}{\ss}en sind
+\begin{align}
+\left[ \barr {c} n_s  \\ n_\vartheta \earr \right] = \frac{E\,t}{1 - \nu^2} \left[ \barr
+{c@{\hspace{2mm}} c@{\hspace{2mm}}} 1 &\nu \\ \nu & 1 \earr \right] \left[ \barr{ c}
+\varepsilon_s \\ \varepsilon_\vartheta \earr \right] \qquad \left[ \barr {c} m_s  \\
+m_\vartheta \earr \right] = \frac{E\,t^3}{12\,(1 - \nu^2)} \left[ \barr
+{c@{\hspace{2mm}} c@{\hspace{2mm}}} 1 &\nu \\ \nu & 1 \earr \right] \left[ \barr{ c}
+\kappa_s \\ \kappa_\vartheta \earr \right]\,.
+\end{align}
+Im Sinne der isoparametrischen Elemente wird das im allgemeinen gekr\"{u}mmte Elemente interpretiert als das $C^1$-Bild eines {\em master elements\/} $-1 \leq \,\xi \leq +1$ auf dem vier kubische Ansatzfunktionen, entsprechend den zwei Knoten $\xi_1 = - 1, \xi_2 = + 1$  und $\xi_0 = \xi_i\,\xi$, definiert sind
+\begin{align}
+\varphi^{(1)}_i(\xi) = \frac{1}{4}(\xi_0\,\xi^2 - 3\,\xi_0 + 2) \qquad
+\varphi^{(2)}_i(\xi) = \frac{1}{4}( 1 - \xi_0)^2\,(1 + \xi_0)\,.
+\end{align}
+Sie bieten die M\"{o}glichkeit die Geometrie des Elements, also die Funktionen $r$ und $z$
+\begin{align}
+r(\xi) = \sum_{i = 1}^2 (\varphi^{(1)}_i(\xi)\,r(\xi_i) + \varphi^{(2)}_i(\xi) \frac{d
+r}{d \xi}(\xi_i))
+\end{align}
+(sinngem\"{a}{\ss} ebenso $z(\xi)$), wie auch die Verformungen $u$ und $w$ des Meridians $C^1$-stetig darzustellen. Die Freiheitsgrade in den Elementknoten sind die Verschiebungen und die ersten Ableitungen nach der Bogenl\"{a}nge $s$
+\begin{align}
+\vek u_e = \left\{u_i,w_i,u'_i,w'_i \right\}^T\,.
+\end{align}
+Die $C^1$-Fortsetzung der Verschiebung $u$ ist ungew\"{o}hnlich. Sie muss man aufgeben, wenn
+die St\"{a}rke der Schale sich \"{a}ndert, weil dann die Verzerrungen $\varepsilon_s$ springen,
+\cite{Z1}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Volumenelemente und degenerierte Schalenelemente}}}\label{AllgemeineSchalenelemente}\index{degenerierte Schalenelemente}\index{Volumenelemente}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Der Einsatz von Volumenelementen in der Schalenstatik ist in der Regel nicht empfehlenswert. Zum einen wird einfach die Zahl der Freiheitsgrade zu gro{\ss}, und zum andern sind die Steifigkeitsunterschiede in Quer- und L\"{a}ngsrichtung auf Grund der geringen Schalenst\"{a}rke sehr gro{\ss}, und solche Elemente reagieren daher sehr empfindlich auf Rundungsfehler.
+
+Besser ist es daher, die Volumenelemente zu modifizieren. Man kommt so zu den degenerierten Schalenelemente, s. Abb. \ref{Shell4}. Weil sie aus 3D-Elementen hergeleitet werden, sind es schubweiche Elemente, und man spricht daher auch von {\em Mindlin-Schalen-Elementen\/}\index{Mindlin-Schalen-Elemente}. Der Vorteil dieser Elemente ist, dass man -- vordergr\"{u}ndig zumindest -- keine Schalentheorie braucht.
+%------------------------------------------------------------------------------------------
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.4\textwidth]{\Fpath/SHELL4}
+\caption{Degeneriertes Schalenelement, Reduktion eines Volumenelements mit 20 Knoten auf
+ein Schalenelement mit 8 Knoten} \label{Shell4}
+\end{figure}
+%------------------------------------------------------------------------------------------
+
+Im Wesentlichen besteht die Reduktion darin, dass man alles auf die Mittelfl\"{a}che
+reduziert und die Schichten oberhalb und unterhalb der Mittelfl\"{a}che durch Addition eines
+Vektors $\vek v_3 \simeq \vek n$ erreicht
+\begin{align}
+\vek x(\xi,\eta) = \sum_i \vek x_i\,\Np_i(\xi,\eta) + \sum_i
+\Np_i(\xi,\eta)\,\frac{\zeta}{2}\,\vek v_{3i}\,.
+\end{align}
+Der erste Teil ist eine Entwicklung nach den cartesischen Koordinaten der Knoten, und der
+zweite Teil ist der Teil, der aus der Fl\"{a}che herausragt. Die Schalenkoordinaten sind
+$\xi,\eta,\zeta$.
+
+\"{A}hnlich kann man das Verschiebungsfeld der Schale aus der Mittelfl\"{a}che ($\zeta = 0$)
+heraus entwickeln
+\begin{align}
+\vek u(\xi,\eta) = \sum_i \vek u_i\,\Np_i(\xi,\eta) + \sum_i
+\Np_i(\xi,\eta)\,\frac{\zeta\,t_i}{2}\, \left[ v_{1i}\,\alpha_i -
+v_{2i}\,\beta_i\right]\,,
+\end{align}
+wobei der zweite Teil die Verdrehungen $\alpha_i$ und $\beta_i$ um die Vektoren $\vek
+v_{1i}$ und $\vek v_{2i}$ in der Tangentialebene an die Schalenmittelfl\"{a}che in
+Bewegungen in der H\"{o}he $\zeta \,t_i/2$ oberhalb der Fl\"{a}che \"{u}bersetzt.
+
+So pr\"{a}pariert kann man nun, unter Beachtung von $\sigma_{33} = 0$, eine
+Steifigkeitsmatrix f\"{u}r das Schalenelement herleiten
+\begin{align}
+\vek K^e = \int_{-1}^{\,+l} \int_{-1}^{\,+l} \int_{-1}^{\,+l} \vek B^T\,\vek E\,\vek
+B\,\mbox{det}\,\vek J\,d\xi\,d\eta\,d\zeta\,.
+\end{align}
+Zu beachten ist dabei wieder, dass f\"{u}r $t \to 0$ {\em shear-locking\/} droht, und wenn das
+Element gekr\"{u}mmt ist auch {\em membrane locking\/}\index{membrane locking}. Deswegen gibt es einen ganzen Katalog
+von Gegenma{\ss}nahmen, mit denen man diesen Tendenzen entgegenwirkt, \cite{Bathe}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Kreisb\"{o}gen}}}\label{Kreisbogen}\index{Kreisb\"{o}gen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Zur Einf\"{u}hrung in die Problematik des {\em shear locking\/} bei Schalenelementen wollen
+wir kurz die Modellierung von Bogentragwerken mit finiten Elementen besprechen.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/Bogen}
+\caption{{Kreisbogen}}\label{Bogen}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Die Verschiebung eines Punktes auf der Mittelachse messen wir in tangentialer Richtung,
+Verschiebung $u$, und normal dazu, Verschiebung $w$, s. Abb. \ref{Bogen}. In erster N\"{a}herung lauten die
+Verzerrungen  einer Faser im Abstand $z$ von der Mittelachse, \cite{Cook1},
+\begin{align}
+\varepsilon_s = \varepsilon_m + z\,\kappa \qquad \mbox{mit} \qquad \varepsilon_m = u,_s
++ \frac{w}{R} \qquad \kappa = \frac{u,_s}{R} - w,_{ss}\,.
+\end{align}
+Das Integral der Energiedichte $E\,\varepsilon_s^2$ \"{u}ber die Bogenh\"{o}he $t$, liefert den
+folgenden Ausdruck f\"{u}r die Wechselwirkungsenergie
+\begin{align}\label{EnergieA61}
+a(\vek u,\vek u) = \int_0^{\,l} EA\,\varepsilon_m^2\,ds + \int_0^{\,l} EI\,\kappa^2 \,ds
+\qquad\vek u = \left\{u,w\right\}\,,
+\end{align}
+wobei $E$ der Elastizit\"{a}tsmodul ist, $A = b\,t$ ist die Querschnittsfl\"{a}che, und $I =
+b\,t^3/12$ ist das Tr\"{a}gheitsmoment des Bogens.
+
+Bei Starrk\"{o}rperbewegungen sind die Dehnungen und Kr\"{u}mmungen null, $\varepsilon_m =
+\kappa = 0$, was f\"{u}r die Verschiebungen das folgende Resultat liefert
+\begin{align}
+u = b_1\,\cos\,\varphi + b_2\,\cos\,\sin\,\varphi + b_3\,,\quad w = b_1\,\sin\,\varphi -
+b_2\,\cos \varphi\,, \quad \varphi = \frac{s}{R}\,.
+\end{align}
+Die Konstanten $b_1$ und $b_2$ stellen Verschiebungen in zwei orthogonalen Richtungen
+dar, und $b_3$ stellt eine Verdrehung um den Mittelpunkt des Bogens dar. Bei einer
+Drehung des Bogens ist $w = 0$, und alle Punkte bewegen sich tangential zum Bogen, $u =
+b_3$.
+
+Bei einem d\"{u}nnen Bogen ist die Dehnung $\varepsilon_m$ der Bogenachse praktisch null,
+und alle \"{A}nderung von $u$ kommt allein aus der Biegeverformung $w$
+\begin{align}
+\varepsilon_m = 0 \qquad \rightarrow \qquad u,_s + \frac{w}{R} = 0\,.
+\end{align}
+Als Ansatzfunktionen w\"{a}hlen wir lineare Ans\"{a}tze f\"{u}r $u$ und kubische f\"{u}r $w$
+\begin{align}
+u = a_0 + a_1\,s \qquad w = b_0 + b_1\,s + b_2\,s^2 + b_3\,s^3\,,
+\end{align}
+und wir erhalten so
+\begin{align}
+\varepsilon_m = (a_1 + \frac{b_0}{R}) + \frac{b_1}{R} \,s + \frac{b_2}{R}\,s^2 +
+\frac{b_3}{R}\,s^3\,.
+\end{align}
+Wenn jetzt die St\"{a}rke $t$ des Bogens gegen null geht, dann muss auch die Mittelachse
+dehnungsfrei werden, $\varepsilon_m = 0$, was bedingt, dass
+\begin{align}
+a_1 + \frac{b_0}{R} = b_1 = b_2 = b_3 = 0
+\end{align}
+gelten muss, was weiter impliziert, dass die Flexibilit\"{a}t des Bogens gegen null geht, denn es verbleibt nur $w = b_0$ als Ansatz f\"{u}r die Biegeverformungen. Alle Ableitungen dieser Biegelinie sind null, $w,_s = w,_{ss} = w,_{sss} = 0$. Das Element wird mit $t \to 0$ immer steifer. Hier deutet sich das sogenannte {\em membrane locking\/}\index{membrane locking} an. Der Term $EA$ dominiert zunehmend den Term $EI$ in der Wechselwirkungsenergie, und der Versuch \"{u}ber $EA/EI \to \infty$ die Dehnung $\varepsilon_m = 0$ zu erzwingen, f\"{u}hrt auch dazu, dass die Biegeverformungen viel zu klein werden.
+
+In der Praxis lassen sich solche Effekte durch {\em reduzierte Integration\/}\index{reduzierte Integration} vermeiden. F\"{u}r den Biegeanteil in (\ref{EnergieA61}) benutzt man eine Zwei-Punkte-Formel, aber f\"{u}r den Membrananteil nur eine Ein-Punkt-Formel, indem man nur den Wert in der Mitte des Elements, $s = 0$, abfragt. Dort ist die Bedingung
+\begin{align}
+a_1 + \frac{b_0}{R} = 0
+\end{align}
+erf\"{u}llt, und so wird nur ein Freiheitsgrad geopfert, um die Zwangsbedingungen zu erf\"{u}llen. Besser ist es allerdings, den Polynomgrad der Ans\"{a}tze zu erh\"{o}hen. Auf diesem Wege erzielt man denselben Effekt. Niedrige Ans\"{a}tze \glq verbrauchen\grq\ sozusagen all ihre Freiwerte, um die {\em constraints\/}, die Zwangsbedingungen wie $\varepsilon_m \simeq 0$ zu erf\"{u}llen. Mittels {\em constraint counting\/} kann man die notwendige Ordnung der Polynomans\"{a}tze absch\"{a}tzen, \cite{Cook1}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Faltwerkelemente}}}\label{Faltwerkelemente}\index{Faltwerkelemente}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/BECKEN}
+\caption{Berechnung eines Wasserbeh\"{a}lters mit Faltwerkselementen}  \label{Becken}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Der \"{u}berwiegende Teil der Schalen d\"{u}rfte heute mit Faltwerkelementen berechnet werden, s. Abb. \ref{Becken}, Abb. \ref{Becken2} und \ref{Tunnel}. Mit Faltwerkelementen eine Schale nachzubilden ist relativ einfach und f\"{u}r die Schnittgr\"{o}{\ss}enermittlung meist ausreichend. Faltwerkelemente k\"{o}nnen Starrk\"{o}rperbewegungen darstellen, und weil die Membranspannungszust\"{a}nde und die Biegezust\"{a}nde entkoppelt sind, sind solche Elemente gut zu kontrollieren. Die Verformungsans\"{a}tze k\"{o}nnen aus bew\"{a}hrten Scheiben- und Plattenans\"{a}tzen aufgebaut werden.
+
+Die erste Idee ist es, dreiecksf\"{o}rmige Elemente zu benutzen, s. Abb. \ref{Flat}. Wenn wir die Knoten eines Dreiecks mit drei Verschiebungen und drei Drehungen ausstatten, dann hat ein Dreieckelement 18 Freiheitsgrade, die wir uns wie folgt angeordnet denken k\"{o}nnen
+\begin{align}
+\vek u = \left[\vek u_i, \vek v_i, \vartheta_{zi}, \vek w_i, \vek \vartheta_{xi},\vek
+\vartheta_{yi} \right]^T\,,
+\end{align}
+wobei in den Vektoren $\vek u_i = \left\{u_1, u_2, u_3\right\}^T$, $\vek
+\vartheta_{zi} = \{ \vartheta_{z1}, \vartheta_{z2}, \vartheta_{z3} \}^T$, etc. die
+Verformungen der einzelnen Knoten stehen.
+
+Wie man ein Scheibenelement erfolgreich mit Drehfreiheitsgraden $\vartheta_i$ ausstattet, haben wir in kurz in Kapitel 1 skizziert, s. S. \pageref{Eq19}. Zuvor gab es aber eine ganze Reihte von anderen Vorschl\"{a}gen, etwa \cite{Allman}, \cite{Bergan},  \cite{Cook0}, wie man vorgehen k\"{o}nnte. Vielleicht ist es instruktiv, auf diese Ideen n\"{a}her einzugehen.
+
+Es sei $\vek K^M$ die zugeh\"{o}rige $9 \times 9$ Steifigkeitsmatrix f\"{u}r den Membranspannungszustand des Elements. Der Einfachheit halber w\"{a}hlen wir f\"{u}r den Biegeanteil ein DKT-Element. Bezeichne $\vek K^B$ die zugeh\"{o}rige Steifigkeitsmatrix, so sehen wir
+\begin{align}
+\vek K^e\,\vek u = \left[ \barr {c c} \vek K^M_{(9 \times 9)} & \vek 0_{(9 \times 9)} \\
+\vek 0_{(9 \times 9)} & \vek K^B_{(9 \times 9)} \earr \right]\, \left[\barr {l} \vek u_i
+\\ \vek v_i \\ \vartheta_i \\ \vek w_i \\ \vek \vartheta_{xi} \\ \vek
+\vartheta_{yi}\earr \right] = \vek f\,,
+\end{align}
+dass die Membran- und Biegeanteile in der Tat entkoppelt sind. Erst durch die Transformation auf die globalen Koordinaten und den Zusammenhang an den Knoten entsteht das r\"{a}umliche Tragverhalten.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.6\textwidth]{\Fpath/Flat}
+\caption{Faltwerkelemente}  \label{Flat}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/MACNEAL}
+\caption{Urspr\"{u}nglich ebenes Element dessen vier Knoten nicht mehr in einer Ebene
+liegen, \protect \cite{MacNeal}}  \label{MacNeal}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/MACNEAL2}
+\caption{{\em Twisted beam problem\/}, \protect \cite{MacNeal}}  \label{MacNeal2}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Benutzen wir f\"{u}r den Membranspannungszustand das {\em CST-Element\/}, so gibt es keine
+Drehsteifigkeiten um die Hochachse
+\begin{align}\label{KMA61}
+\vek K^M\,\vek u = \left[ \barr {c c} \vek K_{(6 \times 6)}^{CST} & \vek 0_{(6 \times 3)} \\
+\vek 0_{(3 \times 6)} & \vek 0_{(3 \times 3)} \earr \right] \left[\barr {l} \vek u_i \\ \vek v_i \\
+\vartheta_{zi} \earr \right]\,,
+\end{align}
+was bedeutet, dass ein Knoten, in dem alle Elemente in einer Ebene liegen, keine Steifigkeit um die Hochachse besitzt, und die globale Steifigkeitsmatrix somit singul\"{a}r ist. Um dies zu vermeiden, wurden k\"{u}nstlich Drehsteifigkeiten eingebaut,
+\begin{align}
+\alpha\,E\,V \left[\barr {r r r} 1.0 & -0.5 &-0.5 \\ -0.5 & 1.0 & -0.5 \\ -0.5 & -0.5 &
+1.0 \earr \right]  \left[\barr {l} \vartheta_{z1} \\ \vartheta_{z2} \\
+\vartheta_{z3} \earr \right] =  \left[\barr {l} M_{z1} \\ M_{z2} \\
+M_{z3}  \earr \right]\,.
+\end{align}
+Hierbei sind $E, V, \alpha$, der Elastizit\"{a}tsmodul, das Volumen des Elements und $\alpha$ ist ein Skalierungsfaktor ($< 0.5$), \cite{Z1}. Die null-Matrix auf der Diagonalen in (\ref{KMA61}) wird also durch diese Matrix ersetzt. Man \"{u}berzeugt sich leicht, dass Starrk\"{o}rperdrehungen wie $\vartheta_{z1} = \vartheta_{z2} = \vartheta_{z3}$ keine Knotenmomente hervorrufen.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.6\textwidth]{\Fpath/TREPPE}
+\caption{{Berechnung einer gekr\"{u}mmten Treppe mit Faltwerkelementen -- Ansicht der
+verformten Treppe im LF $g$}}\label{Treppe}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Eine gute Wahl f\"{u}r ein  Faltwerkselement ist eine Kombination aus dem Wilson-Element Q4+2 und einem schubweichen, vierknotigen Plattenelement. Dabei ist jedoch eine Besonderheit zu beachten: W\"{a}hr\-end die Knoten eines Dreieckselements immer in einer Ebene liegen, ist dies bei Vier-Knoten-Elementen nicht garantiert. Daher muss man die Steifigkeitsmatrizen dahingehend modifizieren, dass sie die eventuelle Ausmitte der Knoten gegen\"{u}ber der Elementebene ber\"{u}cksichtigen, s. Abb. \ref{MacNeal}
+\begin{align}
+\hat{\vek K} = \vek S^T\,\vek K\,\vek S\,.
+\end{align}
+Hierbei ist $\vek S$ die Matrix, die die Kopplung zwischen den Freiheitsgraden der verschobenen Knoten und den Knoten in der Ebene des Elements darstellt
+\begin{align}
+\vek u = \vek S\,\hat{\vek u}\,,
+\end{align}
+und die transponierte Matrix $\vek S^T$ rechnet die Knotenkr\"{a}fte $\vek f$ des Elements
+in die Knotenkr\"{a}fte $\hat{\vek f}$ der verschobenen Knoten um
+\begin{align}
+\hat{\vek f} = \vek S^T\,\vek f \qquad \vek f_i = [N_x^{(i)}, N_y^{(i)}, P_z^{(i)},
+M_x^{(i)}, M_y^{(i)}, 0]^T\,.
+\end{align}
+Hierbei wird angenommen, dass die ausmittigen Knoten durch kleine starre St\"{a}be der L\"{a}nge $h$ an das Element gebunden sind, und man kann so mittels Gleichgewichtsbedingungen den Zusammenhang zwischen den Knotenkr\"{a}ften $\vek f$ und $\hat{\vek f}$ beschreiben, also die Matrix $\vek S^T$ formulieren.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/BECKEN2}
+\caption{Kl\"{a}rbecken, Berechnung mit Faltwerkselementen {\bf a)} System {\bf b)}
+Verformungen unter ungleichm\"{a}{\ss}iger Temperatur}  \label{Becken2}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8 \textwidth]{\Fpath/TUNNEL}
+\caption{Kreuzung zweier Tunnelr\"{o}hren, Modellierung mit Faltwerkselementen {\bf a)}
+System {\bf b)} Verformung der elastisch gebetteten Tunnelr\"{o}hren}  \label{Tunnel}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Rechnerisch entstehen auf Grund des Hebelarms $h$ Versatzmomente
+\begin{align}
+\hat{M}_x = \pm h\,N_y\,, \qquad \hat{M}_y = \pm h\,N_x
+\end{align}
+in den Knoten. Wie in \cite{MacNeal} bemerkt wird, ist diese Vorgehensweise jedoch keine gute Taktik, weil die Knotenmomente einen etwaigen Membranspannungszustand empfindlich st\"{o}ren k\"{o}nnen. Es ist besser die Momente, die durch die Ausmitte der Knoten entstehen, durch vertikale Kr\"{a}ftepaare ({\em couples\/}) aufzunehmen. So wird z.B. das Moment, das die beiden Kr\"{a}fte $F_{14}$ und $F_{41}$ erzeugen, s. Abb. \ref{MacNeal}, durch zwei gegengleiche vertikale Kr\"{a}fte
+\begin{align}
+F_{1z} = - F_{4z} = \frac{h}{l_{14}} (F_{14} - F_{41})
+\end{align}
+aufgenommen.
+
+Modelliert man die Verwindung eines Plattenstreifens ({\em twisted beam problem\/}), dann zeigt sich, dass bei der \"{U}bertragung der Momente an den Knoten noch ein Moment $M_z$ um die Hochachse auftritt, was, weil das Element ja keine Steifigkeit um diese Achse hat, zum Versagen des Modells f\"{u}hrt. Man kann sich dann so behelfen, dass man die $z$-Komponente des Moments $M_1$, s. Abb. \ref{MacNeal2}, durch ein vertikale gerichtetes Kr\"{a}ftepaar aufnimmt
+\begin{align}
+F_A = - F_B = \frac{\sin \,\alpha}{l_{AB}}\,M_1\,.
+\end{align}
+Faltwerkelemente neigen, bedingt durch die vielen Kanten, die bei einer facettenartigen Approximation der Geometrie entstehen, zu Singularit\"{a}ten. Einen Eindruck davon vermittelt die Stahltreppe in Abb. \ref{Treppe}, die aus zwei Stahlwangen (St\"{a}rke 12 mm) mit eingeschwei{\ss}ten Stufen und Stufentr\"{a}gern (St\"{a}rke 5 mm) besteht. Die Wangen wurden oben und unten allseitig gelenkig gelagert angenommen. Im LF $g$, aber auch den anderen Lastf\"{a}llen, ergeben sich im Rechenmodell an den markierten Stellen, s. Abb. \ref{Treppe} lokale Spannungsspitzen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Membranen}}}\label{Membranen}\index{Membran}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Berechnung von Zeltd\"{a}chern oder anderen Membranen kann mittels spezieller Scheibenelemente vorgenommen werden. Man kombiniert praktisch das Tragverhalten einer vorgespannten Membran mit einem dehnsteifen Segeltuch, \cite{Bletzinger2}.
+
+Die Durchbiegung $w$ einer nach allen Richtungen mit derselben Kraft $H$ vorgespannten
+Membran gen\"{u}gt der Differentialgleichung
+\begin{align}
+- H\,(w,_{xx} + w,_{yy}) = p \qquad p = \mbox{Winddruck}\,.
+\end{align}
+Es ist, wie man leicht erkennt, die Erweiterung der Seilgleichung $- H\,w'' = p$ auf zwei Dimensionen erweitert. Nun wird ein Zeltdach in der Regel in Richtung von Kette und Schuss unterschiedlich vorgespannt. Bezeichnen wir diese konstanten Vorspannkr\"{a}fte mit $H_x$ und $H_y$, so sind wir versucht, f\"{u}r die Durchbiegung $w$ der Membran die Differentialgleichung
+\begin{align}
+- H_x\,w,_{xx} - H_y\,w,_{yy} = p
+\end{align}
+anzusetzen. Zu dieser Differentialgleichung geh\"{o}rt die Identit\"{a}t
+\begin{align}
+G(w,\hat{w}) &= \int_{\Omega} (- H_x\,w,_{xx} - H_y\,w,_{yy})\,\hat{w}\,d\Omega \\
+&+ \int_{\Gamma} (H_x\,w,_x\,n_x + H_y\,w,_y\,n_y)\,\hat{w}\,ds - a(w,\hat{w}) = 0
+\end{align}
+mit der Wechselwirkungsenergie
+\begin{align}
+a(w,\hat{w}) = \int_{\Omega} (H_x\,w,_x\,\hat{w},_x + H_y\,w,_y\,\hat{w},_y)\,d\Omega\,.
+\end{align}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.45\textwidth]{\Fpath/STABFLAT}
+\caption{Fachwerkstab in gedrehter Lage}  \label{Stabflat}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Um zu verstehen, wie man weiter vorgeht, wollen wir ein Stabelement betrachten. Zu dem Stabelement geh\"{o}rt urspr\"{u}nglich eine $2 \times 2$-Matrix, die man jedoch, wenn man den Stab sp\"{a}ter in einer gedrehten Lage einbaut, s. Abb. \ref{Stabflat}, zu einer $4 \times 4$-Matrix erweitern muss
+\begin{align}
+\frac{EA}{l_e} \left[ \barr {r r } 1 & -1 \\ -1 & 1 \earr \right] \,\left [\barr {c} u_1 \\
+u_2 \earr \right]  \qquad \Rightarrow \qquad \frac{EA}{l_e} \left[ \barr
+{r@{\hspace{2mm}}  r@{\hspace{2mm}} r@{\hspace{2mm}} r@{\hspace{2mm}} r}
+ 1 & 0 & -1 & 0 \\
+0 & 0 & 0 & 0 \\ -1 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \earr \right] \,\left [\barr {c} u_1 \\
+u_2 \\ u_3 \\ u_4 \earr \right]\,.
+\end{align}
+Denken wir uns jetzt das Stabelement durch eine Horizontalkraft $H$ stabilisiert, so erhalten wir f\"{u}r das Element die Beziehung
+\begin{align}
+\vek K \vek u = \left\{\frac{EA}{l_e} \left[ \barr {r@{\hspace{2mm}}  r@{\hspace{2mm}}
+r@{\hspace{2mm}} r@{\hspace{2mm}} r}
+ 1 & 0 & -1 & 0 \\
+0 & 0 & 0 & 0 \\ -1 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \earr \right] + \frac{H}{l_e} \left[
+\barr {r@{\hspace{2mm}}  r@{\hspace{2mm}} r@{\hspace{2mm}} r@{\hspace{2mm}} r}
+ 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & -1 \\ 0 & 0 & 0 & 0 \\ 0 & -1 & 0 & 1 \earr \right]
+\,\right\}  \left [\barr {c} u_1 \\
+u_2 \\ u_3 \\ u_4 \earr \right] = \vek f\,.
+\end{align}
+Die Horizontalkraft $H$ versieht den Stab mit einer vertikalen Steifigkeit, weil die
+Kraft $H$ die Tendenz hat, den ausgelenkten Stab gerade zu ziehen.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8 \textwidth]{\Fpath/MEMBRAN1}
+\caption{\"{U}berdachung einer Mischanlage mit einer vorgespannten Membran {\bf a)} System
+{\bf b)} Verformung unter Ausbaulast + Verkehrslast + Schnee}  \label{Membran1}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Diese Matrix erinnert ihrer formalen Struktur nach an die gen\"{a}herte Steifigkeitsmatrix des Balkens nach Theorie II. Ordnung. Der erste Teil ist die lineare Steifigkeitsmatrix, und die zweite Matrix ist die sogenannte geometrische Steifigkeitsmatrix. Sie ist die auf die Gr\"{o}{\ss}e $4 \times  4$ erweiterte Steifigkeitsmatrix des Seils
+\begin{align}
+\frac{H}{l_e}\,\left[\barr{r r} 1 & - 1 \\ - 1 & 1 \earr \right] \left[\barr {c} u_1 \\
+u_2 \earr \right] = \left[\barr {c} f_1 \\ f_2 \earr \right]\,,
+\end{align}
+wobei jetzt nat\"{u}rlich die $u_i$ und $f_i$ nicht die Richtungen wie in Abb. \ref{Stabflat} haben, sondern vertikal gerichtete Gr\"{o}{\ss}en an den Seilenden sind.
+
+Die Steifigkeitsmatrix eines Membranelements setzt sich also sinngem\"{a}{\ss} aus der Scheibenmatrix $\vek K^S$ des Segeltuchs (orthotropes Material) und einer Membranmatrix $\vek K^M$ zusammen
+\begin{align}
+\vek K = \vek K^S + \vek K^M\,.
+\end{align}
+Sinnvollerweise w\"{a}hlt man f\"{u}r den Scheibenanteil das viereckige Q4+2-Element und erg\"{a}nzt
+das Element mit vier bilinearen Einheitsverformungen f\"{u}r die Durchbiegung der vier
+Ecken, so dass in der Membranmatrix $\vek K^M$ die Wechselwirkungsenergien dieser vertikalen
+Einheitsverformungen der Knoten stehen
+\begin{align}
+k^M_{ij} = \int_{\Omega} (H_x\,\Np_i,_x\,\Np_j,_x + H_y\,\Np_i,_y\,\Np_j,_y)\,d\Omega\,.
+\end{align}
+Die Berechnung einer vorgespannten Membran gliedert sich dann in zwei Rechenschritte: In
+die {\em Formfindung\/}\index{Formfindung} und in die eigentliche {\em Spannungsberechnung\/}.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9 \textwidth]{\Fpath/SEILBELLMANN}
+\caption{Formfindung {\bf a)} bei einem vorgespannten Seil und {\bf b)} bei einer
+Membran}  \label{SeilBellmann}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Im ersten Schritt, der Formfindung, wird nur mit der geometrischen Matrix aus der Vorspannung gerechnet, also die L\"{a}ngssteifigkeit null gesetzt. Damit aber die Knoten in tangentialer Richtung auf der Membranoberfl\"{a}che nicht, wie bei einer Seifenhaut, davon schwimmen, werden die Knoten in tangentialer Richtung durch kleine Federn k\"{u}nstlich stabilisiert. Ist dann die Form der Membran gefunden, so wird im zweiten Schritt der Spannungszustand der Membran berechnet.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0 \textwidth]{\Fpath/MEMBRANB}
+\caption{Formfindung, die Membran ist ringsum gelagert {\bf a)} Ausgangslage {\bf b)}
+endg\"{u}ltige Gestalt}  \label{MembranB}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9 \textwidth]{\Fpath/MEMBRANWIND}
+\caption{Windbelastung einer Membran {\bf a)} Unverformtes System {\bf b)}
+Verformung unter Wind}  \label{MembranWind}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Das Abb. \ref{SeilBellmann} a illustriert die Formfindung bei einem vorgespannten Seil. Vorgegeben sind hier die Auslenkungen der Knoten Eins und Vier, $u_1 = 1.0$ m, $u_4$ = 1.4 m. Die Unbekannten sind die zugeh\"{o}rigen Knotenkr\"{a}fte $f_1, f_4$ und die Verschiebungen $u_2, u_3$ der freien Knoten, so dass das Gleichungssystem zur Bestimmung der unbekannten Gr\"{o}{\ss}en wie folgt lautet
+\begin{align}
+\frac{H}{l_e}\,\left[\begin{array}{r r r r }
+  2 & -1 & 0 & 0 \\
+  -1 & 2 & -1 & 0 \\
+  0 &-1 & 2 & -1 \\
+  0 & 0& -1 & 2
+\end{array}\right] = \left[\begin{array}{r}
+  1.0 \\
+  u_2 \\
+  u_3 \\
+  1.4
+\end{array}\right] = \left[\begin{array}{r}
+  f_1 \\
+  0 \\
+  0 \\
+  f_4
+\end{array}\right]\,.
+\end{align}
+Die Ausgangslage f\"{u}r die Formfindung kann entweder ein r\"{a}umliches, s. Abb. \ref{MembranB}, oder ein ebenes System sein. Beginnt man mit einem r\"{a}umlichen System, dann werden die verbindenden Fl\"{a}chen als ebene Teilfl\"{a}chen, als Faltwerk, eingegeben. Beginnt man mit einem ebenen System, wie in Abb. \ref{SeilBellmann} b, dann wird die Membran an den Auflagerknoten oder Aufh\"{a}ngepunkten nach oben gezogen.
+
+Nach der Formfindung m\"{u}ssen die f\"{u}r die Bemessung der Membran wesentlichen Belastungen wie Wind und Schnee untersucht werden. W\"{a}hrend sich die Schneelast einfach eingeben l\"{a}sst, ist die Windlast von der H\"{o}he, Lage und Orientierung der einzelnen Elemente abh\"{a}ngig, s. Abb. \ref{MembranWind}. Unter hohen Windkr\"{a}ften k\"{o}nnen leicht die Zugspannungen aus der Vorspannung aufgebraucht werden, und dann entstehen {\em Falten\/} in der Membran. Weil die volle Windbelastung in einem Schritt meist nicht konvergiert, muss die Windlast stufenweise aufgebracht werden.
+\vspace{-1.2cm}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.85 \textwidth]{\Fpath/MW2}
+\caption{Wind auf Zeltdach {\bf a)} Unverformtes System {\bf b)}
+Verformungen unter Wind (leicht \"{u}berh\"{o}ht), die maximale Durchbiegung in Membranmitte betrug rund 30 cm}  \label{MW2}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------

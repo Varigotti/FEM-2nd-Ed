@@ -1,0 +1,78 @@
+\setcounter{chapter}{6}
+\textcolor{blau2}{\chapter{Anhang}}\label{Details}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-3cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{hellgrau2}{\section{Notation}}}\index{Notation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\`{O}%%%%%%%%%%%%%w%%%%
+F\"{u}r partielle Ableitungen benutzen wir die Notation
+\begin{align}
+f,_x = \frac{\partial f}{\partial x} \qquad f,_{xy} = \frac{\partial^2 f}{\partial x \partial y}\,.
+\end{align}
+Die Kurzform f\"{u}r Integrale ist
+\begin{align}
+(f,g) = \int_{0}^{l} f\,g\,dx
+\end{align}
+und {\em Tensornotation\/}\index{Tensornotation} meint, dass \"{u}ber doppelt vorkommende Indices zu summieren ist wie in dem Skalarprodukt zweier Vektoren
+\begin{align}
+\vek a^T \vek b = a_i\,b_i = a_1\,b_1 + a_2\,b_2 + a_3\,b_3\,.
+\end{align}
+Der Begriff des {\em Skalarprodukts\/} (oder $L_2$-{\em Skalarprodukt\/}) f\"{u}r Integrale ist aus Sicht der Statik gut gew\"{a}hlt, denn \glq fast alles\grq\ Rechnen in der Statik basiert auf der \"{U}berlagerung einer Kraft mit einem Weg, hat im Ergebnis die Dimension einer Arbeit. Sei es  das Produkt zweier Zahlen, $P \cdot w$, das Skalarprodukt zweier Vektoren, $\vek u^T \vek f$, oder die \"{U}berlagerung des Moments mit der Kr\"{u}mmung, wie in der Mohrschen Arbeitsgleichung
+\begin{align}
+1 [\text{kN}] \cdot \delta [\text{m}]= \int_{0}^{l}\frac{M\,\bar{M}}{EI}\,dx = \int_{0}^{l} M\,\kappa\,dx = \text{Skalarprodukt} = \text{Arbeit}\,.
+\end{align}
+Nur haben wir uns daran gew\"{o}hnt aus dem [kNm] wieder ein [m] zu machen, die Spuren zu verwischen, indem wir durch 1 kN dividieren.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{hellgrau2}{\section{Greensche Identit\"{a}ten}}}\label{Greensche Identitaeten}\index{Greensche Identit\"{a}ten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\`{O}%%%%%%%%%%%%%w%%%%
+Zweimalige partielle Integration des Arbeitsintegrals
+\begin{align} \label{Eq12}
+\int_{0}^{l} EI\,w^{IV}(x)\,\textcolor{red}{\delta w(x)}\,dx
+\end{align}
+ergibt die {\em Erste Greensche Identit\"{a}t\/} der Balkengleichung
+\begin{align} \label{Eq16}
+\text{\normalfont\calligra G\,\,}(w, \textcolor{red}{\delta w}) = \underbrace{\int_0^{\,l} EI\,w^{IV}\textcolor{red}{\delta w}\,dx + [V\,\textcolor{red}{\delta w} -
+M\,\textcolor{red}{\delta w'}]_{\,0}^{\,l}}_{\delta A_a}
+ - \underbrace{\int_0^{\,l} \frac{M\,\textcolor{red}{\delta M}}{EI}\,dx}_{\delta A_i} = 0\,.
+\end{align}
+Das ist die Gleichheit zwischen au{\ss}en und innen, $\delta A_a = \delta A_i$.
+
+Wenn $EI(x)$ ver\"{a}nderlich ist, dann gilt $(EI(x)\,w'')'' = p(x)$ und mit $M = -EI(x)\,w''$ und $V = -(EI(x)\,w'')'$ kommt man auf die zu (\ref{Eq16}) analoge Identit\"{a}t.
+\begin{align}
+\text{\normalfont\calligra G\,\,}(w,\textcolor{red}{\delta w}) =\int_0^{\,l} (EI(x)\,w'')''\,\textcolor{red}{\delta w}\,dx + [V\,\textcolor{red}{\delta w} - M\,\textcolor{red}{\delta w'}]_{@0}^{@l}  - \int_0^{\,l} \frac{M\,\textcolor{red}{\delta M}}{EI}\,dx = 0\,.
+\end{align}
+Weil $-M'' = p$ dasselbe ist wie $(EI(x) w'')'' = p$, kann man auch schreiben
+\begin{align}
+\int_0^{\,l} -M''\,\textcolor{red}{\delta w}\,dx = [-M'\,\textcolor{red}{\delta w} + M\,\textcolor{red}{\delta w'}]_0^l + \int_0^{\,l} -M\,\textcolor{red}{\delta w''}\,dx\,.
+\end{align}
+Zur Differentialgleichung des Stabs, $- EA\,u''(x) = p(x)$, geh\"{o}rt die Identit\"{a}t
+\begin{align}
+\text{\normalfont\calligra G\,\,}(u, \textcolor{red}{\delta u}) &= \underbrace{\int_0^{\,l} - EA u'' \,\textcolor{red}{\delta u} \, dx}_{Start} +
+\underbrace{[N\,\textcolor{red}{\delta u}]_{\,0}^{\,l} - \int_0^{\,l} EA \,u' \, \textcolor{red}{\delta u'} \,dx}_{umgeformte \,Terme} = 0 \nn \\
+&= \underbrace{\int_0^{\,l} - EA u'' \,\textcolor{red}{\delta u} \, dx + [N\,\textcolor{red}{\delta u}
+]_{\,0}^{\,l}}_{\delta A_a} - \underbrace{\int_0^{\,l} EA \,u' \, \textcolor{red}{\delta u'}
+\,dx}_{\delta A_i} = 0\,,
+\end{align}
+und sinngem\"{a}{\ss} geh\"{o}rt zur Differentialgleichung des Seils, $- H\,w''(x) = p(x)$, die Identit\"{a}t
+\begin{align}
+\text{\normalfont\calligra G\,\,}(w, \textcolor{red}{\delta w}) &= \underbrace{\int_0^{\,l} - H w'' \,\textcolor{red}{\delta w} \, dx + [V\,\textcolor{red}{\delta w}]_{\,0}^{\,l}}_{\delta A_a} - \underbrace{\int_0^{\,l} H \,w' \, \textcolor{red}{\delta w'}
+\,dx}_{\delta A_i} = 0\,.
+\end{align}
+Das Man\"{o}ver
+\begin{align}
+\text{\normalfont\calligra B\,\,}(w_1,w_2) = \text{\normalfont\calligra G\,\,}(w_1,w_2) - \text{\normalfont\calligra G\,\,}(w_2,w_2) = 0
+\end{align}
+ergibt die {\em Zweite Greensche Identit\"{a}t\/}, den Satz von Betti.
+
+
+Die Identit\"{a}ten der g\"{a}ngigsten Differentialgleichungen der Statik findet der Leser in \cite{Ha1},
+\cite{HaJa2} und bei Ramm \cite{Ramm2} (Stabstatik).
+
+
+%Die Arbeitsprinzipe der Statik beruhen auf diesen Identit\"{a}ten, denn es ist
+%\begin{alignat}{2}
+%\text{\normalfont\calligra G\,\,}(w,\delta w) &= 0 &&\quad \mbox{Prinzip der virtuellen Verr\"{u}ckungen} \nn \\
+%\text{\normalfont\calligra G\,\,}(\delta w,w) &= 0 &&\quad \mbox{Prinzip der virtuellen Kr\"{a}fte} \nn \\
+%\text{\normalfont\calligra B\,\,}(w_1,w_2) &= 0 &&\quad \mbox{Satz von Betti} \nn\,.
+%\end{alignat}

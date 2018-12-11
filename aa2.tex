@@ -1,0 +1,670 @@
+{\textcolor{blue}{\chapter{Einflussfunktionen}}}
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Statik ist Kinematik}}}
+
+In der linearen Statik beruht jede Durchbiegung, jede Schnittgr\"{o}{\ss}e, jede Lagerkraft auf einer Einflussfunktion
+\begin{align}
+w(x) = \int_{0}^{l} G(y,x)\,p(y)\,dy\,.
+\end{align}
+Die FEM rechnet genauso, nur dass sie statt der exakten Einflussfunktion, des exakten Kerns $G(y,x)$\index{Kern} eine N\"{a}herung $G_h(y,x)$ benutzt
+\begin{align}
+w_h(x) = \int_{0}^{l} G_h(y,x)\,p(y)\,dy
+\end{align}
+und deswegen sind die FE-Ergebnisse nur N\"{a}herungen.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ FEM bedeutet Rechnen mit gen\"{a}herten Einflussfunktionen. }}\\
+
+Die Idee der Einflussfunktionen ist im Grunde so alt wie die Statik selbst, denn sehr fr\"{u}h schon, mit {\em Archimedes\/} und seinem Hebelgesetz $ P_l \, h_l = P_r \, h_r$, kam die Kinematik in die Statik, die Erkenntnis, dass man Gleichgewicht als einen {\em Balanceakt\/} interpretieren kann.
+
+
+Das Moment in der Mitte eines Einzeltr\"{a}gers wird so eingestellt, dass bei einer Spreizung des dort nachtr\"{a}glich eingebauten Momentengelenks die beiden Momente dieselbe Arbeit leisten wie die Belastung. {\em Statik ist also} -- auch wenn es etwas holprig klingen mag -- {\em nicht statisch, sondern kinematisch\/}.
+
+
+Der Passant, der an einem Tragwerk vorbeigeht, ahnt das nicht. F\"{u}r ihn ist das Tragwerk in Ruhe. Aber ein Tragwerk besteht eigentlich aus unendlich vielen Gelenken, nur dass diese Gelenke zur Sicherheit gesperrt sind. Aber wenn man eines dieser Gelenke l\"{o}st und spreizt, dann wird man finden, dass die Arbeit der Belastung und die Arbeit der Schnittkraft in dem Gelenk gleich gro{\ss} sind, wie bei einer Schaukel, siehe Abb. \ref{U32},
+\begin{align}
+P_l \, w_l - P_r \, w_r = P_l \,\tan \Np \, h_l - P_r \, \tan \Np \, h_r
+= (P_l \, h_l - P_r \, h_r) \,\tan \Np  = 0\,,
+\end{align}
+weil die beiden Kr\"{a}fte dem Hebelgesetz\index{Hebelgesetz} gehorchen, $P_l \, h_l = P_r \, h_r$.\\
+%-----------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/U32}
+\caption{Schaukel} \label{U32}
+\end{figure}%%
+%-----------------------------------------------------------------
+%-----------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/U164}
+\caption{Eine Einflussfunktion gleicht einer Schaukel} \label{U164A}
+\end{figure}%%
+%-----------------------------------------------------------------
+
+%---------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.95\textwidth]{\Fpath/1GreenF131D}
+\caption{Wie ein FE-Programm die Spannungen in einer Scheibe berechnet. Er spreizt den Aufpunkt und beobachtet, um
+wieviel sich der Fu{\ss}punkt der Einzelkraft hebt/senkt. Die Arbeit, die die Einzelkraft dabei leistet, ist gleich der Spannung im Aufpunkt. Bei einem Fl\"{a}chentragwerk ist ein Versatz von 1,000 mm nicht einfach eine Spreizung von 1,000 mm, sondern es ist ein integrales Ma{\ss}. Wenn man den Aufpunkt einmal umrundet, dann findet man sich um 1,000 mm weiter rechts ($\sigma_{xx}$) oder weiter oben ($\sigma_{yy}$).
+}\label{1GreenF131}
+\end{figure}
+%----------------------------------------------------------------------------
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ In diesem Sinne gleicht jede Einflussfunktion einer Schaukel. }}\\
+
+Um die Querkraft $V(x)$ eines Tr\"{a}gers in einem Punkt $x$ zu berechnen, s. Abb.  \ref{U164A},  installieren wir im Punkt $x$ ein Querkraftgelenk und spreizen das Gelenk so, dass die beiden Querkr\"{a}fte dabei in der Summe den Weg $(-1)$ gehen, also die Arbeit $- V(x) \cdot 1$ leisten
+\beq
+-V(x) \, w(x_{-} ) - V(x) \, w(x_{+}) = -V(x) \, (w(x_{-} )
+ + w(x_{+})) = -V(x) \cdot  1\,.
+\eeq
+Die Arbeit der Punktlast $P$ bei der Hebung $w$, die durch die Spreizung des Gelenks ausgel\"{o}st wird, muss gem\"{a}{\ss} dem {\em Satz von Betti\/} genau gegengleich sein
+\beq
+\underbrace{- V(x) \cdot 1 + P \cdot w}_{A_{1,2}} = 0 \,.
+\eeq
+Bei einer FE-Berechnung behindern wir aber die freie Bewegung des Tragwerks, wir legen dem Tragwerk Fesseln an, weil die {\em shape functions\/} $\Np_i(x)$ zu \glq ungelenk\grq\ sind, und daher bekommt das Gelenk das falsche Signal, ist die Verschiebung im Fu{\ss}punkt von $P$ nur ein gen\"{a}herter Wert $w_h$
+\beq
+-V_h(x) \cdot 1 + P \cdot w_h = 0\,,
+\eeq
+aber nicht der exakte Wert $w$
+\beq
+-V(x) \cdot 1  + P \cdot w = 0\,,
+\eeq
+und so ist $V_h(x) \neq V(x)$. {\em Ein FE-Programm versch\"{a}tzt sich bei der Kinematik\/}, weil ein FE-Programm  mit gen\"{a}herten Einflussfunktionen operiert. Dies gilt vor allem f\"{u}r Fl\"{a}chentragwerke. Bei Stabtragwerken wie in Abb. \ref{U546} ist die Kinematik meist in Ordnung, es sei denn $EA$ oder $EI$ sind nicht konstant.
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.99\textwidth]{\Fpath/U546}
+\caption{Fachwerkturm -- Einflussfunktionen f\"{u}r eine Strebe und einen Pfosten} \label{U546}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+%---------------------------------------------------------------------------------
+\begin{figure}
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.95\textwidth]{\Fpath/U176}
+\caption{Eine Spreizung der St\"{u}tze erzeugt die Einflussfunktion f\"{u}r die St\"{u}tzenkraft. Die korrekte Propagierung \"{u}ber das Tragwerk h\"{a}ngt von der korrekten Modellierung der Steifigkeiten ab}
+\label{U176}%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+Die Kinematik eines Netzes, die Feinheit der Details, bestimmt also die Genauigkeit der FE-L\"{o}sung, s. Abb. \ref{1GreenF131} und \ref{U176}.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Netz = Kinematik = Pr\"{a}zision der Einflussfunktionen = G\"{u}te der Ergebnisse}}\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Funktionale}}}\index{Funktionale}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Technisch gesehen sind Einflussfunktionen Funktionale. {\em Funktionale sind Funktionen von Funktionen\/}. Die  Fl\"{a}che $A$ zwischen der $x$-Achse und einer Biegelinie $w(x) $
+\begin{align}
+J(w) = A = \int_{0}^{l} w(x)\,dx
+\end{align}
+ist zum Beispiel ein Funktional.
+Genauso ist die Querkraft $V(x) $ oder das Moment $M(x) $  in einem Punkt $x$ ein Funktional $J(w) = V(x)$ bzw. $J(w) = M(x)$. Jede Messung, jede Auswertung, die wir an einer Biegelinie vornehmen, stellt ein Funktional dar, s. Abb. \ref{U546}.
+
+Alle linearen Funktionale\footnote{also $J(w_1 + w_2) = J(w_1) + J(w_2)$, die Grundregel der linearen Statik, Durchbiegungen, Momente, etc. d\"{u}rfen \"{u}berlagert werden, lineare Statik = lineare Funktionale} kann man durch Einflussfunktionen darstellen
+\begin{align} \label{Eq7}
+J(w) = \int_{0}^{l} G(y,x)\,p(y)\,dy = \text{[m]} \cdot \text{[kN/m]} \cdot \text{[m]} =
+\text{[kNm]}\,,
+\end{align}
+also als die \"{U}berlagerung der Belastung $p$ mit der entsprechenden Einflussfunktion $G(y,x) $. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Das Ergebnis einer Einflussfunktion ist eine Arbeit.}}\\
+
+Auch hinter dem $p\,l^2/8$ steckt ein Integral\footnote{Das Dreieck hat die Spitze $l/4$ und das Rechteck die H\"{o}he $p$, Integral = $1/2 \cdot l/4 \cdot l\cdot p $.},
+\begin{align}
+M = \int_0^{\,l} G(y,x)\,p(y)\,dy = \int_0^{\,l} \seileck \; \rechtecklang \,dy = \frac{p\,l^2}{8}
+\end{align}
+nur sieht man das nicht mehr, weil das Integral, das $L_2$-Skalarprodukt, auf das griffige Endergebnis reduziert wurde und so ist es mit vielen anderen Formeln in der Statik auch, wie etwa der Formel f\"{u}r die Auflagerkraft $A$
+\begin{align}
+A \cdot 1 = \int_{0}^{l} \dreiecklu \; \cross \,dx = \frac{1}{2}\, p \cdot l \qquad \text{[kNm]}\,.
+\end{align}
+Die 1 ist der Weg, den die Lagerkraft geht, wenn man das Lager um ein Meter absenkt.
+
+\glq Jedes\grq\ Resultat in der linearen Statik ist ein Skalarprodukt, und wenn der zweite Integrand zu fehlen scheint, wie bei der Resultierenden einer Linienlast
+\begin{align}
+R \cdot 1 = \int_{0}^{l} p\,dx = \int_{0}^{l} 1 \cdot p \,dx = \int_{0}^{l} \cross \; \cross \,dx\,,
+\end{align}
+dann ist es die Eins, die Absenkung des Balkens um 1 Meter. $R \cdot 1$ [kNm] ist eine Arbeit, ein Skalarprodukt, und wenn wir $R \cdot 1$ durch den Weg teilen, wird daraus eine Kraft $R$ [kN].
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Berechnung von Einflussfunktionen mit finiten Elementen}}}
+Auch ein FE-Programm rechnet so, nur ersetzt es die exakte Einflussfunktion $G(y,x)$ durch eine N\"{a}herung $G_h(y,x)$, wenn es zum Beispiel die Durchbiegung eines Balkens berechnet
+\begin{align}
+w_h(x) = \int_{0}^{l}G_h(y,x)\,p(y)\,dy\,.
+\end{align}
+Die N\"{a}herung ist eine Entwicklung nach den {\em shape functions\/}
+\begin{align}
+G_h(y,x) = \sum_i\,g_i(x)\,\Np_i(y)\,,
+\end{align}
+wobei die Gewichte $g_i(x)$ -- sie bestimmen wie viel von jedem $\Np_i$ die Einflussfunktion enth\"{a}lt -- von der Lage $x$ des Aufpunktes abh\"{a}ngen.
+
+%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.8\textwidth]{\Fpath/U72}
+\caption{Berechnung der Einflussfunktion f\"{u}r eine Verschiebung $u(x)$, \textbf{a)} Dachfunktionen und Originalbelastung, \textbf{ b)} Ersatzkr\"{a}fte und daraus resultierende FE-Einflussfunktion} \label{U72}
+\end{figure}%%
+%----------------------------------------------------------
+
+Die Bestimmung der $g_i(x) $ geschieht durch L\"{o}sen des Gleichungssystems
+\begin{align}
+\vek K\,\vek g = \vek j\,,
+\end{align}
+was genau das System $\vek K\,\vek u = \vek f $ ist, nur nennen wir die $u_i$ jetzt $g_i$ und die $f_i$ hei{\ss}en $j_i$, weil sie gerade die Werte $J(\Np_i)$ sind. Dieser Namenswechsel erleichtert das Operieren mit FE-Einflussfunktionen. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{
+ Die Einflussfunktion f\"{u}r ein lineares Funktional $J(u)$ wird durch die Knotenkr\"{a}fte $j_i = J(\Np_i)$ erzeugt, also die Werte $J(\Np_i)$ der Ansatzfunktionen.}}\\
+
+Hier z\"{o}gert man, denn $J(\Np_i) $ kann ja eine Verschiebung, eine Querkraft, ein Moment sein und diese Gr\"{o}{\ss}en haben ja alle verschiedene Dimensionen, aber das Programm erg\"{a}nzt den {\em input\/}, wenn man so sagen will, automatisch so, dass $j_i = J(\Np_i)$ die Dimension einer Arbeit hat. Das ist so \"{a}hnlich wie bei der Mohrschen Arbeitsgleichung, wo ja auf der linken Seite eine \glq Eins-Kraft\grq\ aus der Verschiebung $\delta$ eine Arbeit $1 \cdot \delta$ macht.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Einflussfunktion f\"{u}r eine L\"{a}ngsverschiebung}}}
+
+Im ersten Beispiel berechnen wir die Einflussfunktion f\"{u}r die L\"{a}ngsverschiebung $u(x)$ des Stabes in Abb. \ref{U72} im Punkt $x = 2.5$, also f\"{u}r das Funktional $J(u) = u(2.5)$. Die \"{a}quivalenten Knotenkr\"{a}fte sind daher die Verschiebungen der Ansatzfunktionen $\Np_i(x)$ in dem Punkt $x = 2.5$
+\begin{align}\label{Eq110}
+\Np_1(2.5) = 0 \qquad \Np_2(2.5) = 0.5 \qquad \Np_3(2.5) = 0.5 \qquad \Np_4(2.5) = 0\,,
+\end{align}
+und somit lautet das Gleichungssystem $\vek K\,\vek g = \vek j$ f\"{u}r die Knotenverschiebungen $g_i$
+\begin{align}\label{Eq68}
+\frac{EA}{l_e} \left[\barr{r r r r} 2 & - 1 & 0 & 0 \\ - 1 & 2 & -1 & 0\\ 0 & -1 & 2 &-1 \\ 0 & 0 & -1 &2\earr\right]
+\,\left[\barr{c} g_1 \\g_2 \\ g_3 \\ g_4 \earr \right] = \left[\barr{c} 0 \\ 0.5  \\
+0.5  \\ 0 \earr \right]\,.
+\end{align}
+Es hat die L\"{o}sung
+\begin{align}
+g_1 = 1\qquad g_2 = 2\qquad g_3 = 2.5\qquad g_4 = 2.5\,,
+\end{align}
+und daher hat die Einflussfunktion die Gestalt
+\begin{align}
+G_h(y,x = 2.5) = \frac{l_e}{EA}\, (1 \cdot \Np_1(y) + 2 \cdot \Np_2(y) + 2.5 \cdot \Np_3(y) + 2.5 \cdot\Np_4(y))\,.
+\end{align}
+Die FE-Einflussfunktion ist, bis auf das Element, in dem der Aufpunkt $x$ liegt, exakt.
+Den Fehler in dem Element beheben die FE-Programme dadurch, dass sie zur FE-L\"{o}sung die lokale L\"{o}sung der Einflussfunktion addieren
+\begin{align}
+G(y,x) = G_h(y,x) + \text{lokale L\"{o}sung}\,,
+\end{align}
+und so gelingt es den FE-Programmen exakte Einflussfunktionen bei Stabtragwerke zu generieren -- vorausgesetzt $EA$ und $EI$ sind konstant.
+
+Die lokale L\"{o}sung ist die Gestalt der Einflussfunktion am beidseitig eingespannten Element. Das Vorgehen entspricht praktisch dem Drehwinkelverfahren.
+
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Der Schl\"{u}ssel zu den Knotenkr\"{a}ften $ j_i$}}}\index{Schl\"{u}ssel zu den  $j_i$}
+
+Warum waren bei diesem Beispiel die \"{a}quivalenten Knotenkr\"{a}fte $j_i$ (= $f_i$) die Werte der Ansatzfunktionen im Aufpunkt, $j_i = \Np_i(2.5)$? Der Schl\"{u}ssel hierzu liegt in der Definition der \"{a}quivalenten Knotenkr\"{a}fte $f_i$.
+
+%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption[t] \fi
+\includegraphics[width=.85\textwidth]{\Fpath/U451A}
+\caption{Berechnung der vier Einflussfunktionen eines Balkens mit finiten Elementen. Die \"{a}quivalenten Knotenkr\"{a}fte (hier ohne Vorzeichen -- das steckt in den Pfeilen) sind die Werte der Ansatzfunktionen im Aufpunkt $x = 0.5\,\ell$. Werden zu den FE-L\"{o}sungen noch die lokalen L\"{o}sungen links addiert, sind die Ergebnisse auch im Element mit dem Aufpunkt exakt -- sonst nur au{\ss}erhalb von dem Element. Die $j_i$ findet man in (\ref{Eq219X}), S. \pageref{Eq219X}. } \label{U451}
+\end{figure}%%
+%----------------------------------------------------------
+Eine \"{a}quivalente Knotenkraft $f_i$ ist eine {\em Arbeit\/} und zwar die Arbeit, die die Belastung $p(x)$  auf dem Weg  $\Np_i(x)$ leistet
+\begin{align}
+f_i = \int_0^{\,l} p(x)\,\Np_i(x)\,dx\,.
+\end{align}
+Bei Einflussfunktionen ist die Belastung ein Dirac Delta (eine in einem Punkt zusammengeschn\"{u}rte Linienlast [kN/m])
+\begin{align}
+-EA\,\frac{d^2}{dy^2}\,G(y,x) = \delta(y-x) \qquad \leftarrow \,\,\text{[kN/m]}\,,
+\end{align}
+die hier eine horizontale Kraft $P = 1$ im Aufpunkt $x = 2.5$ repr\"{a}sentiert. Sie ist sozusagen das $p$, das zur Einflussfunktion geh\"{o}rt. (Wir differenzieren auf der linken Seite nach der Laufvariablen $y$, denn $x$ markiert den  Aufpunkt).
+
+Jetzt rechnen wir und finden, dass die \"{a}quivalenten Knotenkr\"{a}fte ($[\text{kNm}]$)
+\begin{align}
+j_i = \int_0^{\,l} \underbrace{\delta(y-x)}_{[\text{kN/m}]}\,\underbrace{\Np_i(y)}_{[\text{m}]}\,\underbrace{dy}_{\text{[m]}} = \Np_i(x)  \qquad x = 2.5
+\end{align}
+zahlenm\"{a}{\ss}ig einfach die Werte der vier Ansatzfunktionen $\Np_i$ im Aufpunkt $x = 2.5$ sind; so kommt die Liste (\ref{Eq110}) zustande, siehe auch Abb. \ref{U451}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Allgemeine Form einer FE-Einflussfunktion}}}
+
+Wir k\"{o}nnen das gleich verallgemeinern: Die Einflussfunktion f\"{u}r ein lineares Punktfunktional $J(w)$, wie
+\begin{align}
+J(w) = w(x) \qquad J(w) = M(x) \qquad J(w) = V(x) \qquad \text{etc.}
+\end{align}
+ist von der Gestalt ({\em Vektor$^T$Matrix Vektor = Skalar})
+\beq
+G_h(y,x) = \vek \phi(y)^T\, \vek K^{-1}\,\vek j(x)\,.
+\eeq
+Die Elemente des Vektors
+\begin{align}
+\vek j(x) =  \{J(\Np_1), J(\Np_2), J(\Np_3), \ldots, J(\Np_n) \}^T
+\end{align}
+sind die Ergebnisse $J(\Np_i)(x)$ der einzelnen {\em shape functions\/}, die Matrix $\vek K^{-1}$ ist die inverse Steifigkeitsmatrix und der Vektor
+\begin{align}
+\vek \phi(y) = \{\Np_1(y), \Np_2(y), \ldots, \Np_n(y)\}^T
+\end{align}
+sind die Werte der Ansatzfunktionen im Punkt $y$.
+
+Wir notieren noch, dass die Auswertung einer Einflussfunktion wegen
+\begin{align}
+J(w) = \int_{0}^{l}G_h(y,x)\,p(y)\,dy = \sum_i g_i(x)\int_{0}^{l}\Np_i(y)\,p(y) = \sum_i g_i(x)\,f_i
+\end{align}
+auf den Ausdruck
+\begin{align}
+\boxed{ J(w) = \vek g^T\,\vek f = \vek u^T\,\vek j}
+\end{align}
+zur\"{u}ckgespielt werden kann, also das Skalarprodukt des Vektors $\vek f$ der \"{a}quivalenten Knotenkr\"{a}fte aus der Belastung mit dem Vektor $\vek g$ der Einflussfunktion. Der zweite Ausdruck ist einfach die  Formel
+\begin{align}
+J(u) = J(\sum_i\,u_i\,\Np_i) = \sum_i u_i\,J(\Np_i) =  \sum_i u_i\,j_i = \vek u^T\,\vek j\,.
+\end{align}
+
+%---------------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\includegraphics[width=0.8\textwidth]{\Fpath/U191A}}
+  \caption{\textbf{ a)} Seil aus $n = 5$ Elementen, \textbf{ b-e)} die Durchbiegungen sind die Spalten der inversen Steifigkeitsmatrix (alle Werte mal $l_e/(5\,H)$), \textbf{ f)} wenn $n$ w\"{a}chst, werden die Spalten von $\vek K^{-1}$ immer \"{a}hnlicher, $\det(\vek K^{-1}) \to 0$, d.h. $\vek K^{-1}$ wird singul\"{a}r}\label{Korrektur6}
+  \label{U191}
+\end{figure}
+%---------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Die inverse Steifigkeitsmatrix}}}\index{inverse Steifigkeitsmatrix}
+Die Inverse einer Steifigkeitsmatrix mal dem Vektor $\vek f $ ergibt die Knotenverschiebungen $\vek w = \vek K^{-1}\vek f$ und daher ist es keine \"{U}berraschung, dass die Spalten (= Zeilen) der symmetrischen Inversen gerade die Einflussfunktionen f\"{u}r die Knotenverschiebungen sind -- genauer sind die Spalten die Knotenwerte dieser Einflussfunktionen.
+
+Betrachten wir ein Seil. Die FE-Einflussfunktion f\"{u}r die Durchbiegung $J(w) = w(x_k)$ in einem Knoten $x_k$ hat die Form
+\begin{align}
+G_h(y,x_k) = \sum_{i=1}^n g_i(x_k)\,\Np_i(y)
+\end{align}
+und der Vektor $\vek g = \{g_{1},g_{2}, \ldots, g_{n}\}^T $ ist die L\"{o}sung des Systems $\vek K\,\vek g = \vek j$. Wegen
+\begin{align}
+j_i = J(\Np_i) = \Np_i(x_k) = \left \{ \barr{l l } 1 & \,\, i = k \\  0 & \,\, i \neq k \earr\right \} = \delta_{ik} \quad \text{(Kronecker Delta)}
+\end{align}
+ist der Vektor $\vek j = \vek e_k$ gleich dem $k$-ten Einheitsvektor, und das System
+\begin{align}
+\vek K\,\vek g = \vek e_k \qquad \text{(Einheitsvektor $\vek
+e_k$)}\,,
+\end{align}
+bedeutet daher, dass die $n$ Spalten $\vek g_k$ der inversen Steifigkeitsmatrix $\vek K^{-1}$
+\begin{align}
+\vek K^{-1} \vek e_k = \vek g_k
+\end{align}
+die Knotenwerte sind, die zu den $n$ Einflussfunktionen $G_h(y, x_k)$ der $n$ Knoten $x_k$ geh\"{o}ren
+\begin{align}
+ G_h(y,x_k) = \sum_{i=1}^n g_{k @i}\,\Np_i(y)  = \vek g_k^T\,\vek \Phi (y)\,,
+\end{align}
+mit $\vek \Phi(y) = \{\Np_1(y), \Np_2(y), \ldots, \Np_n(y)\}^T$, was damit auf
+\begin{align}
+w_h(x_k) &= \int_{0}^{l} G_h(y,x_k)\,p(y)\,dy = \int_{0}^{l}\sum_{i=1}^n g_{k @i}\,\Np_i(y) \,p(y)\,dy\nn \\
+ &= \sum_{i=1}^n g_{k @i}\,f_i =  \vek g_k^T\,\vek f
+\end{align}
+f\"{u}hrt. Das erkl\"{a}rt, warum die Inverse der tri-diagonalen Steifigkeitsmatrix voll be\-setzt ist.
+Ein Finger, eine Kraft $P = 1$ in einem Knoten $x_k$, reicht aus, um die ganze Gitarrensaite auszulenken. Die Inverse einer Differenzenmatrix wie $\vek K$ (zeilenweise  $l_e^{-1} \cdot (\ldots 0\,\,-1\,\,\,2\,\,-1\,\,\,0\,\,\ldots$)) ist also eine Summenmatrix.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Eine Steifigkeitsmatrix $\vek K$ \glq differenziert\grq\ und ihre Inverse $\vek K^{-1}$ \glq integriert\grq. Die Inverse ist {\em immer\/} voll besetzt und sie ist symmetrisch (wegen Maxwell).
+}}\\
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsubsection*{Beispiel}}}
+Das mit einer Kraft $H$ vorgespannte Seil in Abb. \ref{U191}\,a besteht aus f\"{u}nf linearen Elementen. Die Steifigkeitsmatrix
+$\vek K$
+\begin{align}\label{Eq11}
+    \vek K = \frac{H}{l_e}
+    \left[ \barr {r @{\hspace{4mm}}r @{\hspace{4mm}}r
+@{\hspace{4mm}}r}
+      2 & -1 & 0 & 0  \\
+      -1 & 2 & -1 & 0 \\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2  \\
+    \earr \right]\,
+\end{align}
+ist tri-diagonal, aber ihre Inverse
+\begin{align}
+   \vek K^{-1} = \frac{l_e}{5\,H}
+    \left[ \barr {r @{\hspace{4mm}}r @{\hspace{4mm}}r
+@{\hspace{4mm}}r}
+      4 & \phantom{-}3 & \phantom{-}2 & \phantom{-}1  \\
+      3 & 6 & 4 & 2 \\
+      2 & 4 & 6 & 3 \\
+      1 & 2 & 3 & 4  \\
+    \earr \right]\,
+\end{align}
+ist voll besetzt. In der Spalte $\vek g_k$ der Inversen, s. Abb. \ref{U191}\,b -- f, stehen die Durchbiegungen der Knoten, wenn im Knoten $x_k$ eine Einzelkraft $P = 1$ angreift.
+
+Die Summe der Spaltenvektoren der Inversen ist die Durchbiegung des Seils unter Vollast, wenn alle $f_i = 1$ gleich gro{\ss} sind.
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/RAMM}
+\caption{Wandscheibe {\bf a)} System und Belastung, {\bf b)} die Einflussfunktion f\"{u}r die
+Spannung $\sigma_{yy}$ in der Ecke, {\bf c)} die Einflussfunktion f\"{u}r die Schnittkraft
+$N_y$ im Schnitt A--A } \label{Ramm214}
+\end{figure}%
+%-----------------------------------------------------------------
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Einflussfunktionen f\"{u}r integrale Werte}}}\index{Einflussfunktionen f\"{u}r integrale Werte}
+
+Wenn Punktwerte zu stark schwanken oder singul\"{a}r werden, wie die Spannung $\sigma_{yy}$ in Abb. \ref{Ramm214}, dann ist es besser mit Mittelwerten zu arbeiten, also die Werte \"{u}ber eine k\"{u}rzere L\"{a}nge aufzuintegrieren.
+
+Warum das hilft, versteht man, wenn man sich die Einflussfunktionen anschaut. Die Einflussfunktion f\"{u}r die Spannung $\sigma_{yy}$ in dem Eckpunkt der \"{O}ffnung ist eine Spreizung des Aufpunktes in $y$-Richtung, s. Abb. \ref{Ramm214} b. Erweitern wir den Punkt dagegen zu einer kurzen Linie $\ell$ und entschlie{\ss}en uns mit dem Mittelwert der Spannungen l\"{a}ngs dieser Linie zu arbeiten
+\begin{align}
+\sigma_{yy}^\varnothing = \frac{1}{\ell } \int_0^{\,\ell} \sigma_{yy}\,ds \,,
+\end{align}
+dann ist die Einflussfunktion eine {\em simultane\/} Versetzung aller Punkte auf der Linie um Eins und eine solche Bewegung ist einfacher mit finiten Elementen anzun\"{a}hern als eine Punktversetzung. Das ist der Grund, warum eine Mittelung in der Regel bessere Werte liefert.
+
+Noch deutlicher ist die Abb. \ref{EinfSigmaYYScheibe}. Die Einflussfunktion f\"{u}r $N_y$ in der Bodenfuge ist ein {\em lift\/} der ganzen Scheibe nach oben um Eins
+\begin{align}
+N_y = \int_0^{\,l} \sigma_{yy} \cdot 1 \,dx\,,
+\end{align}
+und diesen {\em lift\/} kann ein FE-Netz darstellen (alle Festhaltung werden gel\"{o}st -- genauer die Summe aller $\Np_i(\vek x)$ ist in jedem Punkt 1), ist das $N_y$ im Ausdruck daher exakt, w\"{a}hrend die Einflussfunktion f\"{u}r den Punktwert $\sigma_{yy}$ jedes Netz \"{u}berfordert.
+%-----------------------------------------------------------------
+\begin{figure}[tbp] \centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/EinfSigmaYYScheibe}
+\caption{{\bf a)} Einflussfunktion f\"{u}r $\sigma_{yy}$, {\bf b)} Einflussfunktion f\"{u}r die
+Schnittkraft $N_y$} \label{EinfSigmaYYScheibe}
+\end{figure}%
+%-----------------------------------------------------------------
+
+Einflussfunktionen f\"{u}r integrale Werte berechnen sich sinngem\"{a}{\ss}. Ist $J(w)$ z.B. die mittlere Durchbiegung auf einer Strecke $(x_a, x_b)$,
+\begin{align}
+J(w) = \frac{1}{(x_b - x_a)}\int_{x_b}^{\, x_b} w(x)\,dx\,,
+\end{align}
+dann sind die \"{a}quivalenten Knotenkr\"{a}fte die Mittelwerte der $\Np_i$
+\begin{align}
+j_i = J(\Np_i) = \frac{1}{(x_b - x_a)} \int_{x_b}^{\, x_b}  \Np_i(x)\,dx\,.
+\end{align}
+und bei der Platte in Abb. \ref{U534} sind die $j_i$ die aufintegrierten Momente der {\em shape functions\/}
+\begin{align}
+j_i = \int_{0}^{l} m_{yy}(\Np_i)\,dx\,.
+\end{align}
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/U534}
+\caption{Einflussfunktionen f\"{u}r {\bf a)} das Moment $m_{yy}$ in einem Punkt und {\bf b)} f\"{u}r das Integral von $m_{yy}$ l\"{a}ngs einer Linie} \label{U534}
+\end{figure}%
+%-----------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/U408}
+\caption{Einflussfunktion f\"{u}r den Mittelwert von $\sigma_{xx}$ in dem Element {\bf a)\/} das \lqq Dirac Delta\rqq \, besteht aus horizontalen Linienkr\"{a}ften auf dem vertikalen Rand und (kleinen, $\nu$-fachen) vertikalen Linienkr\"{a}ften auf dem horizontalen Rand von $\Omega_e$, {\bf b)\/}
+horizontale Verschiebungen, nach oben und unten in $z$-Richtung abgetragen. } \label{Average}
+\end{figure}%%
+%----------------------------------------------------------------------------------------------------------
+
+Eine spezielle Situation ergibt sich bei Fl\"{a}chentragwerken. Die mittlere Spannung $\sigma_{xx}^{\varnothing}$ in einem Element $\Omega_e$ mit der Fl\"{a}che $|\Omega_e|$ ist das Integral
+\begin{align}
+\sigma_{xx}^\varnothing = \frac{1}{|\Omega_e|}\int_{\Omega_e} \sigma_{xx}\,d\Omega =
+\frac{E}{|\Omega_e|}\int_{\Omega_e} (\varepsilon_{xx} + \nu\,\varepsilon_{yy})\,d\Omega\,.
+\end{align}
+Wegen $\varepsilon_{xx} = u_x,_x$ und $\varepsilon_{yy} = u_y,_y$, kann das Gebietsintegral durch ein Integral \"{u}ber den Rand $\Gamma_e$ des Elements ersetzt werden
+\begin{align}
+\sigma_{xx}^\varnothing = \frac{E}{|\Omega_e|}\int_{\Omega_e}  (\varepsilon_{xx} +
+\nu\,\varepsilon_{yy})\,d\Omega = \frac{E}{|\Omega_e|}\int_{\Gamma_e} (u_x\,n_x +
+\nu\,u_y\,n_y) \,ds\,.
+\end{align}
+Die Einflussfunktion f\"{u}r die Verschiebung $u_x$ bzw. $u_y$ eines Randpunktes $\vek x$ ist die Verschiebung, die durch eine Einzelkraft $P_x = 1$ bzw. $P_y = 1$ ausgel\"{o}st wird, die im Punkt $\vek x$ angreift. Daher ist die Einflussfunktion f\"{u}r das Integral
+\begin{align}
+\frac{E}{|\Omega_e|}\int_{\Gamma_e} (u_x\,n_x + \nu\,u_y\,n_y) ds
+\end{align}
+das Verschiebungsfeld, das durch horizontale bzw. vertikale Linienkr\"{a}fte $E/|\Omega_e|
+\cdot n_x$ bzw. $E/|\Omega_e| \cdot n_y$ l\"{a}ngs des Randes $\Gamma_e$ erzeugt wird, s. Abb. \ref{Average}.
+
+Daraus folgt, dass die mittleren Spannungen in einer Scheibe, die l\"{a}ngs ihres Randes unverschieblich gelagert ist, null sind, weil die Randkr\"{a}fte, die die Einflussfunktion erzeugen wollen, die Scheibe nicht deformieren k\"{o}nnen. Sinngem\"{a}{\ss} gilt dasselbe f\"{u}r Platten: Die Mittelwerte der Momente in einer allseits eingespannten Platte sind null.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Gausspunkte}}}\index{Gausspunkte}
+Diese Null ist auch der Grund, warum die Spannungen in den {\em Gausspunkten\/} genauer und unter Umst\"{a}nden sogar exakt sind, s. Abb. \ref{Ausgleich1}. Die FE-L\"{o}sung reduziert ja alles in die Knoten, oder im \"{u}bertragenen Sinn, in die R\"{a}nder. Im Fall eines Durchlauftr\"{a}gers ist die FE-L\"{o}sung zwischen den Knoten eine homogene L\"{o}sung, $EI\,w_0^{IV} = 0$, (keine L\"{a}ngsbelastung $p$, weil ja alles in die Knoten reduziert wurde) und das FE-Programm addiert dazu elementweise die partikul\"{a}re (= lokale) L\"{o}sung $w_p$
+\begin{align}
+w = w_0 + w_p \qquad \text{in jedem einzelnen Element}\,,
+\end{align}
+um auf die exakte L\"{o}sung zu kommen. Die partikul\"{a}re L\"{o}sung in einem Element ist die Durchbiegung unter Last am beidseitig eingespannten Element und bei solchen Lagerbedingungen ist das Moment $M_p$ der partikul\"{a}ren L\"{o}sung im Mittel null, denn
+\begin{align}\label{Eq3}
+\int_{0}^{l} M_p\,dx = \int_{0}^{l} - EI\,w_p''\,dx = - EI\,(w_p'(l) - w_p'(0)) = - EI\, ( 0-0) = 0\,.
+\end{align}
+Ist $p $ konstant, $M_p$ also quadratisch, dann muss das Moment $M_p$ in den beiden Gausspunkten null sein, weil sich das obige Integral mit einer Gauss-Quadratur exakt berechnen l\"{a}sst,\footnote{$n = 2$ Punkte k\"{o}nnen Polynome bis zur Ordnung $2\,n - 1 = 3$ exakt integrieren.} und das geht nur so, dass das Moment $M_p$ in den beiden Integrationspunkten null ist. Also ist das FE-Moment
+\begin{align}
+M_{FE} = M_0 + M_p = M_0 + 0
+\end{align}
+in den Gausspunkten exakt, weil ein FE-Programm ja den nicht verschwindenden Teil $M_0 = - EI\,w_0''$ exakt trifft. (Die FE-L\"{o}sung $w_h$ ist in jedem Element mit der homogenen L\"{o}sung $w_0$ identisch). Sollte $M_p(x)$ ein kubisches Polynom sein ($p$ = linear), dann ist $M_p$ in den beiden Gausspunkten nicht mehr null, aber der quadratische Anteil von $M_p $ ist es weiterhin und somit d\"{u}rfte auch in dieser Situation die heilsame Wirkung der Gausspunkte zum Tragen kommen.
+
+Bei Scheiben und Platten gilt das bei Gleichlast unter Umst\"{a}nden nur noch n\"{a}herungsweise, aber immer noch hinreichend deutlich, was den Gauss\-punkten ihren guten Ruf eingebracht hat.
+
+{\textcolor{sectionTitleBlue}{\subsubsection*{Spannungen in Elementmitte}}}\index{Spannungen in Elementmitte}
+Erfahrungsgem\"{a}{\ss} sind die Spannungen in der Mitte eines Elements am genauesten, weil man in der Mitte von den R\"{a}ndern des Elements, wo die FE-Spannungen springen, am weitesten entfernt ist, oder, was der eigentliche Grund ist, sich die Einflussfunktionen f\"{u}r Spannungen, das Element wird ja gespreizt, in der Elementmitte am einfachsten realisieren lassen.
+
+Bei bilinearen Elementen hat man noch den Sondereffekt, dass die FE-Einflussfunktionen f\"{u}r die Spannungen in der Elementmitte die gleichen sind, wie f\"{u}r die Mittelwerte der Spannungen im Element. Letztere sind aber einfacher zu erzeugen, weil sie ja keine Punktversetzung simulieren m\"{u}ssen, s. Abb. \ref{Average}. Im Ausdruck stehen also, wenn man mit bilinearen Elementen rechnet, eigentlich die Mittelwerte der Spannungen in den Elementen, \cite{Ha5}.
+
+Sp\"{o}tter weisen bei passender Gelegenheit gern darauf hin, dass die mathematische Definition des {\em Standpunkts\/} ein Gesichtskreis mit Radius null ist. \"{A}hnliches kann man \"{u}ber die Punktwerte bei FE-Berechnungen sagen. Die FEM ist ja ein Energieverfahren, ein Integralverfahren, und ein Punkt ist in einem gewissen Sinne das genaue Gegenteil, repr\"{a}sentiert er ein unendlich scharfes Ma{\ss} -- man denke an das dem Punkt korrespondierende Dirac Delta.
+
+%-----------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/U44A}
+\caption{Einflussfunktionen werden von Monopolen (linke Seite) bzw. Dipolen (rechte Seite) erzeugt,  Einflussfunktion f\"{u}r \textbf{ a)} Durchbiegung,  \textbf{ b)} Verdrehung $w,_x$, \textbf{ c)} Moment $m_{xx}$,  \textbf{ d)} Querkraft $q_x$ }\label{U44A}
+\end{figure}%%
+%-----------------------------------------------------------------
+
+Nat\"{u}rlich, wenn die L\"{o}sung glatt ist, dann vertrauen wir den Punktwerten, aber die Situation kann sich versch\"{a}rfen, wenn auch die Belastung ein Punktwert, eine Einzelkraft ist, weil dann die Einflussfunktionen genau in einem Punkt richtig sein m\"{u}ssen, w\"{a}hrend verteilte Belastungen m\"{o}gliche Fehler, m\"{o}gliche {\em wiggles\/}, in den Einflussfunktionen ausgleichen (k\"{o}nnen).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Monopole und Dipole}}}\index{Monopole}\index{Dipole}
+Die Einflussfunktion f\"{u}r die Verdrehung $w'$ eines Balkens wird durch ein Einzelmoment $M = 1 $ erzeugt
+\begin{align}
+M = \lim_{\Delta x \to 0} \,\,\frac{1}{\Delta x}  \, \Delta x = 1\,,
+\end{align}
+das aus zwei gegengleichen Kr\"{a}ften, $P = \pm 1/\Delta x$, entsteht, deren Abstand $\Delta x $ gegen null geht, w\"{a}hrend gleichzeitig die Kr\"{a}fte gegen unendlich gehen. In der Physik nennt man das Ergebnis dieses Grenzprozesses einen {\em Dipol\/}.
+
+Die Einflussfunktion f\"{u}r eine Durchbiegung $w(x)$ hingegen wird von einem {\em Monopol\/}, einer Einzelkraft, erzeugt.
+
+Einflussfunktionen, die von Monopolen erzeugt werden, summieren. Solche Einflussfunktionen gleichen Dellen oder Senken, s. Abb. \ref{U44A}. Alles was in die Delle hineinf\"{a}llt, vergr\"{o}{\ss}ert die Durchbiegung der Platte.
+
+Dipole hingegen erzeugen Scherbewegungen, die auf Ungleichgewichte reagieren, sie differenzieren, s. Abb. \ref{U44A} .\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Monopole integrieren und Dipole differenzieren.}}\\
+
+
+Jede der vier Einflussfunktionen in Abb. \ref{U44A} geh\"{o}rt sinngem\"{a}{\ss} zu einem der beiden Typen:\\
+
+\begin{itemize}
+  \item E.F. f\"{u}r Durchbiegungen und Momente {\em summieren\/}.
+  \item E.F. f\"{u}r Verdrehungen, Spannungen und Querkr\"{a}fte {\em  differenzieren\/}
+\end{itemize}
+
+Die Einflussfunktion f\"{u}r die Querkraft $V$ wird von einem Dipol erzeugt, und die Einflussfunktion f\"{u}r das Biegemoment $M$ von zwei entgegengesetzt, nach Innen drehenden Momenten $M = \pm 1/\Delta x$, die eine symmetrische Biegefigur mit einem Knick im Aufpunkt generieren\footnote{Genau genommen lautet die Folge: Monopol---Dipol---Quadropol---Octopol, entsprechend den finiten Differenzen f\"{u}r $w, w', M, V$, aber f\"{u}r unsere Zwecke reicht das einfache Raster: Monopol---Dipol oder symmetrisch-antimetrisch aus.}.
+
+Das Ergebnis ist am gr\"{o}{\ss}ten, wenn die Belastung und die Einflussfunktion vom selben Typ sind ({\em symmetrisch---symmetrisch\/} oder {\em anti\-metrisch---anti\-metrisch\/}) und am kleinsten, wenn sie vom entgegengesetzten Typ sind, siehe Abb. \ref{U177}.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{ Der Unterschied zwischen Monopolen und Dipolen ist der Grund, warum es einfacher ist, Verschiebungen und Biegemomente anzun\"{a}hern, als Spannungen und Querkr\"{a}fte. Es ist der Unterschied zwischen  numerischer Integration und numerischer Differentiation.}}\\
+
+Alle Einflussfunktionen f\"{u}r Lagerreaktionen integrieren, obwohl die Lagerkr\"{a}fte ja Normalkr\"{a}fte (Spannungen) oder Querkr\"{a}fte sind und daher w\"{u}rden wir erwarten, dass die Einflussfunktionen differenzieren. Aber in einem festen Lager wird der eine Teil der Scherbewegung durch den Baugrund behindert, so dass der andere Teil den ganzen Weg allein gehen muss, um die vorgeschriebene Versetzung $[[u]] = 1$ zu realisieren und daher wird aus der Einflussfunktion eine einseitige Integration.
+
+
+%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=1.0\textwidth]{\Fpath/U177}
+\caption{Oberste Reihe Einflussfunktionen f\"{u}r \textbf{ a)} das Biegemoment und \textbf{ b)} die Querkraft in der Mitte des Balkens, \textbf{ c)} und \textbf{ d)} Momente und Querkr\"{a}fte unter symmetrischer Last und antimetrischer Last, \textbf{ e)} und \textbf{ f)}}
+\label{U177}%
+%
+\end{figure}%%
+%----------------------------------------------------------
+%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.75\textwidth]{\Fpath/U178}
+\caption{\textbf{ a)} Gerbertr\"{a}ger, \textbf{ b)} Einflussfunktion f\"{u}r ein Moment $M$. Nicht alle Einflussfunktionen klingen ab! }
+\label{U178}%
+%
+\end{figure}%%
+%----------------------------------------------------------
+
+Nicht alle Einflussfunktionen tendieren gegen null. Wenn Teile des Tragwerks nach dem Einbau eines $N$-, $V$- oder $M$-Gelenkes Starrk\"{o}rperbewegungen ausf\"{u}hren k\"{o}nnen, dann kann es sein, dass sich die Einflussfunktionen aufschaukeln, siehe Abb. \ref{U178} b.
+
+Das Abklingverhalten von Einflussfunktionen h\"{a}ngt von der Ordnung der Zielgr\"{o}{\ss}e ab, beim Balken den Zahlen $0, 1, 2, 3$
+\begin{align}
+w(x), \quad w'(x), \quad M(x) = - EI\,w''(x), \quad V(x) = - EI\,w'''(x)\,.
+\end{align}
+Je niedriger die Ordnung, die Ableitung, ist, um so weiter schwingt die Einflussfunktion aus und um so langsamer klingt sie ab, wie man an der Einflussfunktion f\"{u}r die Durchbiegung $w(\vek x)$ der Platte sieht, s. Abb. \ref{U44A} a, w\"{a}hrend die Einflussfunktion f\"{u}r die Querkraft $q_x$ sehr eng gefasst ist, s. Abb. \ref{U44A} d. Es sind praktisch zwei gegengleiche Spitzen $\pm \infty$, die aus der Platte herausragen, die dann aber sehr rasch auf null abfallen.
+
+Nat\"{u}rlich sind das nur \glq Trendmeldungen\grq\ und das genaue Verhalten h\"{a}ngt auch von der Art der Lagerung ab, s. Abb. \ref{U78B} und \ref{U498} S. \pageref{U498}, denn gerade Kragtr\"{a}ger und Kragplatten (und auch  Stockwerkrahmen!) spielen diesbez\"{u}glich eine Sonderrolle, weil sie freie Enden haben.
+
+%-------------%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.80\textwidth]{\Fpath/U78C}
+\caption{Einflussfunktion f\"{u}r das Moment $m_{xx}$ und die Querkraft $q_x$ in der Mitte einer Kragplatte}
+\label{U78B}%
+\end{figure}%%
+%------------------------------------------------------------------------------------------------------
+
+Eine Sonderrolle spielen auch Einflussfunktionen f\"{u}r Kraftgr\"{o}{\ss}en an statisch bestimmten Systemen. Weil nach dem Einbau des Gelenks das System kinematisch ist, k\"{o}nnen sich die Verformungen frei ausbilden, denn es wird keine Energie verbraucht. Nichts kann die Einflussfunktion f\"{u}r das Moment in einem Kragtr\"{a}ger daran hindern den Schenkel rechts vom Aufpunkt unter $45^\circ$ bis \glq in den Himmel\grq{} laufen zu lassen, denn es kostet ja nichts. Deswegen st\"{u}rzen kinematische Strukturen auch so leicht ein, denn es ist keine Energie n\"{o}tig, um den Einsturz auszul\"{o}sen.
+%-------------%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.80\textwidth]{\Fpath/U554}
+\caption{Berechnung der Spannung $\sigma_{xx}$ in der obersten Faser der Kragscheibe}
+\label{U554}%
+\end{figure}%%
+%------------------------------------------------------------------------------------------------------
+Statisch unbestimmte Systeme d\"{a}mpfen also die Ausbreitung der Einflussfunktionen f\"{u}r Kraftgr\"{o}{\ss}en, w\"{a}hrend bei statisch bestimmten Systemen eine solche Sperre fehlt.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Wie (singul\"{a}re) Spannungen entstehen}}}
+Spannungen $\sigma = E \cdot \varepsilon$ entstehen, wenn sich die Verschiebungen \"{a}ndern
+\begin{align}
+\sigma = E \cdot \lim_{\Delta x \to 0} \frac{u(x + \Delta x) - u(x)}{\Delta x}\,.
+\end{align}
+Im folgenden gehen wir einmal nicht bis zur Grenze $\Delta x \to 0$ und betrachten die Situation in der Abb. \ref{U554}. In dem Punkt $x_P $ greift eine vertikale Einzelkraft $P$ an\footnote{Der Einfachheit halber schreiben wir hier alles skalar}, LF 1, und in der Umgebung des Aufpunktes $x$ ziehen zwei Einzelkr\"{a}fte $\pm 1/\Delta x$, LF 2 und LF 3, nach links und rechts.
+
+Ist $G_0(y,x_P)$ die vertikale Verschiebung im Punkt $x_P$ aus einer horizontalen Einzelkraft $F = 1$ im Punkt $y$, dann haben die vertikalen Verschiebungen, die die beiden Einzelkr\"{a}fte $\pm 1/\Delta x$ in dem Fu{\ss}punkt $x_P$ der Kraft $P$ erzeugen, die Gr\"{o}{\ss}e
+\begin{align}
+-\frac{1}{\Delta x}\cdot G_0(x, x_P) \qquad \text{und} \qquad \frac{1}{\Delta x}\cdot G_0(x + \Delta x, x_P)\,.
+\end{align}
+Nach dem Satz von Betti gilt, wir formulieren ihn zweimal, LF 1 $\times $ LF 2 und LF 1 $\times $ LF 3, und addieren
+\begin{align}
+\frac{1}{\Delta x} \cdot(u(x + \Delta x) - u(x)) = P\cdot (\frac{1}{\Delta x} G_0(x + \Delta x, x_P) -\frac{1}{\Delta x} G_0(x, x_P))\,.
+\end{align}
+In der Grenze, $\Delta x \to 0$, folgt somit
+\begin{align}
+\sigma &= E \cdot \varepsilon = E \cdot \lim_{\Delta x \to 0} \frac{1}{\Delta x}\,(G_0(x,x_P) - G_0(x + \Delta x, x_P) \cdot P = P \cdot G_1(x,x_P) \,,
+\end{align}
+wenn wir mit $G_1(x,x_P)$ die Einflussfunktion f\"{u}r $\sigma$ bezeichnen.
+
+Nun stellen wir uns vor, dass der Aufpunkt $x$ ganz nach links, zur Wand wandert. Dann wirkt nur noch die Kraft $F = 1/\Delta x$ im Punkt $x + \Delta x$ und weil der Gegenpart, der Antagonist fehlt, gelingt es ihr in der Grenze, $\Delta x \to 0$, den Fu{\ss}punkt $x_P$ der Kraft $P$ nach $\infty$ zu verschieben. Die Auswertung der Einflussfunktion ergibt also $ \sigma = P \cdot \infty$, d.h. die Spannung $\sigma$ in der obersten Faser der Scheibe ist in der eingespannten Ecke der Scheibe unendlich gro{\ss}.
+
+Wenn wir den Aufpunkt ein St\"{u}ck nach unten verschieben, dann gelingt der Kraft $F = 1/\Delta x$ das Man\"{o}ver dagegen nicht, weil dann das Material oberhalb die Bewegung abbremst. So kann man also mit elementaren Mitteln singul\"{a}re Spannungen erkl\"{a}ren, \cite{HaJa2}. Wir werden dem Thema und dieser Logik in diesem Buch noch \"{o}fter begegnen.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Prinzip von St. Venant}}}\index{Prinzip von St. Venant}
+{\em \glq \!Wenn die auf einen kleinen Teil der Oberfl\"{a}che eines elastischen K\"{o}rpers wirkende Kraft durch ein \"{a}quivalentes Kr\"{a}ftesystem ersetzt wird, ruft diese Belastungsumverteilung wesentliche \"{A}nderungen nur bei den \"{o}rtlichen Spannungen hervor: nicht aber in Bereichen, die gro{\ss} sind im Vergleich zur belasteten Oberfl\"{a}che\grq\/}, \cite{Wiki1}.
+
+Dieses Prinzip ist eine direkte Konsequenz der Tatsache, dass Wirkungen per Einflussfunktionen propagieren. Einflussfunktionen sind Skalarprodukte, sind Integrale, die die Belastung $p$ mit einem Kern $G(y,x)$\index{Kern} wichten und der Kern hat (gew\"{o}hnlich) die Eigenschaft, dass er mit wachsendem Abstand vom Aufpunkt gegen null tendiert. Wenn der Abstand nur gro{\ss} genug ist kann man eine Ein-Punkt-Quadratur benutzen, d.h. man kann die Belastung durch ihre Resultierende ersetzen. Weil nun \"{a}quivalente Kr\"{a}ftesysteme dieselbe Resultierende haben, wirkt sich ein Austausch in der Ferne nicht aus.
+
+Daraus folgt im \"{u}brigen, dass die Wirkungen von antimetrischen Lasten, von Lasten mit null Resultierender, besonders schnell abklingen, wenn Sie auf symmetrische Einflussfunktionen sto{\ss}en. Ja wenn die Einflussfunktion im Bereich der Belastung \glq flach\grq{} verl\"{a}uft, keine Steigung hat, dann ist der Einfluss sofort null, {\em Symmetrie $\times$ Antimetrie = 0\/}. \\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{Antimetrische Belastungen \glq differenzieren\grq{} die Einflussfunktionen.}}\\
+
+Dieser Effekt spielt bei den Kr\"{a}ften $f^+ $ in Kapitel 4 beim Thema {\em Reanalysis\/} eine gro{\ss}e Rolle, denn Steifigkeits\"{a}nderungen f\"{u}hren zu gegengleichen, also antimetrischen Zusatzkr\"{a}ften $f^+$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{chapterTitleBlue}{\section{Die Reduktion der Dimension}}\index{Reduktion der Dimension}}
+
+Zu den Einflussfunktionen geh\"{o}rt auch das Thema der Reduktion der Dimension.
+Beim Drehwinkelverfahren sprechen wir vom {\em Grad der kinematischen Unbestimmtheit\/} also der Zahl der unbekannten Knotenverschiebungen und Knotenverdrehungen. Nachdem die Verformungen der Knoten berechnet wurden, ist das Tragwerk kinematisch bestimmt, und wir k\"{o}nnen aus den Knotenwerten die Verformungen und die Schnittgr\"{o}{\ss}en zwischen den Knoten  berechnen.
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.99\textwidth]{\Fpath/U552}
+\caption{Die Knoten sind die \glq R\"{a}nder\grq{} eines Rahmens. Wei{\ss} man, wie sich die Knoten verformen, dann hat man alles im Griff.} \label{U252}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+In der Stabstatik reicht es also offenbar aus, die Weg- und Kraftgr\"{o}{\ss}en auf dem \glq Rand\grq{} zu kennen -- in den Knoten, s. Abb. \ref{U252} -- denn nur so ist es m\"{o}glich, dass sich die Statik eines Rahmens auf zwei Vektoren, $\vek u$ und $\vek f$, und das Gleichungssystem
+\begin{align}
+\vek K\,\vek u = \vek f
+\end{align}
+reduzieren l\"{a}sst. Das bedeutet:\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{{\em Endlich viele\/} Knotenwerte bestimmen die unendlich vielen Werte $u(x), w(x), w'(x) $ und $ N(x), M(x), V(x)$ in den unendlich vielen Punkten der Stiele und Riegel.}}
+\\
+
+Das ist aber doch eine Reduktion um Eins. Die $n = 1$ dimensionalen Tragglieder schrumpfen auf eine $n - 1 = 0$ dimensionale Menge von Punkten, von Knoten, zusammen. {\em Erst diese Reduktion macht das  Drehwinkelverfahren\index{Drehwinkelverfahren} m\"{o}glich: Es reicht, sich mit den Knoten zu besch\"{a}ftigen!\/}
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/U253A}
+\caption{Staumauer, auf der Wasser- und Luftseite kennt man den Spannungsvektor $\vek t = \vek S\,\vek n$ und im Fels den Verschiebungsvektor $\vek u = \vek 0$. Die fehlenden Gr\"{o}{\ss}en, den Spannungsvektor $\vek t$ im Fels und den Verschiebungsvektor $\vek u$ des oberen Teils kann man durch L\"{o}sen einer Integralgleichung (\glq Knotenausgleich auf der Oberfl\"{a}che der Staumauer\grq{}) berechnen. Anschlie{\ss}end kann man aus den Randwerten die Spannungen im Innern der Staumauer berechnen} \label{U253}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+Alle linearen, selbstadjungierten Differentialgleichungen gestatten eine solche Reduktion der Dimension eines Problems um Eins, $n \to (n-1)$. Der praktische Wert dieser Reduktion kann nicht hoch genug gesch\"{a}tzt werden.\\
+
+\hspace*{-12pt}\colorbox{highlightBlue}{\parbox{0.98\textwidth}{Wenn man die Weg- und Kraftgr\"{o}{\ss}en auf dem Rande kennt,  kann man die Verformungen und Schnittgr\"{o}{\ss}en im Innern eines Bauteils mittels Einflussfunktionen aus den Randwerten berechnen.}}
+\\
+
+Zur Ermittlung der Spannungen in einer Staumauer ($n = 3$), s. Abb. \ref{U253}, reicht die Kenntnis der Verschiebungen und Spannungen auf der Oberfl\"{a}che der Staumauer ($n = 2$) aus. Um eine Platte ($n = 2$) zu berechnen, reicht die Kenntnis der Weg- und Schnittgr\"{o}{\ss}en l\"{a}ngs des Randes ($n = 1$) aus und bei einem Balken ($n = 1$) muss man nur die Knotenwerte kennen.
+
+Die einfachste und elementarste Umsetzung dieser Idee ist das Lineal. Eine Gerade (die L\"{o}sung der Differentialgleichung $u'' = 0$) ist durch ihre beiden Randwerte eindeutig bestimmt und daher kann man die Gerade zeichnen, wenn man das Lineal an die Endpunkte anh\"{a}lt. {\em Das Lineal ist die universelle Einflussfunktion der Geraden\/}.
+
+Die  Methode der Randelemente\index{Randelemente} ist die Anwendung dieser Idee auf Fl\"{a}chentragwerke (Scheiben und Platten) oder 3-D Strukturen, wie Staumauern, \cite{Ha3}. Sie hat ihren Namen von den kurzen Geradenst\"{u}cken (Randelementen), in die der Rand der Platte oder Scheibe unterteilt wird. Eine Unterteilung des Innern wie bei den finiten Elementen ist nicht n\"{o}tig, so wie ja noch nie ein Ingenieur einen Knotenausgleich \glq im Feld\grq{} gef\"{u}hrt hat.
+
+Man kann sich die Methode als eine Mischung aus dem Drehwinkelverfahren und Einflussfunktionen vorstellen. Der Rand der Platte oder Scheibe wird in Randelemente unterteilt,  um die Randverformungen und Randkr\"{a}fte (= Funktionen) l\"{a}ngs des Randes mit Polygonz\"{u}gen darstellen zu k\"{o}nnen. Dann wird, wie beim Drehwinkelverfahren, ein Knotenausgleich in den Randknoten durchgef\"{u}hrt -- allerdings nicht iterativ, sondern in einem Schritt. Anschlie{\ss}end werden dann mit Hilfe von Einflussfunktionen aus den Verformungen des Randes und den Lagerkr\"{a}ften die Schnittgr\"{o}{\ss}en im Innern der Platte oder Scheibe berechnet.\\
+
+{\small
+{\em Auch die Methode der finiten Elemente ist in einem versteckten Sinn eine \glq Randelementmethode'\/}, denn die Einflussfunktionen $G_h(\vek y,\vek x)$ auf denen die FE-L\"{o}sung basiert werden unsichtbar aus {\em Randintegralen\/} (denselben wie in der BEM) und {\em Gebietsintegralen\/} erzeugt (ohne dass die Anwender und wohl auch die meisten Programmautoren sich dessen bewusst sind).
+
+Um das zu zeigen, m\"{u}ssen wir etwas ausholen. Jede Funktion $w(\vek x)$ kann man gem\"{a}{\ss} der Potentialtheorie\index{Potentialtheorie}, \cite{Ha3}, aus ihren Randwerten $w$ und $\partial w/\partial n$ und der 'Last' $-\Delta w$ im Feld generieren
+\begin{align} \label{Eq20}
+w(\vek x) = \! \int_{\Gamma} (g(\vek y, \vek x)\,\frac{\partial w}{\partial n}(\vek y) - \frac{\partial g(\vek y, \vek x)}{\partial n}\,w(\vek y))\,ds_{\vek y} +  \!\int_{\Omega}g(\vek y,\vek x) (- \Delta w(\vek y))\,d\Omega_{\vek y}\,.
+\end{align}
+Hier ist $g(\vek y, \vek x) = - 1/(2\,\pi)\,\ln |\vek y - \vek x|$ die Fundamentall\"{o}sung der {\em Laplace Gleichung\/} $- \Delta g = \delta(\vek y - \vek x)$.
+
+Betrachten wir ein Beispiel: Sei etwa $G_h(\vek y, \vek x)$ die N\"{a}herung (FE-L\"{o}sung) der Einflussfunktion einer vorgespannten Membran, also $G_h = 0$ auf dem Rand $\Gamma$, dann garantiert die Mathematik, dass die FE-L\"{o}sung $G_h(\vek y, \vek x)$ die folgende Integraldarstellung hat
+\begin{align}\label{Eq21}
+G_h(\vek y,\vek x) &=  \int_{\Gamma} g(\vek \xi,\vek y)\,\underset{\uparrow}{\frac{\partial G_h}{\partial n}}(\vek \xi, \vek x)\,ds_{\vek \xi} + \int_{\Omega}g(\vek \xi,\vek y) \,\delta_h(\vek \xi,\vek x)\,d\Omega_{\vek \xi}\,.
+\end{align}
+Der Wert von $G_h$ in einem Innenpunkt $\vek y$ wird also bestimmt von der Normalableitung $\partial G_h/\partial n $ auf dem Rand und der Funktion $\delta_h = - \Delta G_h$, das ist  der Flickenteppich von Elementlasten, mit denen das FE-Programm versucht das Dirac Delta nachzubilden\footnote{Bei linearen Elementen besteht das $\delta_h$ aus Linienkr\"{a}ften $l_k$ l\"{a}ngs den Kanten des Netzes, die gleich den Spr\"{u}ngen der Normalableitung von $G_h$ zwischen Elementen sind}.
+
+Wenn die Normalableitung $\partial G/\partial n$ der Original-Einflussfunktion in einer Ecke des Randes singul\"{a}r wird, dann wird das auch auf die Normalableitung $\partial G_h/\partial n$ der FE-L\"{o}sung abf\"{a}rben, es wird zu Oszillationen von $\partial G_h/\partial n$ in der Ecke kommen, und darunter leidet wegen (\ref{Eq21}) offenbar die Genauigkeit der Einflussfunktion -- in allen Punkten $\vek y$ im Innern der Membran -- und damit auch die Genauigkeit der damit berechneten FE-L\"{o}sung, denn \"{u}ber $\vek y$ wird ja nachher integriert
+\begin{align}
+w_h(\vek x) = \int_{\Omega} G_h(\vek y, \vek x)\,p(\vek y)\,d\Omega_{\vek y}\,.
+\end{align}
+{\em Singularit\"{a}ten auf dem Rand propagieren \"{u}ber diesen Mechanismus ins Innere und verringern die Qualit\"{a}t der Einflussfunktion und damit der FE-L\"{o}sung selbst, \cite{HaJa2}\/}.
+\begin{align}
+\frac{\partial G}{\partial n} \qquad \to \qquad \frac{\partial G_h}{\partial n}  \qquad \to \qquad G_h \qquad \to \qquad w_h
+\end{align}
+Nichts kann diese Kette sprengen.
+
+All dies gilt sinngem\"{a}{\ss} auch f\"{u}r Scheiben und Platten. Bei Scheiben ist es die Randverschiebung $\vek u$ und der Spannungsvektor $\vek t = \vek S\,\vek n$ (Spannungstensor mal Randnormale), die sich nach Innen fortpflanzen, \cite{Ha3} Eq. (4.8), und bei der Kirchhoffplatte sind es vier Funktionen, die Durchbiegung $w$, die Randverdrehung $\partial w/\partial n$, das Biegemoment $m_n$ (das Einspannmoment) und der Kirchhoffschub $v_n$ (die Lagerkraft), \cite{Ha3} Eq. (6.6). Bei schubweichen Platten (einem $2 \times 2$ System) sind es im Grunde dieselben vier Funktionen, \cite{HaJa2}.
+
+Ob man finite Elemente benutzt oder Randelemente ist zun\"{a}chst zweitrangig. Was die Mathematik prim\"{a}r interessiert ist, welche Integraldarstellung die L\"{o}sung hat, wie die L\"{o}sung von den Randdaten und den Lasten im Gebiet abh\"{a}ngt. Diese Frage beantwortet f\"{u}r $-\Delta w = p$ die Glg. (\ref{Eq20}) und bei Scheiben und Platten sind es die dazu analogen Glg. (4.8) und (6.6) in \cite{Ha3}. Und der Schl\"{u}ssel ist die jeweilige Fundamentall\"{o}sung -- {\em the unit response of the elastic media\/}.\\
+
+
+\begin{remark}
+Die Glg. (\ref{Eq20}) ist praktisch die Erweiterung der Gleichung (partielle Integration)
+\begin{align}
+w(x) &= w(0) + \int_{0}^{x} w'(y)\,dy = \int_{\Gamma} \ldots + \int_{\Omega} \ldots \,,
+\end{align}
+auf h\"{o}here Dimensionen. Wir halten (\ref{Eq20}) f\"{u}r den Schl\"{u}ssel zur Diffe\-ren\-tial- und Integralrechnung:  Gebiet, Rand und Funktion bilden eine Einheit und die finiten Elementen sind die logische Umsetzung dieser Idee -- deswegen sind sie so erfolgreich
+\begin{align}
+\text{Finites Element} = \text{Gebiet} + \text{Rand} + \text{Funktion}\,.
+\end{align}
+\end{remark}
+Das hat der Bauingenieur {\em Clough\/} instinktiv richtig erfasst und so ist er zu den finiten Elementen gekommen. Mathematiker oder Elektroingenieure denken nicht in {\em shapes\/}, sie h\"{a}tten die finiten Elemente nicht erfinden k\"{o}nnen. Ihnen fehlt -- man verzeihe uns das Vorurteil -- das intuitive Verst\"{a}ndnis f\"{u}r diesen Zusammenhang, das einen Bauingenieur oder Maschinenbauer auszeichnet.
+
+Es ging nicht darum, $\sin (x)$ und $\cos (x)$ durch kurze H\"{u}tchen-Funktionen zu ersetzen, das haben auch andere Autoren vorgeschlagen, sondern das Bauteilkonzept, die Idee alles in einem, das {\em tutto insieme\/}, das wie nat\"{u}rlich aus (\ref{Eq20}) erw\"{a}chst, ist die eigentliche Idee hinter den finiten Elementen und von dieser Idee geht die Faszination der finiten Elemente aus.} % Ende small
+
+

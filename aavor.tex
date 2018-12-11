@@ -1,0 +1,81 @@
+\chapter*{Vorwort}
+
+\markboth{Vorwort}{Vorwort} Die Methode der finiten Elemente ist heute aus den
+technischen B\"{u}ros und Ingenieurb\"{u}ros nicht mehr wegzudenken. Insofern hat sie eine
+beispiellose Erfolgsgeschichte hinter sich und wohl auch noch ein gutes St\"{u}ck vor sich.
+Pl\"{o}tzlich war es m\"{o}glich, Tragwerke zu analysieren, die vorher einer Berechnung nicht
+zug\"{a}nglich waren.
+
+Mit dem Erfolg kam aber auch die Kritik, denn es wurde sp\"{u}rbar, dass die Kenntnis
+der Grundlagen nicht im gleichen Sinne mitgewachsen ist, ja Pr\"{u}fingenieure klagen, dass
+die Methode zunehmend unkritisch eingesetzt wird, ohne dass die Ergebnisse in
+irgendeiner Form hinterfragt werden. Oft fehlt es an dem einfachsten Verst\"{a}ndnis f\"{u}r die
+Grenzen und M\"{o}glichkeiten der Methode.
+
+Das ist eigentlich schade, denn hinter den finiten Elementen steckt, so merkw\"{u}rdig das
+jetzt hier klingen mag, \hlq richtige\grq, klassische Statik. Die Methode der finiten
+Elemente bedeutet mehr, als dass man ein Tragwerk in kleine Elemente zerlegt, sie in
+den Knoten verbindet und die Belastung durch Knotenkr\"{a}fte ersetzt. Das ist ein beliebtes
+Modell, aber dieses Modell verk\"{u}rzt die statische Wirklichkeit in einem solchen Ma{\ss}e,
+dass es schon wieder irref\"{u}hrend ist. Zu oft wird vergessen, dass dieses Modell nur ein
+Modell 'als ob' ist.
+
+Die Unkenntnis der Grundlagen ist um so mehr zu bedauern, als die Idee hinter den
+finiten Elementen eigentlich sehr einfach ist. Es ist das klassische Prinzip der
+virtuellen Verr\"{u}ckungen: So wie ein Waagebalken ins Gleichgewicht kommt, wenn wir die
+eine Last mit der anderen Last aufwiegen, so ist es mit den finiten Elementen: In der
+linken Waagschale liegt, im \"{u}bertragenen Sinn, die urspr\"{u}ngliche Belastung $p$, und wir
+legen in die rechte Waagschale eine Ersatzlast $p_h$ so, dass bei jeder Drehung des
+Waagebalkens beide Lasten die gleiche Arbeit leisten. Das ist -- nat\"{u}rlich etwas
+verk\"{u}rzt -- die Methode der finiten Elemente.
+
+Ein Verst\"{a}ndnis f\"{u}r die Grundlagen der finiten Elemente ist Voraussetzung daf\"{u}r, dass man
+FE-Programme sinnvoll einsetzen kann, dass man Ergebnisse bewerten kann, denn erst aus dem Wissen
+um die Grundlagen kommt die n\"{o}tige Souver\"{a}nit\"{a}t und Gelassenheit im Umgang mit
+FE-Programmen.
+
+Das Ziel des Buches war es daher, die Grundlagen der finiten Elemente in einer an die
+Vorstellungswelt des Ingenieurs angepassten Sprache darzustellen, sie so
+aufzubereiten, dass die Statik hinter den finiten Elementen sichtbar wird. Dabei kam es
+uns vor allem darauf an, die Ideen zu vermitteln. Sie waren wichtig und nicht unbedingt
+die technischen Details, denn die Statik sollte im Vordergrund stehen und nicht das
+Programmieren der Elemente. Und so haben wir auch viel Wert auf illustrative Beispiele gelegt.
+
+Die finiten Elemente wurden nicht von Mathematikern sondern von Ingenieuren erfunden
+(Argyris, Clough, Zienkiewicz). In der Tradition der mittelalterlichen Baumeister wurden
+Elemente ersonnen und ausprobiert, ohne dass man die genauen Hintergr\"{u}nde gekannt h\"{a}tte.
+Die Ergebnisse waren empirisch brauchbar, und man war dankbar, dass man \"{u}berhaupt
+Antworten auf Fragen erhielt, die vorher unl\"{o}sbar waren. In einem zweiten Zeitalter, das
+man barock nennen k\"{o}nnte, wurden dann immer komplexere Elemente entwickelt, ein
+FE-Programm bot dem Benutzer 50 oder mehr verschiedene Elemente an. Die dritte Phase,
+die der Aufkl\"{a}rung, begann damit, dass sich die Mathematiker mit der Methode
+besch\"{a}ftigten und versuchten, die Hintergr\"{u}nde der Methode zu finden. In Teilen war ihr
+Bem\"{u}hen vergeblich oder extrem schwierig, da die Ingenieure in der Vergangenheit \hlq
+Kunstgriffe\grq\, angewandt hatten (reduzierte Integration, nichtkonforme Elemente,
+diskrete Kirchhoff-Elemente), die nicht in das Muster der Voraussetzungen passten. Hinzu
+kam das Problem, dass manche mathematischen Gesetze (z.B. das Maximumsprinzip) auf
+diskrete Systeme angepasst werden mussten. Zug um Zug wuchs aber die Erkenntnis, und
+heute haben zumindest Mathematiker kein schlechtes Gef\"{u}hl mehr, wenn sie sich mit den
+Grundlagen der finiten Elemente auseinandersetzen, ja es gelingt sogar jetzt zutreffende
+Voraussagen \"{u}ber die Eigenschaften eines Elements zu machen, das man analysiert hat.
+Insofern muss man anerkennen, dass zu den Grundlagen der finiten Elemente auch
+mathematische Aspekte geh\"{o}ren.
+
+Die Autoren dieses Buches sind beide Ingenieure mit mathematischem Hintergrund, die
+zwischen der Welt der angewandten Mathematik und der Praxis stehen. Mit ein Ziel dieses
+Buches ist es, dem Praktiker die mathematischen Grundlagen in einer Form nahe zu
+bringen, die es ihm erlaubt, ohne detaillierte Kenntnisse der Mathematik vertiefte Einsicht in die
+Grundlagen der Methode zu erwerben. Wenn es die letztlich unersetzliche kritische
+Besch\"{a}ftigung mit den Ergebnissen der FE-Methode unterst\"{u}tzt, hat es seinen Zweck
+erreicht.
+
+\vskip 0.2cm \noindent Im Mai 2001  \hfill {\it Friedel Hartmann, Casimir Katz}\\
+
+\begin{acknowledgement}
+Die Kolleginnen und Kollegen
+Dipl.-Ing. Baumann, Prof. Dr.-Ing. Barth, Dr.-Ing. Bellmann, Dipl.-Ing. Filus, Dipl.-Ing. Gr\"{a}tsch,
+Prof. Dr.-Ing. Holzer, Dr.rer.nat Dr.-Ing. Jahn, Dipl.-Ing. Kemmler, Dr.-Ing. Kimmich, Prof. Dr.-Ing. Pauli, Dr.-Ing. Pflanz,
+Prof. Dr.-Ing. Ramm, Prof. Dr.-Ing. Schikora, Prof. Dr.-Ing. Schnellenbach-Held,
+Dr.-Ing. Schroeter, Dipl.-Ing. v. Spiess
+haben uns tatkr\"{a}ftig unterst\"{u}tzt. Ihnen gilt unser besonderer Dank.\\
+\end{acknowledgement}

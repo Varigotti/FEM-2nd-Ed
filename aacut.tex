@@ -1,0 +1,129 @@
+Bei anderen Verformungsanteilen ist es sinngem\"{a}{\ss} dasselbe. Es sind die Standardintegrale, die wir aus der Mohrschen Arbeitsgleichung kennen.
+
+Sie sind einfach Umformungen mittels partieller Integration der Integrale
+\begin{align}
+\int_{0}^{l} - EA\,u''\,\delta u\,dx
+\end{align}
+und daher hebt sich alles in der Summe auf. Wenn man partielle integriert, dann schreibt man das Ergebnis auf die rechte Seite, hier haben wir aber die Ergebnisse am Schluss auf die linke Seite gepackt und dann muss nat\"{u}rlich alles null sein.
+Das Element
+\begin{align}
+k_{ij} = a(\Np_i,\Np_j)
+\end{align}
+einer Steifigkeitsmatrix ist die {\em Wechselwirkungsenergie\/}, oder auch virtuelle innere Energie genannt, zwischen
+den Ansatzfunktionen $\Np_i(x)$ und $\Np_j(x)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{blue}{\section{Lokale L\"{o}sung}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wenn man mit einem FE-Programm die Seilkurve berechnet, dann ist das eine wohl gerundete sch\"{o}ne Kurve und kein Polygonzug mit Ecken. Aber wir hatten doch gesagt, dass ein FE-Programm die Gleichlast durch Knotenkr\"{a}fte ersetzt, und dann m\"{u}sste doch auf dem Bildschirm ein Seileck erscheinen. Warum sieht man aber eine parabelf\"{o}rmige Kurve?
+
+Das liegt daran, dass das FE-Programm zu seinen Ergebnissen (dem Seileck) noch die lokalen L\"{o}sungen addiert. Bevor wir das diskutieren, wollen wir kurz an das Drehwinkelverfahren erinnern. Beim Drehwinkelverfahren reduzieren wir die Belastung in die Knoten, machen einen Knotenausgleich und h\"{a}ngen dann die {\em lokalen L\"{o}sungen\/}, das sind die Verformungen und Schnittkr\"{a}fte an dem beidseitig eingespannten Stab, ein, langsam wie man sagt.
+
+Genauso geht die Methode der finiten Elemente vor: Wenn das FE-Programm das Gleichungssystem $\vek K\,\vek u = \vek f $ gel\"{o}st hat, dann wei{\ss} es, wie sich die Knoten verschieben und verdrehen, wenn man die Belastung im Feld durch \"{a}quivalente Knotenkr\"{a}fte ersetzt. Das ist aber nur die halbe L\"{o}sung, denn in Wirklichkeit steht die Belastung ja drau{\ss}en im Feld. Das FE-Programm erg\"{a}nzt daher seine L\"{o}sung noch um die lokalen L\"{o}sungen, genau so, wie es auch das Drehwinkelverfahren macht.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{blue}{\section{Stabtragwerke}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Es ist nun an der Zeit, ein Wort \"{u}ber die Sonderrolle der Stabstatik in der Methode der finiten Elemente zu sagen.
+Die Anwendung der finiten Elemente auf Rahmentragwerke ist eigentlich keine FE-Methode, sondern sie ist identisch mit dem Drehwinkelverfahren.
+
+
+%----------------------------------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/UE338A}
+\caption{Lokale und globales Koordinatensystem} \label{UE338}
+\end{figure}%
+%----------------------------------------------------------------------------------------------------------
+
+{\textcolor{blue}{\subsubsection*{Beispiel}}}
+Da es wichtig ist, dieses Vorgehen zu verstehen, wollen wir die einzelnen Schritte an Hand des Systems in Abb.  \ref{UE338} erl\"{a}utern.
+
+Im ersten Schritt stellt das FE-Programm die globale, nicht reduzierte Steifigkeitsmatrix $ \bar{\vek K}_G$ der Gr\"{o}{\ss}e $9 \times 9$ auf. Es geht dabei (theoretisch) wie folgt vor:  Es schreibt das System zun\"{a}chst in entkoppelter Form (12 Gleichungen)
+\begin{align}
+\left[ \barr{c c} \vek K_1 & \vek 0 \\ \vek  0 & \vek K_2 \earr \right] \,\left[ \barr{c}\vek u_1 \\ \vek u_2 \earr \right] =\left[ \barr{c} \vek f_1 \\ \vek f_2\earr \right] + \left[ \barr{c} \vek p_1\\ \vek p_2\earr \right]
+\end{align}
+wobei $\vek K_i$ die Elementmatrizen sind und die Vektoren $\vek u_i, \vek f_i$ und $\vek p_i$ die zugeh\"{o}rigen Weg- und Kraftgr\"{o}{\ss}en an den Balkenenden und die Vektoren $\vek p_i$ die Auflagerdr\"{u}cke. Die Kopplung der Balkenendverformungen $\vek u_i$ an die Knotenverformungen $\bar{\vek u}$ kann man durch eine Matrix $\vek A$ beschreiben
+\begin{align}
+ \left[ \barr{c}\vek u_1 \\ \vek u_2 \earr \right]_{(12)} = \vek A_{(12 \times 9)}\,\bar{\vek u}_{(9)}\,.
+\end{align}
+Gleichzeitig m\"{u}ssen die Balkenendkr\"{a}fte $\vek f_i + \vek p_i$ in jedem Knoten mit den \"{a}u{\ss}eren Knotenkr\"{a}ften $\bar{\vek f}$ im Gleichgewicht sein, was gerade die Gleichung
+\begin{align}
+\vek A^T_{(9 \times 12)}\,(\left[ \barr{c} \vek f_1 \\ \vek f_2\earr \right]_{(12)} + \left[ \barr{c} \vek p_1\\ \vek p_2\earr \right]_{(12)}) = \bar{\vek f}_{(9)}
+\end{align}
+ist und so kommt man auf die Beziehung
+\begin{align}
+\vek A^T \left[ \barr{c c} \vek K_1 & \vek 0 \\ \vek  0 & \vek K_2 \earr \right]\,\vek A\,\bar{\vek u} = \bar{\vek K}_G\,\bar{\vek u} = \bar{\vek f}
+\end{align}
+wobei die Matrix links die globale, nicht reduzierte Steifigkeitsmatrix $\bar{\vek K}_G$ des Rahmens ist. Im Anschluss streicht das Programm die Spalten und Zeilen der Matrix $ \bar{\vek K}_G$, die gesperrten Freiheitsgraden entsprechen (praktisch geht es anders vor), und reduziert so die Matrix $\bar{\vek K}_G$ auf eine $5 \times 5$ Matrix $\bar{\vek K}$.
+
+Der Querstrich auf Matrizen und Vektoren soll andeuten, dass sie sich auf das globale Koordinatensystem beziehen.
+
+Im zweiten Schritt berechnet das FE-Programm f\"{u}r jedes Element die Auflagerdr\"{u}cke (= \"{a}quivalente Knotenkr\"{a}fte) aus der verteilten Belastung
+\begin{align}
+p_i^{@e} = \int_0^{\,l_e} p_e(x)\,\Np_i^{@e}(x)\,dx\,.
+\end{align}
+Die Notation ist symbolisch zu nehmen, weil $p_e(x)$ zwei Richtungen haben kann, in lokaler $x_e$- oder lokaler $z_e$-Richtung und die Einheitsverschiebungen $\Np_i^{@e}(x)$ sind entsprechend die korrespondierenden Verschiebungen, zwei in $x_e$-Richtung und vier in $z_e$-Richtung.
+
+Eine $6 \times 6$ Matrix $\vek T_e$ ($\ldots \sin\,\Np_e, \cos\,\Np_e, \ldots$), s. (\ref{Eq72}), transformiert diese Vektoren $\vek p_e$ in das globale Koordinatensystem $\bar{\vek p}_e = \vek T_e\,\vek p_e$, wo dann aus den $2 \times 6$ Komponenten die 5 Komponenten des Vektors
+\begin{align}
+\bar{\vek p} \leftarrow \{\bar{\vek p}_1,\, \bar{\vek p}_2\}
+\end{align}
+zusammengestellt werden, der die Auflagerdr\"{u}cke in die 5 Richtungen $u_i$ enth\"{a}lt.
+
+Im zentralen, dritten Schritt l\"{o}st das Programm das System
+\begin{align}\label{Eq160}
+\bar{\vek K}\,\bar{\vek u} = \bar{\vek f}_K + \bar{\vek p}
+\end{align}
+und bestimmt damit den Vektor $\bar{\vek u}$ der Knotenverschiebungen. Der Vektor $\bar{\vek f}_K$ enth\"{a}lt nur Nullen, au{\ss}er $\bar{f}_{K @3} = P$.
+
+Im vierten Schritt werden die Knotenverschiebungen $\bar{u}_i$ aus dem globalen Koordinatensystem in die lokalen Koordinatensysteme der einzelnen Elemente transformiert
+\begin{align}
+\vek u_e = \vek T_e^T \bar{\vek u} \qquad (\vek  T_e^T = \vek T_e^{-1})\,.
+\end{align}
+Im f\"{u}nften Schritt bestimmt das Programm f\"{u}r jedes Element anhand des Systems
+\begin{align}
+\vek K_e\,\vek u_e = \vek f_e + \vek p_e
+\end{align}
+den Vektor der Balkenendkr\"{a}fte $\vek f_e$
+\begin{align}
+\vek f_e = \vek K_e\,\vek u_e - \vek p_e\,,
+\end{align}
+wobei $\vek K_e$ die Elementmatrix der Gr\"{o}{\ss}e $6 \times 6$ ist. Man beachte, dass die $f_i^e$ Balkenendkr\"{a}fte sind, w\"{a}hrend die $\bar{f}_{K @i}$ in (\ref{Eq160}) Knotenkr\"{a}fte sind.
+
+Wenn man die Balkenendkr\"{a}fte $f_1^{@e}, f_2^{@e}, f_3^{@e}$ am Anfang des Elements kennt und die Streckenlast, dann kann man mit den Gleichgewichtsbedingungen die Schnittgr\"{o}{\ss}en $N(x), M(x)$ und $V(x)$ jedem Punkt $x$ des Elements berechnen.
+
+Im letzten sechsten Schritt addiert das FE-Programm schlie{\ss}lich die lokale L\"{o}sung zur FE-L\"{o}sung und kommt so zur selben L\"{o}sung wie das Drehwinkelverfahren.
+
+In einem einzelnen Balken entspricht die ganze Prozedur der Aufteilung der Biegelinie $w(x)$ in eine homogene und eine partikul\"{a}re L\"{o}sung
+\begin{align}
+w(x) = w_h(x) + w_p(x)\,,
+\end{align}
+wobei die homogene L\"{o}sung eine Entwicklung nach den Einheitsverformungen ist
+\begin{align}
+w_h(x) = \sum_i\,u_i\,\Np_i(x)\,,
+\end{align}
+und die partikul\"{a}re L\"{o}sung ist die Biegelinie, wenn die Enden des Balkens eingespannt sind.
+In Glg. (\ref{Eq159}), S. \pageref{Eq159}, haben wir diese Aufspaltung vorgenommen.
+
+Nach diesem kurzen Ausflug in die Notation $\vek K\,\vek u = \vek f_K + \vek p$  wollen wir im Folgenden zur \"{u}blichen Notation $\vek K\,\vek  u = \vek f$ zur\"{u}ckkehren, bei der die rechte Seite f\"{u}r $\vek f \equiv \vek f_K + \vek p$ steht.
+
+Wir werden auch meist die Knotenwerte mit $u_i$ bezeichnen, auch wenn es Ergebnisse aus einer Balkenberechnung sind, weil $\vek K\,\vek u = \vek f$ die Standardnotation ist.
+
+
+Die Biegelinie eines Seils ist die Einh\"{u}llende der unendlich vielen Einflussfunktionen, die jede f\"{u}r sich den Einfluss eines infinitesimalen Teils $p(y)\,dy$ der Belastung auf die Durchbiegung $w(x)$ beschreiben, s. Abb. \ref{U83},
+\beq
+w(x) = \int_0^{\,l} G(y,x)\,p(y)\,dy\,.
+\eeq
+Im Unterschied hierzu ist die FE-L\"{o}sung $w_h(x) = \vek w^T\,\vek \phi(x) $ darstellbar als eine Summe von {\em endlich vielen\/} Einflussfunktionen, die einzeln mit den \"{a}quivalenten Knotenkr\"{a}ften $f_i$ der Knoten $x_i$ gewichtet werden
+\beq
+w_h(x) =  f_1\,G_h(x_1, x) + f_2\,G_h(x_2, x) + \ldots + f_n\,G_h(x_n, x)\,,
+\eeq
+denn der Vektor $\vek w$ der Knotenwerte ist
+\begin{align}
+\vek w &= \vek K^{-1} \vek f =  \vek K^{-1} (f_1\,\vek e_1 + f_2\,\vek e_2 + \ldots + f_n\,\vek e_n) \nn \\
+&= f_1\,\vek g_1 + f_2\,\vek g_2 + \ldots + f_n\,\vek g_n = \sum_{k = 1}^n\,f_k \cdot \left [\barr{c} \phantom{.} \\  \vek g_k \\ \phantom{.} \earr \right ]
+\end{align}
+und die Spalte  $\vek g_k$ von $\vek K^{-1}$ entspricht $G_h(x_k,x)$.

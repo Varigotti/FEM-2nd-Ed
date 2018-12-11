@@ -1,0 +1,1555 @@
+\setcounter{chapter}{4}
+{\textcolor{blue}{\chapter{Platten}}}
+
+Beim \"{U}bergang zur Platte, s. Abb. \ref{U499}, wird aus der Balkengleichung $EI\,w^{IV} = p$ die biharmonische Differentialgleichung der {\em Kirchhoffplatte\/}
+\begin{align} \label{Eq13}
+ K(w,_{xxxx} + 2\, w,_{xxyy} + w,_{yyyy}) = K \Delta\Delta w = p
+\end{align}
+in deren Wechselwirkungsenergie -- wie beim Balken -- Ableitungen zweiter Ordnung, also die Kr\"{u}mmungen, stehen
+\begin{align}\label{Eq17}%\color{sectionTitleBlue}
+a(w,\delta w) = \int_{\Omega} K\,(w,_{xx}\, \delta w,_{xx} + 2\,w,_{xy}\,\delta w,_{xy} + w,_{yy}\,\delta w,_{yy})\,\,d\Omega\,,
+\end{align}
+und daher m\"{u}ssen die Ansatzfunktionen $C^1$ sein, darf es keinen Knick in der Platte geben, denn senkrecht zu einem solchen Knick, also Kr\"{u}mmungskreisradius $\rho = 0$, w\"{a}re die Kr\"{u}mmung $\kappa = 1/\rho$ unendlich. Das ist der Grund, warum Platten heute meist schubweich gerechnet werden, denn bei solchen Platten sind Knicke erlaubt, reichen also $C^0 $ Ansatzfunktionen aus.
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/U499A}  %519
+\caption{Fl\"{a}chentragwerk kommt von Fl\"{a}che und die Komplexit\"{a}t nimmt mit der Ordnung der Ableitungen zu} \label{U499}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+In der klassischen Balkenstatik ({\em Bernoulli-Balken\/}), $EI w^{IV} = p$, rechnen wir Balken {\em schubstarr\/},
+vernachl\"{a}ssigen wir die Schubverformungen aus der Querkraft. Ein Querschnitt, der vor der Verformung senkrecht zur Balkenachse steht, dreht sich mit der Achse mit, wenn sie sich neigt, er beh\"{a}lt die $90^\circ$ bei. Bei einem schubweichen Balken ({\em Timoshenko-Balken\/}), geht jedoch der Querschnitt aus dem Lot, er kippt um einen Winkel $\gamma$ gegen\"{u}ber der Senkrechten auf die geneigte Achse, s. Abb. \ref{Winkel}.
+
+Dem Bernoulli-Balken entspricht die {\em Kirchhoffplatte\/} und dem Timo\-shenko-Balken entspricht
+die schubweiche {\em Reissner-Mindlin-Platte\/}.\\
+
+\begin{itemize}
+\item schubstarr -- Bernoulli-Balken, Kirchhoff-Platte
+\item schubweich -- Timoshenko-Balken, Reissner-Mindlin-Platte
+\end{itemize}
+Die Tabellenwerke von {\em R\"{u}sch\/} \cite{Ruesch}, {\em Czerny\/} \cite{Czerny}, {\em Stiglat, Wippel} \cite{StiglatWippel} basieren auf der Kirchhoffschen Plattentheorie. Mit den finiten Elementen haben sich jedoch die Gewichte -- aus den oben genannten Gr\"{u}nden -- in Richtung der schubweichen Platte verschoben, s. Abb. \ref{Falz}.
+
+Weil bei Deckenst\"{a}rken, wie sie im Hochbau \"{u}blich sind, Schubverformungen keine Rolle spielen, ist es im Idealfall fast gleichg\"{u}ltig, ob eine Platte schubstarr oder schubweich gerechnet wird, weil sich gute schubweiche Elemente bei diesen Deckenst\"{a}rken -- von den Randbereichen der Platten vielleicht abgesehen -- wie schubstarre Elemente verhalten.
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.5\textwidth]{\Fpath/FALZ}
+\caption{Man kann eine schubstarre Platte nicht wie ein Blech falzen, eine schubweiche Platte aber schon} \label{Falz}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+\vspace{-0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Schubstarre Platten}}}\label{Schubstarre Platten}\index{schubstarre Platten}\index{Platten, schubstarr}\index{Kirchhoffplatten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Grundgr\"{o}{\ss}en der Platte, die Durchbiegung $w$, die drei Kr\"{u}mmungen $\kappa_{\,ij}$ und die drei Biegemomente $m_{\,ij}$, sind \"{u}ber ein System von sieben Differentialgleichungen miteinander verkn\"{u}pft. In Tensorschreibweise lautet dieses System
+\begin{align} \label{SystemPlatte}
+                      \kappa_{\,ij} - w,_{\,ij} &= 0\,, \qquad
+\mbox{(3 Glg.)}, \nn \\
+     K\{(1-\nu)\kappa_{\,ij} + \nu \kappa_{kk} \delta_{\,ij}\} +
+m_{\,ij} &= 0\,, \qquad \mbox{(3 Glg.)},  \\
+                         - m_{\,ij},_{ji} &= p\,, \qquad\mbox{(1 Glg.)}\,. \nn
+\end{align}
+Die Konstante
+\begin{align}
+K = \frac{E h^3}{12 (1 - \nu^2)} \qquad \mbox{$h$ = Plattenst\"{a}rke}
+\end{align}
+ist die Plattensteifigkeit und $\nu$ ist die Querdehnung ({\em Poissonsche
+Konstante\/})\index{Poissonsche Konstante}.
+
+Setzt man diese sieben Gleichungen ineinander ein, dann erh\"{a}lt man die eingangs zitierte biharmonische Differentialgleichung (\ref{Eq13}) f\"{u}r die Biegefl\"{a}che $w(x,y)$ der Platte.
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/MOMENTE}
+\caption{Schnittkr\"{a}fte in einer Platte} \label{Momente}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+Wie beim Balken sind die Momente in der Platte proportional den Kr\"{u}mmungen der Biegefl\"{a}che, s. Abb. \ref{Momente},
+\begin{align}
+    m_{xx} &= - K(w,_{xx} + \nu\, w,_{yy})\,, \quad    m_{yy} = -
+K(w,_{yy} + \nu\, w,_{xx})\,, \nn \\
+    m_{xy} &= - (1-\nu) K w,_{xy}\,,\nn
+\end{align}
+und die Querkr\"{a}fte folgen den dritten Ableitungen
+\begin{align}
+    q_x = - K(w,_{xxx} + w,_{yyx})\,, \qquad   q_y = -
+K(w,_{xxy} + w,_{yyy}) \nn \,.
+\end{align}
+Die Momente $m_{xx}$ werden durch Eisen in $x$-Richtung abgedeckt,
+und die Momente $m_{yy}$ durch Eisen in $y$-Richtung.
+Alle Schnittkr\"{a}fte sind Schnittkr\"{a}fte pro lfd. m.
+
+
+In einem schiefen Schnitt lauten die Schnittgr\"{o}{\ss}en bei Benutzung der Tensorschreibweise
+\begin{align}
+m_{nn} = m_{\,ij}\, n_i\,n_j\,, \qquad m_{nt} = m_{\,ij}\, n_i\,t_j\,, \qquad q_n = q_i\, n_i
+\,,\nn
+\end{align}
+wobei $\vek n = \{n_x,n_y\}^T$ der Normalenvektor in dem Schnitt ist und $\vek t =
+\{t_x,t_y\}^T = \{-n_y,n_x\}^T$ der dazu orthogonale Tangentenvektor. In dem Schnitt mit dem Winkel
+\begin{align}
+\tan\,2\,\varphi = \frac{2\,m_{yy}}{m_{xx} - m_{yy}}\,,
+\end{align}
+treten die Hauptmomente auf, s. Abb. \ref{U520}
+\begin{align}
+m_{I,II} = \frac{m_{xx} + m_{yy}}{2} \pm \sqrt{\left[\frac{m_{xx} - m_{yy}}{2}\right]^2 +
+m_{xy}^2}\,.
+\end{align}
+
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+%\if \bild 2 \sidecaption \fi
+\includegraphics[width=.65\textwidth]{\Fpath/U520}
+\caption{Die Hauptmomente der Platte in Abb. \ref{U499} } \label{U520}
+\end{figure}%%
+%----------------------------------------------------------------------
+{\textcolor{sectionTitleBlue}{\subsection{Querdehnung}}}\index{Querdehnung}
+Die Analogie {\em Platte-Balken\/} ist streng genommen nur dann richtig, wenn man die Querdehnung $\nu$ vernachl\"{a}ssigt, denn sie ist ja wesentlich f\"{u}r die zweiachsige Tragwirkung verantwortlich: In der Druckzone verbreitert sich der Balkenstreifen und in der Zugzone schn\"{u}rt er sich zusammen, s. Abb. \ref{Zylinder2}.
+
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.4\textwidth]{\Fpath/ZYLINDER2}
+\caption{Die Querdehnung f\"{u}hrt zur Aufweitung der Druckzone und Einschn\"{u}rung der
+Zugzone, \protect \cite{Stiglat}} \label{Zylinder2}
+\end{figure}%%
+%----------------------------------------------------------------------
+Mit gr\"{o}{\ss}er werdender Querdehnung $\nu$ nehmen die Momente in einer Platte daher zu, w\"{a}hrend die Durchbiegung und auch die Eckkraft $F$ abnehmen, s. Abb. \ref{Nue}. Die Abnahme der Durchbiegung $w$ beruht auf der Zunahme der Biegesteifigkeit $K$ mit der Zunahme von $\nu$
+\begin{align}
+K = \frac{E\,h^3}{12\,(1 - \nu^2)}\,,
+\end{align}
+was z.B. bei einer Stahlbetonplatte aus C 20/25 mit der St\"{a}rke $h = 0.2$ m bedeutet, dass die Steifigkeit von $K_0 = 20\,000\,\, \mbox{kNm}^2$ ($\nu = 0$) auf $K_{0.2} = 20\,833 \,\, \mbox{kNm}^2$ ($\nu = 0.2$) anw\"{a}chst. Dem Verh\"{a}ltnis der Steifigkeiten $K_0/K_{0.2} = 0.96$ entspricht das Verh\"{a}ltnis der Durchbiegungen $w_{0.2}/w_0 = 1.506/1.568 = 0.96$ in Feldmitte.
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.99\textwidth]{\Fpath/NUE}
+\caption{Einfluss der Querdehnung $\nu$ auf die Biegemomente, die Durchbiegung in
+Feldmitte und die Eckkr\"{a}fte $F$ bei einer gelenkig gelagerten Platte. Alle Werte sind
+bezogen auf die Werte f\"{u}r $\nu = 0$. Die Momente steigen mit $\nu$ an, w\"{a}hrend die
+Eckkraft $F$ und die Durchbiegung $w$ kleiner werden} \label{Nue}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+F\"{u}r die meisten Materialien liegt $\nu$ zwischen $0.0$ und $0.3$. F\"{u}r Stahlbeton wird in den Normen ein Wert von 0.2 f\"{u}r den ungerissenen Zustand empfohlen. Viele Tafelwerke basieren auf $\nu = 0.0$, und man erh\"{a}lt die Schnittmomente f\"{u}r $\nu \neq 0$ gem\"{a}{\ss} den Formeln
+\begin{align}
+m_{xx}(\nu)  = m_{xx}(0) + \nu \,m_{yy}(0)\,, \qquad m_{yy}(\nu)  = m_{yy}(0)  + \nu
+\,m_{xx}(0)\,.
+\end{align}
+
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.95\textwidth]{\Fpath/MNT2}
+\caption{ Zerlegung des Torsionsmoments in Randkr\"{a}fte} \label{Mnt}
+\end{figure}%%
+%------------------------------------------------------------------
+
+{\textcolor{sectionTitleBlue}{\subsection{Gleichgewicht}}}\index{Gleichgewicht}
+
+Die Kraft, die eine schubstarre Platte im Gleichgewicht h\"{a}lt, ist nicht die Querkraft, sondern der {\em Kirchhoffschub}\index{Kirchhoffschub}. Der Kirchhoffschub $v_n$ ist die Querkraft $q_n$ plus der Ableitung des Torsionsmomentes\footnote{es gleicht seitlich in die Platte gesteckten Korkenziehern} $m_{nt}$ nach der laufenden Koordinate $s$ (Bogenl\"{a}nge) des Schnittufers
+\begin{align}
+v_n &= q_n + \frac{d m_{nt}}{ds}\,,
+\end{align}
+also bei vertikalem ($|$) bzw. horizontalem (-- ) Rand
+\begin{align}
+v_x &= q_x + \frac{d m_{xy}}{dy} \quad \quad v_y = q_y + \frac{d m_{xy}}{dx}\,.
+\end{align}
+{\em Czerny\/} \cite{Czerny} benutzt die Bezeichnung $\bar q_n$ f\"{u}r den Kirchhoffschub und $q_n$ f\"{u}r die Querkraft in Richtung der Randnormalen $\vek n = \{n_x, n_y\}^T$. Wie es zur Zusatzkraft
+\begin{align}
+\frac{d m_{nt} }{ds} = \frac{\mbox{kNm/m }}{\mbox{m }} = \mbox{kN/m}
+\end{align}
+kommt, versteht man, wenn man das Drillmoment am Rand abschnittsweise (alle $\Delta x$ m) in Kr\"{a}ftepaare zerlegt, s. Abb. \ref{Mnt}, und die ab- und aufw\"{a}rtsgerichteten Kr\"{a}fte an den Abschnittsgrenzen gegeneinander aufrechnet. Was \"{u}brigbleibt, sind die Zusatzkr\"{a}fte, die $q_n$ zu $v_n$ erweitern.
+
+In den FE-Knotenkr\"{a}ften ist automatisch \glq alles\grq\ enthalten, was nur irgendwie zur $\sum V$ beitr\"{a}gt, und daher muss man sich nicht um den Unterschied zwischen $q_n$ und $v_n$ k\"{u}mmern. Dies gilt auch dann, wenn das FE-Programm die Knotenkr\"{a}fte [kN] in verteilte Lagerkr\"{a}fte [kN/m] umrechnet. Diese entsprechen dann dem Kirchhoffschub $v_n$ und nicht der Querkraft $q_n$. FE-Programme rechnen also richtig mit $v_n$.
+
+Dass wir den Schubspannungsnachweis mit $q_n$ statt mit $v_n$ f\"{u}hren, kann man vielleicht damit rechtfertigen, dass der Anteil des Torsionsmoments $m_{nt}$ schon durch die Biegebewehrung abgedeckt wird, $m_{xx},m_{xy},m_{yy} \,\,\rightarrow\,\,m_I,m_{II}\,\,\rightarrow\,\,as-x, as-y$.
+
+An freien R\"{a}ndern ist die Querkraft im \"{u}brigen nicht null, der Kirchhoffschub aber nat\"{u}rlich schon. An einem freien vertikalen Rand  sind z.B. die Querkr\"{a}fte $q_x$ und Torsionsmomente $m_{xy}$ so aufeinander abgestimmt, dass die \"{A}nderung von $m_{xy}$ pro Schrittl\"{a}nge $dy$ durch $q_x$ ausgeglichen wird, so dass gesamthaft der Kirchhoffschub sich zu null ergibt
+\begin{align}
+v_x = q_x +  \frac{d m_{xy}}{dy} = 0 \,.
+\end{align}
+Nur l\"{a}ngs eingespannter R\"{a}nder f\"{a}llt, wegen $m_{nt} = 0$, die Querkraft $q_n$ mit dem Kirchhoffschub $v_n$ zusammen. Bei allen anderen Lagerbedingungen ist $q_n \neq v_n$. Der Unterschied ist allerdings in der Regel nicht sehr gro{\ss}, wie man an Hand der {\em Czerny-Tafeln} erkennt, \cite{Czerny}.
+
+
+
+{\textcolor{sectionTitleBlue}{\subsection{Eckkraft}}}\index{Eckkraft}
+An den Ecken addieren sich die Kr\"{a}fte $d\,mn_t/ds$ von beiden Seiten zur Eckkraft $F$ auf. Man spricht von {\em drillsteifer}\index{drillsteife Lagerung} bzw. {\em drillweicher} Lagerung\index{drillweiche Lagerung} einer Decke, je nachdem ob Zuganker diese Eckkraft aufnehmen oder nicht. Bei drillsteifer Lagerung verlaufen die Hauptmomente zu den Ecken hin unter $45^\circ$. Fehlen die Zuganker, dann muss iterativ eine Gleichgewichtslage der Platte gefunden werden, bei der sich die Ecken von den Lagern abheben.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Der Weggr\"{o}{\ss}enansatz}}}\label{Weggroessenansatz}\index{Weggr\"{o}{\ss}enansatz}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In dem idealen FE-Modell einer Platte beschreiben die Einheitsdurchbiegungen $\Np_i(x,y)$ der Knoten die Situation, dass ein Knoten um eine L\"{a}ngeneinheit ausgelenkt wird, $w = 1$, oder um einen Winkel von $45^\circ$ um die $y$- oder $x$-Achse verdreht wird, $w,_x = 1$ und $w,_y = 1$.
+
+Aus diesen Einheitsverformungen sch\"{o}pft die Platte ihre Bewegungsm\"{o}g\-lich\-keiten, und der gesamte FE-Ansatz ist die Entwicklung der Biegefl\"{a}che $w$ nach diesen $3n$ Einheitsverformungen
+\begin{align}
+w_{h}(x,y) = \sum_{i = 1}^{3n} w_i \, \Np_i(x,y)\,,
+\end{align}
+wobei die Freiheitsgrade $w_i$ im Dreier-Rhythmus $w_1 = w, w_2 = w,_x, w_3 = w,_y$ etc. die Knotendurchbiegungen und Knotenverdrehungen der $n$ Knoten sind.
+
+Jede dieser Einheitsverformungen $\Np_i$ wird von einem gewissen Satz von Kr\"{a}ften erzeugt, die wir die {\em shape forces\/} $p_{\,i}$ nennen, und zu einem $3n$-gliedrigen FE-Ansatz geh\"{o}rt daher in der Summe der Lastfall
+\begin{align}
+p_{h} = \sum_{i = 1}^{3n} w_i \, p_{\,i} \,,
+\end{align}
+der so austariert wird, dass er dem Originallastfall bez\"{u}glich der $3n$ Einheitsverformungen $\Np_i$ \"{a}quivalent ist
+\begin{align} \label{ArbeitE}
+\delta A_a(p_{h},\Np_i) = \delta A_a(p,\Np_i) \qquad i = 1,2,\ldots 3n\,.
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Elemente}}}\index{Elemente, Platten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die nat\"{u}rliche Wahl f\"{u}r ein Plattenelement w\"{a}re ein dreiecksf\"{o}rmiges Element mit den Freiheitsgraden $w,w,_x,w,_y$ in den drei Ecken und einem kubischen Ansatz f\"{u}r die Durchbiegung, was lineare Momentenverl\"{a}ufe und konstante Querkr\"{a}fte im Element ergeben w\"{u}rde. Aber weil ein vollst\"{a}ndiges kubisches Polynom aus 10 Termen besteht, wie man am {\em Pascalschen Dreieck\/} ablesen kann, ist dieser Weg verbaut. Das Element w\"{a}re auch nicht konform, d.h. auf dem Bildschirm w\"{u}rde man Knicke in der Biegefl\"{a}che sehen.
+
+Ein konformes und rechteckiges Element mit je vier Freiheitsgraden $w, w,_x, w,_y, w,_{xy}$ in den vier Ecken erh\"{a}lt man mit dem {\em Produktansatz\/}\index{Produktansatz}
+\begin{align}\label{Balk}
+\Np_{..}^e(x,y) = \Np_i(x)\,\Np_j(y) \qquad i,j   = 1,2,3,4\,,
+\end{align}
+der auf den Einheitsverformungen $\Np_i(x)$ des Balkens basiert
+\begin{align}
+\parbox{5cm}{
+\begin{align}
+\Np_1(x) &= 1 - \frac{3x^2}{l^2} + \frac{2x^3}{l^3} \nn \\
+\Np_2(x) &= - x + \frac{2x^2}{l} - \frac{x^3}{l^2} \nn
+\end{align}
+}
+\parbox{5cm}{
+\begin{align}
+\Np_3(x) &= \frac{3x^2}{l^2} - \frac{2x^3}{l^3}\nn \\
+\Np_4(x) &= \frac{x^2}{l} - \frac{x^3}{l^2}\,.\nn
+\end{align}
+}
+\end{align}
+Aber ein solches Element ist leider auf rechteckige Platten beschr\"{a}nkt; zudem st\"{o}rt der Freiheitsgrad $w,_{xy}$
+bei der Kopplung mit anderen Bauteilen.
+
+Ein echtes isoparametrisches, konformes Viereckelement -- das auch konform bleibt, wenn man die Berandung beliebig w\"{a}hlt -- bekommt man nur, wenn auch die Darstellung des Elements $C^1$ ist, denn nach der Kettenregel\index{$C^1$-Elemente}
+\begin{align}
+w,_x = w,_\xi\, \xi,_x + w,_\eta \, \eta,_x \qquad \xi, \eta = \mbox{Koordinaten des
+Masterelements}
+\end{align}
+ist $w,_x$ nur stetig, wenn auch die Ableitungen $\xi,_x$ und $\eta,_x$, etc., der bildgebenden Funktionen $x(\xi,\eta)$ und $y(\xi,\eta)$ und ihrer Kehrfunktionen $\xi(x,y) $ und $\eta(x,y)$ stetig sind, was bedeutet, dass die Koordinatenlinien $\xi = const.$ und $\eta = const.$ an den Elementgrenzen keine Knicke haben d\"{u}rfen, sondern glatt wie die Wellenlinien im Sand, ineinander \"{u}bergehen m\"{u}ssen. Das ist numerisch nur aufwendig zu realisieren.
+
+{\textcolor{sectionTitleBlue}{\section{Steifigkeitsmatrizen}}}\index{Steifigkeitsmatrizen, Platten}
+Haben wir diese H\"{u}rden \"{u}berwunden, und konforme Elemente konstruiert, dann sind die Elemente $k_{\,ij}^e$ der Steifigkeitsmatrix eines Elements die Wechselwirkungsenergien,  s. (\ref{Eq17}),
+\begin{align}
+k_{\,ij}^e = a(\Np_i^e ,\Np_j^e)
+\end{align}
+zwischen den Element-Einheitsverformungen $\Np_i^e$ der Knoten.
+
+Das Element $k_{ii}^e$ auf der Diagonalen ist die \"{a}quivalente Knotenkraft, die n\"{o}tig ist, um den Knoten auszulenken oder zu verdrehen, $w_i = 1$, und die Elemente $k_{ij}^e$ in derselben Spalte, also oberhalb und unterhalb von $k_{ii}^e$, sind die \"{a}quivalenten Knotenkr\"{a}fte, die daf\"{u}r sorgen, dass die Bewegung an den umliegenden Knoten zum Erliegen kommt\footnote{Also die Arbeiten, die die Bremskr\"{a}fte auf dem Weg $\Np_i$ leisten}.
+
+Die Wechselwirkungsenergie (\ref{Eq17}) zweier Biegefl\"{a}chen $w$ und $ \delta w$ ist das Skalarprodukt des Momententensors $\vek M = [m_{\,ij}]$ von $w$ mit dem Kr\"{u}mmungstensor $\vek \delta\vek K = [\delta \kappa_{\,ij}]$ von $\delta w$ (hier in Tensornotation)
+\begin{align}
+a(w,\delta w) &= \int_{\Omega}\vek M \dotprod \vek  \delta \vek K
+\,d\Omega= \int_{\Omega} m_{\,ij}\,\delta \kappa_{\,ij}\,d\Omega
+ \end{align}
+oder, in einer \"{a}quivalenten Notation, als das Skalarprodukt zwischen dem Vektor $\vek m =
+\{m_{xx},m_{yy},m_{xy}\}^T$ und dem Vektor $\vek  \delta \vek \kappa =
+\{\delta \kappa_{xx},\delta \kappa_{yy},2\,\delta \kappa_{xy}\}^T$
+\begin{align}
+a(w,\delta w) &=\int_{\Omega} \vek m \dotprod  \vek  \delta \vek \kappa \,d\Omega =
+ \int_{\Omega}[m_{xx} \delta \kappa_{xx} + 2 \,m_{xy} \delta \kappa_{xy}
++ m_{yy} \delta \kappa_{yy}]\,d\Omega\,,
+\end{align}
+wobei der letzteren Schreibweise in der FE-Literatur wieder der Vorzug gegeben wird. Der Elastizit\"{a}tstensor der Platte wird in der FE-Literatur zu einer $3 \times 3$-Matrix
+$\vek D$
+\begin{align}\label{MatD}
+\underbrace{\left[\barr {c} m_{xx} \\  m_{yy} \\  m_{xy} \earr\right]}_{\vek m} = \underbrace{\left [\barr {c c c} K & \nu \,K & 0 \\
+\nu\,K & K & 0 \\ 0 & 0 & (1-\nu)\,K/2 \earr \right]}_{\vek D} \underbrace{\left[\barr {c} \kappa_{xx} \\
+\kappa_{yy} \\  2\,\kappa_{xy} \earr\right]}_{\vek \kappa}\,.
+\end{align}
+Bezeichne $\vek m_i$ und $\vek \kappa_i$ den \glq Momenten\grq - und \glq Kr\"{u}mmungsvektor\grq\ der Ansatzfunktion\footnote{Der obere Index $e$ kennzeichnet die lokalen Ansatzfunktionen auf dem Element, im Gegensatz zu den globalen Ansatzfunktionen $\Np_i$, die durch Fortsetzung der $\Np_i^e$ entstehen.} $\Np_i^e $, so sind also die Elemente der Elementsteifigkeitsmatrix die \"{U}berlagerung dieser Vektoren
+\begin{align}
+k^e_{\,ij} &= \int_{\Omega_e} \vek m_i \dotprod \vek \kappa_j\,d\Omega = \int_{\Omega_e}
+\vek m_i^T \vek \kappa_j\,d\Omega = \int_{\Omega_e} (\vek D\,\vek \kappa_i)^T \,\vek
+\kappa_j
+\,d\Omega \\
+&= \int_{\Omega_e} \vek \kappa_i^T \vek D\, \vek \kappa_j\,d\Omega
+\end{align}
+und die Elementsteifigkeitsmatrix eines Elements mit $n$ Freiheitsgraden, also $n$ Ansatzfunktionen, ergibt sich so zu
+\begin{align}
+\vek K^e_{(n \times n)} = \int_{\Omega_e} \vek B_{(n \times 3)}^T \vek D_{(3 \times 3)}
+\,\vek B_{(3 \times n)}\,d\Omega\,,
+\end{align}
+wobei in der Zeile $i$ der Matrix $\vek B$ die Kr\"{u}mmungen $\kappa_{xx}, \kappa_{yy},
+2\,\kappa_{xy}$ der Biegefl\"{a}che $\Np_i^e $ stehen.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Die Kinematik schubstarrer Platten}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Das {\em handicap\/} der schubstarren Platte ist ihre geringere innere Flexibilit\"{a}t. Was nicht hei{\ss}t, dass sich die schubstarre Platte weniger durchbiegt als eine schubweich gerechnete Platte -- die Verformungen sind nahezu gleich -- sondern es meint ihr Verhalten, wenn man sie \"{u}ber eine Ecke biegt oder ihr schnelle Richtungswechsel auf kurzer Distanz aufzwingen will, s. Abb. \ref{U472}. Solchen Bewegungen folgt sie nur ungern.
+%----------------------------------------------------------------------------------------------------------
+\begin{table}
+\caption{ Werden diese Innenwinkel \"{u}berschritten, werden die Momente bzw. Lagerkr\"{a}fte
+einer schubstarren Platte singul\"{a}r, e = eingespannt, f = frei, g = gelenkig, \protect\cite{Melzer}.} \label{TabPlatte2}
+\begin{tabular}{c c c }
+\noalign{\hrule\smallskip}
+ \multicolumn{3}{ c }{Kritische Winkel f\"{u}r die Kirchhoffplatte}\\
+\noalign{\hrule\smallskip}
+  Lagerwechsel &Momente &Lagerkraft \\
+\noalign{\hrule\smallskip}
+  e/e &$180^\circ$ &$126^\circ$\\
+  e/g &$129^\circ$ &$90^\circ$\\
+  e/f &$95^\circ$ &$52^\circ$\\
+  g/g &$90^\circ$ &$60^\circ$\\
+  g/f &$90^\circ$ &$51^\circ$\\
+  f/f &$180^\circ$ &$78^\circ$\\
+\noalign{\hrule\smallskip}
+\end{tabular}
+ \end{table}\label{KritK}
+%----------------------------------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------------------
+\begin{figure}
+\centering
+\includegraphics[width=0.85\textwidth]{\Fpath/U472A}
+\caption{Blick auf eine Deckenplatte -- ein kleiner Versatz in den tragenden Innenw\"{a}nden und die Folgen.}
+\label{U472}%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+Eine schubweiche Platte hat da -- im begrenzten Umfang -- etwas mehr M\"{o}glichkeiten. Sie kann sich wehren indem z.B. der Querschnitt kippt, ohne dass man das der Platte von au{\ss}en ansieht. Theoretisch kann Sie dabei flach liegen bleiben, s. Abb. \ref{RMElement}, aber sie kann auch, etwa an einer Einspannstelle, mit einem Knick nach unten weglaufen.
+
+Dieses (relativ) starre Verhalten bringt die schubstarre Platte immer dann in N\"{o}te, wenn die Lagerkanten schief aufeinander zulaufen oder Lagerbedingungen wechseln oder einfach die Eckenwinkel zu gro{\ss} sind, wie man in Tabelle \ref{TabPlatte2} ablesen kann.
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/PBRIDGED}
+\caption{In den stumpfen Ecken der Plattenbr\"{u}cke werden die Lagerkr\"{a}fte und auch die
+Schnittmomente $m_{xx}$ unendlich gro{\ss}} \label{PBridge}
+\end{figure}%%
+%------------------------------------------------------------------
+
+Teilweise sind diese Singularit\"{a}ten unphysikalisch, also aus statischer Sicht nicht nachvollziehbar. Das bekannteste Beispiel daf\"{u}r sind die Singularit\"{a}ten in gelenkig gelagerten Ecken mit Eckenwinkel gr\"{o}{\ss}er $90^\circ$ (Trapezplatten). Weil in solchen Ecken nicht nur die Durchbiegung null ist, sondern auch die Drehungen um die beiden Koordinatenachsen,
+\begin{align}
+w = w,_x = w,_y = 0\,,
+\end{align}
+stellt eine solche Ecke eine punktf\"{o}rmige Einspannung dar.
+
+Hierher geh\"{o}ren auch die schiefen Plattenbr\"{u}cken, die von stumpfer Ecke zu stumpfer Ecke tragen. Ungl\"{u}cklicherweise werden gerade in den stumpfen Ecken die Auflagerkr\"{a}fte und die Schnittmomente singul\"{a}r, s. Abb. \ref{PBridge}.
+
+In den stumpfen Ecken sollte man daher die Verdrehung der Platte $w,_x$ tangential zum Lagerrand freigeben. Gelenkige Lagerung hei{\ss}t ja am oberen und unteren Rand $w = m_{yy} = 0$. Wenn aber l\"{a}ngs der $x$-Achse die Durchbiegung $w = 0$ ist, dann ist auch die Ableitung null, $\partial w/\partial x = w,_x = 0$, und deswegen setzt man bei einer Kirchhoffplatte in den Lagerknoten -- bei dieser Orientierung des Randes -- die Verdrehung $w,_x = 0$. Wenn man aber die Verdrehung in dem Eckknoten entsperrt, sie frei gibt, mildert man deutlich die Effekte, die in solchen Ecken auftreten.
+
+
+Generell sollte man bei schubstarren aber auch bei schubweichen Platten immer die Nachgiebigkeit der Lager mit ansetzen, weil so die negativen Effekte, die aus kinematisch schwierigen Lagerbedingungen herr\"{u}hren, ged\"{a}mpft, wenn nicht gar beseitigt werden k\"{o}nnen.
+
+Was passieren kann, wenn ein Randknoten nur leicht aus der Flucht ist, illustrieren die Abb. \ref{Richtlinie16},
+\ref{Richtlinie17} und \ref{Richtlinie18}.
+%----------------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\includegraphics[width=0.8\textwidth]{\Fpath/Richtlinie16}}
+\caption{Ein kleiner Fehler in der Plazierung eines Randknotens f\"{u}hrt zu Singularit\"{a}ten in den Momenten, \textbf{ a)} Platte, \textbf{ b)} Hauptmomente}
+\label{Richtlinie16}%
+%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\includegraphics[width=0.8\textwidth]{\Fpath/Richtlinie17}}
+\caption{Die Einflussfunktionen f\"{u}r das Einspannmoment in zwei nahe beieinander liegenden Randpunkten unterscheiden sich stark}
+\label{Richtlinie17}%
+%
+\end{figure}%
+%----------------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\includegraphics[width=0.8\textwidth]{\Fpath/Richtlinie18}}
+\caption{Dieselben Einflussfunktionen, nachdem die Lage des Knotens korrigiert wurde}
+\label{Richtlinie18}%
+%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Pollution}}}
+Der englische Begriff {\em pollution\/}\index{pollution} meint das Ph\"{a}nomen, dass die L\"{o}sung in einem Teil $A$ des Tragwerks von Fehlerquellen, die in einem abliegenden Teil $B$ auftreten, negativ beeinflusst wird. Bei Fl\"{a}chentragwerken haben die Einflussfunktionen mit diesem Effekt zu k\"{a}mpfen wie z.B. bei einer schr\"{a}gen Plattenbr\"{u}cke, s. Abb. \ref{PBridge}. Der Ingenieur wird die Singularit\"{a}ten in den stumpfen Ecken mit einem gewissen Abstand betrachten, \glq das Material ist kl\"{u}ger\grq, und er sieht, von der \glq Intelligenz\grq{} der Platte \"{u}berzeugt, daher keinen Grund die Momente der FE-L\"{o}sung in der Plattenmitte anzuzweifeln.
+
+Tatsache ist jedoch, dass die Singularit\"{a}ten in den Ecken auch die Ergebnisse im Feld verschlechtern. Das liegt daran, dass {\em alle\/} Einflussfunktionen prim\"{a}r vom Rand her leben\footnote{Man denke an ein Lineal. Um zwei Punkte zu verbinden, legt man das Lineal an die Endpunkte der Geraden an. Fehler in den Randdaten propagieren nach Innen} (die FEM ist an dieser Stelle mit der BEM identisch) und wenn die Randdaten ungenau sind oder singul\"{a}r werden, dann hat das einen negativen Einfluss auf die G\"{u}te der Einflussfunktionen -- gleichg\"{u}ltig wo der Aufpunkt liegt, wenn nat\"{u}rlich auch mit wachsender Distanz zum Rand negative Einfl\"{u}sse ged\"{a}mpft werden, \cite{HaJa2}.
+
+%{\Fpath/U288A}
+%---------------------------------------------------------------------------------
+\begin{figure}
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/U547}
+\caption{Stahlbetondecke \textbf{ a)} Unterkonstruktion \textbf{ b)} Einflussfunktion f\"{u}r $m_{xx}$ \textbf{ c)} Fl\"{a}chenlast in 3-D Darstellung. Die Steifigkeiten der Platte und der Unterkonstruktion m\"{u}ssen richtig erfasst werden, damit die  Einflussfunktion nicht verf\"{a}lscht wird und die Auswertung einen realistischen Wert f\"{u}r das Moment $m_{xx}$ im Aufpunkt liefert}
+\label{U547}%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+Es lohnt sich also, in solchen Ecken das Netz zu verfeinern, denn w\"{a}hrend die reale Platte die Singularit\"{a}ten durch Gegenbewegungen abbauen kann, muss das FE-Modell mit den Singularit\"{a}ten leben.
+
+Singularit\"{a}ten treten bei Fl\"{a}chentragwerken praktisch in jeder Ecke auf. Es ist einfach eine Ma{\ss}stabsfrage -- wie genau schaut man hin. Und dann fallen die St\"{o}rungen nat\"{u}rlich unterschiedlich heftig aus. \glq Echte\grq\ Singularit\"{a}ten wie bei der schiefen Plattenbr\"{u}cke sind nicht so h\"{a}ufig und ein guter Tragwerksplaner muss nicht erst durch das FE-Programm auf Problemzonen hingewiesen werden.
+
+In der Praxis d\"{u}rften die Auswirkungen von Singularit\"{a}ten in der Regel auch nicht so dramatisch sein, wie man das nach diesen Hinweisen vielleicht vermuten k\"{o}nnte, denn im Bauwesen sind die Toleranzen doch relativ gro{\ss} und der erfahrene Ingenieur hat zudem ein gut entwickeltes Gesp\"{u}r daf\"{u}r, was glaubhaft ist und was nicht.
+
+Schwerwiegender als die numerischen Fehler in den Einflussfunktionen sind dann doch eher die {\em Modellfehler\/}. Auch dann ist die Kommunikation zwischen der Belastung und dem Aufpunkt gest\"{o}rt, \"{u}bermitteln die Einflussfunktionen das falsche Signal, weil sie nicht zum Tragwerk passen, s. Abb. \ref{U547}.
+
+Dazu noch eine Anmerkung: Im Massivbau wird zwischen {\em Biegebereichen\/}\index{Biegebereich} und {\em Diskontinuit\"{a}tsbereichen\/} \index{Diskontinuit\"{a}tsbereich} unterschieden. Die Bemessung von Biegebereichen mag einfacher sein als die von Diskontinuit\"{a}tsbereichen, aber es ist nicht gesagt, dass die Schnittkr\"{a}fte in Biegebereichen automatisch genauer sind. Wenn die Einflussfunktionen f\"{u}r die Schnittgr\"{o}{\ss}en in dem Biegebereich auf falschen Steifigkeiten beruhen -- und das gilt f\"{u}r den ganzen (!) Weg zwischen Belastung und Aufpunkt -- dann sind auch die Schnittgr\"{o}{\ss}en in einem Biegebereich falsch.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Schubweiche Platten}}}\label{Schubweiche Platten}\index{schubweiche Platten}\index{Platten, schubweich}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Schubweiche Platten bilden unter Linienlasten Knicke aus wie in Abb. \ref{Schubtraeger}. Erst die Gleitung $\gamma = w/0.5\,l$ weckt die Schubspannung $\tau = G \gamma$, die dann als Querkraft $ V = \tau A = G A \gamma$ der Einzelkraft das Gleichgewicht h\"{a}lt. Bei einer Streckenlast kommt es ebenfalls zu einer -- bis zur Balkenmitte stetig zunehmenden Gleitung -- die insgesamt zu einer wohlgerundeten Biegelinie, einem Polynom 2. Grades, f\"{u}hrt. Bei schubweichen Platten st\"{o}rt es also nicht, wenn die Einheitsverformungen Knicke aufweisen, $C^0$-Elemente reichen daher aus, s. Abb. \ref{Mindlin}.
+
+Die Kinematik der schubweichen Platte wird von drei Gr\"{o}{\ss}en bestimmt, der {\em Durchbiegung} und den {\em  Verdrehungen} der Schnittfl\"{a}che in Richtung der $x$- bzw. $y$-Achse, s. Abb. \ref{Winkel},
+\begin{align}
+w \quad \theta_x \quad \theta_y \,.
+\end{align}
+Man nennt die Ma{\ss}e
+\begin{align}
+\gamma_x = w,_x + \, \theta_x \qquad \gamma_y = w,_y + \, \theta_y
+\end{align}
+die {\em Gleitung\/}\index{Gleitung}. Bei der Kirchhoffplatte sind die Gleitungen null.
+
+Die drei Differentialgleichungen der schubweichen Platte lauten in Tensorschreibweise
+\begin{align}
+K ( 1- \nu) \{ - ( \frac{1}{2} (\theta_{\alpha,\beta} &+ \theta_{\beta,\alpha} )
+ + \frac{\nu}{1 - \nu}\, \theta_{\gamma,\gamma} \, \delta_{\alpha \beta} ),_\beta \nn \\
+&+ \bar{\lambda}^2 (\theta_\alpha + w,_\alpha) \} = \frac{\nu}{1-\nu} \frac{1}{\bar{\lambda}^2}\, p,_\alpha \qquad \alpha = 1,2\\
+&- \frac{1}{2} K (1 - \nu) \bar{\lambda}^2 (\theta_\alpha + w,_\alpha),_\alpha = p
+\end{align}
+mit
+\begin{align}
+K = \frac{E h^3}{12 (1- \nu^2)} \,,\qquad \bar \lambda^2  = \frac{10}{h^2}\qquad h =
+\mbox{Plattenst\"{a}rke}\,.
+\end{align}
+Dies ist ein System von drei partiellen Differentialgleichungen zweiter Ordnung f\"{u}r die drei Gr\"{o}{\ss}en $w, \theta_x, \theta_y$. Auf der rechten Seite steht der Gradient $\nabla p = \{p,_x, p,_y\}^T$ der vertikalen Belastung in $x$- und $y$-Richtung und in der dritten Gleichung steht die vertikale Belastung $p$ selbst. Bei konstanter Belastung $p$ ist der Gradient $\nabla p$ null.
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/SCHUBTRAEGER}
+\caption{Schubtr\"{a}ger {\bf a)} unter Streckenlast und {\bf b)} unter einer Einzelkraft}
+\label{Schubtraeger}
+\end{figure}%%
+%------------------------------------------------------------------
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/MINDLIN}
+\caption{Eine schubweiche Platte darf Knicke haben} \label{Mindlin}
+\end{figure}%%
+%------------------------------------------------------------------
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.4\textwidth]{\Fpath/WINKEL}
+\caption{Die Gleitung $\gamma$} \label{Winkel}
+\end{figure}%%
+%------------------------------------------------------------------
+
+Man muss diese drei Komponenten $w, \theta_x, \theta_y$ so \"{a}hnlich lesen, wie die drei Verschiebungskomponenten $u, v, w$ eines elastischen Kontinuums. So wie wir dort die Komponenten zu einem Vektor $\vek u$ zusammenfassen, so k\"{o}nnen wir hier einen entsprechenden Vektor
+\begin{align}\label{A51Vektor}
+\vek  u(x,y) = \{ w(x,y), \theta_x(x,y), \theta_y(x,y) \}^T
+\end{align}
+einf\"{u}hren, der die Verformungsanteile einer schubweichen Platte enth\"{a}lt. Es ist kein echter Verformungsvektor, weil $\vek  x + \vek u$ nicht die Lage des Punktes $\vek x$ nach der Verformung ist -- die Koordinaten der neuen Lage $\vek x'$ berechnen sich vielmehr gem\"{a}{\ss} der Formel
+\begin{align}
+x' =  \theta_x \, z \qquad y' =  \theta_y \, z \qquad z' =  w
+\end{align}
+-- sondern der Vektor $\vek u$ stellt einfach die {\em Liste} der relevanten Verformungsanteile dar.
+
+Die Biegemomente in der Platte sind proportional zu den Ableitungen der Verdrehungen der Querschnitte ($\sim$ Kr\"{u}mmungen)
+\begin{align} \label{Momente1}
+    m_{xx} &= K\,(\theta_{x,x} + \nu \,\theta_{y,y})\,, \qquad    m_{yy} =
+K\,(\theta_{y,y} + \nu \,\theta_{x,x})\,, \nn \\
+    m_{xy} &= (1-\nu)\, K \,(\theta_{x,y} + \, \theta_{y,x})\,,
+\end{align}
+w\"{a}hrend in die Querkr\"{a}fte auch noch die Ableitungen von $w$ eingehen
+\begin{align}
+q_x = K \,\frac{1 - \nu}{2}\, \bar{\lambda}^2\, (\theta_x + w,_x)\,, \qquad q_y = K\,
+\frac{1 - \nu}{2}\, \bar{\lambda}^2\, (\theta_y + w,_y) \,.
+\end{align}
+Hier sieht man deutlich, dass die Querkr\"{a}fte, wie bei einer Konsole, aus den Gleitungen, aus den Schubverformungen $\theta_x$ und $\theta_y$ resultieren.
+
+Anders als die schubstarre Platte kann eine schubweiche Platte Einzelkr\"{a}fte nicht
+festhalten; das hat sie mit der Scheibe gemein. Ebenso w\"{u}rden Einzelmomente keinen Widerstand sp\"{u}ren. Praktisch geht es schon, denn FE-Knotenkr\"{a}fte und FE-Knotenmomente sind ja \"{a}quivalente Kraftgr\"{o}{\ss}en (\glq Rechenpfennige\grq), stehen stellvertretend f\"{u}r mehr oder weniger konzentrierte Fl\"{a}chenkr\"{a}fte.
+
+Die Statik der schubweichen Platte unterscheidet sich ansonsten, was Fragen der Bewehrung, der Lagerkr\"{a}fte, der Durchbiegung im Zustand I und II betrifft, etc., nicht von der Statik der schubstarren Platte. Bei d\"{u}nnen Platten sind die Schubverformungen ja nahezu null, und dann ist es gleichg\"{u}ltig, ob man eine Platte nach Kirchhoff oder nach Reissner-Mindlin\index{Reissner-Mindlin} berechnet. In der Regel wird man daher, abgesehen von der unmittelbaren Randn\"{a}he, bei den \"{u}blichen Deckenst\"{a}rken nur geringe Unterschiede feststellen. Es sind weiterhin die Kr\"{u}mmungen der Plattenmittelfl\"{a}che
+\begin{align}
+\kappa_{xx} = \theta_x,_x \qquad \kappa_{xy} = \frac{1}{2}(\theta_y,_x+ \, \theta_x,_y)
+\qquad \kappa_{yy} = \theta_y,_y\,,
+\end{align}
+die die Momente bestimmen, s. (\ref{Momente1}). Nur dass die Kr\"{u}mmungen jetzt, weil $\theta_x$ und $\theta_y$ schon Winkelverdrehungen sind, die ersten Ableitungen dieser Verdrehungen sind. Beim schubstarren Balken und bei der schubstarren Platte sind die Kr\"{u}mmungen dagegen die zweiten Ableitungen von $w$.
+
+Weil das Differentialgleichungssystem f\"{u}r $w, \theta_x, \theta_y$ von zweiter Ordnung ist, kommen in der symmetrischen Verzerrungsenergie
+\begin{align}
+a(\vek u, \vek  \delta \vek u) &= \int_\Omega [m_{xx}\, \delta \theta_x,_x + m_{xy}\,
+\delta \theta_x,_y +
+m_{yx} \,\delta \theta_y,_x + m_{yy}\,\delta \theta_y,_y\nn \\
+ & + q_x \,(\delta \theta_x + \delta w,_x) + q_y\, (\delta \theta_y + \delta w,_y)] \,d\Omega \nn
+\end{align}
+nur Ableitungen erster Ordnung vor. Daher reicht es aus, wenn die Einheitsverformungen -- die wir uns wieder elementweise durch Polynome dargestellt denken -- an den Elementgrenzen stetig aneinander anschlie{\ss}en, ohne dass die Neigungen der Fl\"{a}chen gleich gro{\ss} sein m\"{u}ssen.
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/RMELEMENT}
+\caption{Bewegungen eines schubweichen Balkenelements {\bf a)} Typ 1: $w = ax,\, \theta =
+0 $,\,\, {\bf b)} Typ 2: $w = 0,\, \theta = a x$} \label{RMElement}
+\end{figure}%%
+%------------------------------------------------------------------
+
+Formal ist die L\"{o}sung einer Reissner-Mindlin-Platte eine vektorwertige Funktion, s. (\ref{A51Vektor}), und daher macht man mit finiten Elementen f\"{u}r die L\"{o}sung einen Ansatz
+der Art
+\begin{align}
+\vek u_{h} &= \underbrace{u_1 \left [ \barr {l } \Np_1  \\ 0 \\ 0 \earr \right ] + u_2
+\left [ \barr {l } 0 \\ \Np_2  \\ 0 \earr \right ] + u_3 \left [ \barr {l } 0 \\ 0 \\
+\Np_3
+\earr \right ]}_{\mbox{\small Knoten 1} }\\
+&\qquad + \underbrace{u_4 \left [ \barr {l } \Np_4  \\ 0 \\ 0 \earr \right ] + u_5 \left [
+\barr {l } 0 \\ \Np_5  \\ 0 \earr \right ] + u_6 \left [ \barr {l } 0 \\ 0 \\ \Np_6
+\earr \right ]}_{\mbox{\small Knoten 2} } + \ldots\,,
+\end{align}
+wobei die Freiheitsgrade $u_i$ und Ansatzfunktionen $\Np_i(x,y)$ im Dreier-Rhythmus pro Knoten die Durchbiegungen, die Verdrehungen in $x$-Richtung und die Verdrehungen in $y$-Richtung bezeichnen.
+
+Das Grundmuster, das sich f\"{u}r jeden Knoten wiederholt, ist also eine Abfolge von drei
+speziellen Einheitsverformungen
+\begin{align}
+ \left [ \barr {l } w \\ 0 \\ 0 \earr \right ]
+\qquad  \left [ \barr {l } 0 \\ \theta_x \\ 0 \earr \right ] \qquad   \left [ \barr {l }
+0 \\ 0 \\ \theta_y \earr \right ] \,.
+\end{align}
+Bei der ersten Verformung neigt sich das Element, s. Abb. \ref{RMElement}, aber die Querschnitte bleiben senkrecht, weil wegen $\gamma_x = w,_x + \, \theta_x$ etc. die Gleitungen $\gamma_x = w,_x$ und $\gamma_y = w,_y$ gerade die Neigung der Tangenten ausbalancieren.
+
+Bei den anderen beiden Verformungen bleibt das Element gerade liegen, $w = 0$, aber die Querschnitte verdrehen sich, s. Abb. \ref{RMElement}.
+%------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/LAGERD}
+\caption{Lagerbedingungen, die Pfeile und Drehpfeile geben die gesperrten Freiheitsgrade
+an} \label{LagerG}
+\end{figure}%%
+%------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Die Kinematik der schubweichen Platte}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Alle Plattenmodelle entstehen durch Reduktion des dreidimensionalen elastischen Kontinuums auf ein ebenes Modell. Je nach den Annahmen, die man dabei trifft, erh\"{a}lt man die schubstarre Kirchhoffplatte oder die schubweiche Reissner-Mindlin-Platte.
+
+Dass durch die Reduktion unsere Modelle \"{a}rmer werden, macht sich am ehesten am Rand bemerkbar. Insbesondere in Ecken k\"{o}nnen die Schnittgr\"{o}{\ss}en singul\"{a}r werden. Bei der schubweichen Platte gibt es zudem noch den sogenannten {\em boundary layer effect\/}\index{boundary layer effect}, \cite{Szabo}. Das meint die Beobachtung, dass die L\"{o}sung zum Rande hin ungenauer wird. Der Rand ist auch der Bereich, in dem sich schubstarre und schubweiche Platten am ehesten unterscheiden, \cite{Szabo}.
+
+Allerdings liegen die Verh\"{a}ltnisse bei normalen Netzen so, dass es nicht auff\"{a}llt. Der Benutzer wei{\ss} es nicht, und er hat auch kein Interesse daran, das Programm diesbez\"{u}glich herauszufordern oder auf die Probe zu stellen.
+
+Dass der Plattenrand eine Problemzone f\"{u}r schubweich gerechnete Platten ist, ahnt man, wenn man sich daran erinnert, dass es in der 3-D Elastizit\"{a}tstheorie keine Linienlager gibt, sie sind \glq zu scharf\grq, das Material w\"{u}rde unter dem Lagerdruck plastifizieren. Der {\em boundary layer effect\/} belegt also sehr sch\"{o}n die \glq analytische\grq\ Herkunft der schubweichen Platten aus der 3-D Elastizit\"{a}tstheorie.
+
+Die schubweiche Platte kennt zwei Lagerungsarten\label{Lagerungsarten} f\"{u}r den gelenkig gelagerten Rand: Den sogenannten {\em hard support\/}\index{hard support}, $w = w,_t = 0$, er entspricht der gelenkigen Lagerung bei der Kirchhoffplatte und den {\em soft support\/}\index{soft support}, $w = 0$, bei dem die Verdrehung in Richtung des Randes, $w,_t = w,_x  t_x + w,_y t_y$, also in Richtung des Tangentenvektors $\vek t = \{t_x,t_y\}^T$ des Randes, freigegeben ist, s. Abb. \ref{LagerG}.
+
+Auch bei der schubweichen Platte treten am Rand Singularit\"{a}ten auf, s. Tabelle \ref{roessletab}, \cite{Roessle}. Bis auf zwei F\"{a}lle sind die kritischen Eckenwinkel unabh\"{a}ngig von der Querdehnzahl $\nu$.\index{Eckenwinkel, kritische, Reissner-Mindlin}
+
+\renewcommand{\arraystretch}{1.2} % sieht ganz gut aus
+\begin{table}\caption{{\small Eckensingularit\"{a}ten bei der Reissner-Mindlin-Platte}}\label{roessletab}
+\vspace{0.2cm}
+\begin{center}
+\begin{tabular}{| l || c | c |}
+\hline
+Lagerungsarten & Biegemoment & Querkraft \\
+im Eckpunkt & unbeschr\"{a}nkt ab & unbeschr\"{a}nkt ab \\\hline\hline
+eingespannt-eingespannt & $180^\circ$ & $180^\circ$ \\
+sliding edge-sliding edge & $90^\circ$ & $180^\circ$ \\
+hard support-hard support & $90^\circ$ & $180^\circ$ \\
+soft support-soft support & $180^\circ$ & $180^\circ$ \\
+frei-frei & $180^\circ$ & $180^\circ$ \\
+eingespannt-sliding edge &$90^\circ$ & $180^\circ$ \\
+eingespannt-hard support & $90^\circ$ & $180^\circ$ \\
+eingespannt-soft support & $\approx 61.70^\circ\,(\nu = 0.29)$ & $180^\circ$ \\
+eingespannt-frei & $\approx 61.70^\circ\,(\nu = 0.29)$ & $90^\circ$ \\
+sliding edge-hard support & $45^\circ$ & $90^\circ$ \\
+sliding edge-soft support &  $90^\circ$ & $180^\circ$ \\
+sliding edge-frei &  $90^\circ$ & $90^\circ$ \\
+hard support-soft support & $\approx 128.73^\circ$ & $180^\circ$ \\
+hard support-frei & $\approx 128.73^\circ$ & $90^\circ$ \\
+soft support-frei & $180^\circ$ & $90^\circ$ \\ \hline
+\end{tabular}
+\end{center}
+\end{table}\label{SingRM}
+\renewcommand{\arraystretch}{1.0}  % wieder r\"{u}ckg\"{a}ngig machen
+
+Praktisch gibt es also in jeder Ecke Singularit\"{a}ten. Zum Gl\"{u}ck(?) sind die Netze aber nicht so fein, dass sich die Singularit\"{a}ten bemerkbar machen. Im Grunde akzeptiert der Ingenieur auch nur Singularit\"{a}ten, die er nachvollziehen kann, die die Standsicherheit gef\"{a}hrden k\"{o}nnen, w\"{a}hrend Singularit\"{a}ten, die aus der beschr\"{a}nkten Kinematik eines Modells folgen, f\"{u}r ihn zweitranging sind.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{Shear locking}}}\index{shear locking}
+Die Vorteile der schubweichen Platte liegen in den geringen Anspr\"{u}chen, die sie an die Stetigkeit der Ansatzfunktionen stellt und in ihrem inneren \glq Reichtum\grq\ an Kinematen. Daf\"{u}r bereitet das {\em shear locking\/} Schwierigkeiten. Der \"{U}bergang von der schubweichen Platte -- also relativ dicken Platten (Fundamentplatten) -- zu schubstarren Platten, wie sie \"{u}berwiegend im Hochbau vorkommen, bereitet Schwierigkeiten.
+
+Die Reissner-Mindlin-Platte enth\"{a}lt ja im Grunde die schubstarre Kirch\-hoff-Platte als Spezialfall, denn beim \"{U}bergang zur schubstarren Platte muss man nur die Gleitungen null setzen
+\begin{align}
+\gamma_x = w,_x + \, \theta_x = 0 \qquad \gamma_y = w,_y + \, \theta_y = 0\,.
+\end{align}
+Da sich Schubverformungen nur bei gedrungenen Balken (und Platten) bemerkbar machen, erwarten wir, dass die Reissner-Mindlin-Platte sich bei geringer Plattenst\"{a}rke wie eine schubstarre Kirchhoff-Platte verh\"{a}lt.
+
+Dem ist (rechnerisch) aber leider nicht so. Mit abnehmender Plattenh\"{o}he $h$ versteift sich eine nach Reissner-Mindlin gerechnete Platte zusehends, die Durchbiegungen hinken immer mehr den Ergebnissen nach Kirchhoff hinterher, bis zuletzt die Ergebnisse unbrauchbar werden, weil die Platte sich kaum noch durchbiegt. Das meint man mit {\em shear-locking}.
+
+Zum Verst\"{a}ndnis sei gesagt, dass dies ein Problem der finiten Elemente ist und nicht der Plattentheorie. K\"{o}nnte man die Gleichungen exakt l\"{o}sen, dann w\"{u}rden die Ergebnisse nach Reissner-Mindlin mit abnehmender Plattenst\"{a}rke $h$ nahtlos (im Sinne der Energie \cite{Szabo}, S. 263) in die Ergebnisse nach Kirchhoff \"{u}bergehen, auch noch in der Grenze $h \mapsto 0$.\\
+
+{\small Wie es zum {\em shear locking\/} kommt, kann man am einfachsten an einem Balken, wie z.B. einem schubweichen Kragtr\"{a}ger, $\vek u = [w, \theta]^T$, verfolgen, s. Abb. \ref{Schubts}. Die Wechselwirkungsenergie ist
+\begin{align}
+a(\vek u, \hat{\vek u}) = \int_0^{\,l} EI \theta' \, \hat \theta' \, dx + \int_0^{\,l} G
+A_s \,(w' + \theta)\, (\hat w' + \hat \theta) \, dx \,,
+\end{align}
+so dass man mit entsprechenden Einheitsverformungen -- 2 f\"{u}r jeden Knoten --
+\begin{align}
+\underbrace{\vek \Np_1 (x) = \left [ \barr {r } w_1 \\ 0 \earr \right ] \quad \vek \Np_2
+(x)
+ = \left [ \barr {r } 0 \\ \theta_2 \earr \right ]}_{\mbox{\tiny{Knoten 1}}} \quad \underbrace{\vek \Np_3 (x)
+  = \left [ \barr {r } w_3 \\ 0 \earr \right ] \quad \vek \Np_4 (x)
+   = \left [ \barr {r } 0 \\ \theta_4 \earr \right ]}_{\mbox{\tiny{Knoten 2}}} \ldots
+\end{align}
+etwa in Form linearer Ans\"{a}tze
+\begin{align}
+ w_i(x) = \frac{l - x}{l} \qquad \theta_j(x) =
+\frac{x}{l}
+\end{align}
+eine Beziehung wie \begin{align} \label{KSchub} (\vek K_B + \vek K_S) \vek u = \vek f \end{align} erh\"{a}lt, wobei die Eintr\"{a}ge in der Matrix $\vek K_B$ die Biegeanteile ber\"{u}cksichtigen und die Eintr\"{a}ge in $\vek K_S$ die Schubanteile
+\begin{align}
+k^B_{\,ij} = \int_0^{\,l} EI \theta_i' \,\theta_j' \, dx \qquad k^S_{\,ij} =
+\int_0^{\,l} GA_s\, (w_i' + \theta_i )\,(w_j' + \theta_j) \, dx \,.
+\end{align}
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/SCHUBTS}
+\caption{Kragtr\"{a}ger} \label{Schubts}
+\end{figure}%%
+Rechnet man den Kragtr\"{a}ger in Abb. \ref{Schubts} schubweich, so erh\"{a}lt man mit einem Element, f\"{u}r die Durchbiegung der Kragarmspitze das Resultat
+\begin{align}
+w(l) = \frac{12 (h/l)^2 +  20}{12 (h/l)^2 +  5} \cdot  \frac{P l}{GA_s}  \qquad
+ A_s = \mbox{\glq Schubfl\"{a}che\grq \,}\,.
+\end{align}
+Bei sehr kurzen Balken, $l \ll 1$ wird der erste Bruch ungef\"{a}hr Eins, und am Tr\"{a}gerende zeigt sich die korrekte Schubverformung
+\begin{align}
+ w = \frac{P l}{GA_s} \,.
+\end{align}
+Ist $l \gg h$, also die L\"{a}nge $l$ gro{\ss} gegen die Tr\"{a}gerh\"{o}he $h$, dann wird der erste Bruch ungef\"{a}hr $20/5$ und man erh\"{a}lt eine viel zu geringe Durchbiegung
+\begin{align}
+ w = 4 \frac{P l}{GA_s}
+\end{align}
+f\"{u}r die Kragarmspitze. Das ist {\em shear-locking}.
+
+Die Ursache f\"{u}r diesen Versteifungseffekt ist die unterschiedliche Sensitivit\"{a}t der Biegesteifigkeit $EI$ und der Schubsteifigkeit $GA_s$ gegen\"{u}ber der Tr\"{a}gerh\"{o}he $h$
+\begin{align}
+E I = \frac{b\,h^3}{12} \qquad G A_s = b \, h   \qquad \mbox{(Rechteckquerschnitt)} \,.
+\end{align}
+L\"{a}sst man die Tr\"{a}gerh\"{o}he $h$ -- und damit die Schubverformungen $\gamma = w' + \theta$ -- in Gedanken gegen null gehen, dann sinkt die Biegesteifigkeit viel rascher ab als die Schubsteifigkeit. Dies f\"{u}hrt, so wie bei der Gleichung
+\begin{align}
+(1 + 10^5)\, u = 10  \qquad \mbox{L\"{o}sung $u = 0.999^{-5}\, \approx \, 0$}\,,
+\end{align}
+dazu, dass in (\ref{KSchub}) die Matrix $\vek K_S$ wegen des stark anwachsenden Einflusses von $GA_s$ zunehmend dominiert. Wenn man exakt rechnen k\"{o}nnte, dann w\"{u}rde der wachsende Einfluss von $GA_s$ durch die zu null gehende Gleitung $w' + \theta = \gamma \mapsto 0$ mehr als kompensiert. In einem FE-Programm funktioniert das aber leider nicht, und deswegen muss die L\"{o}sung $\vek u$ des Gleichungssystems gegen null gehen, sprich es kommt zur Schubversteifung.
+
+All dies gilt sinngem\"{a}{\ss} auch f\"{u}r schubweiche Platten: Der \"{U}bergang von schubweich (mittlere bis gro{\ss}e Plattenst\"{a}rke) zu schubstarr (kleine Plattenst\"{a}rke) gelingt numerisch nicht.\\ } %%%%%%%%%%%%ENDSMALL
+
+Es sind eine ganze Reihe von Ma{\ss}nahmen vorgeschlagen worden, um das {\em shear-locking } zu vermeiden. Am sichersten ist es, den Polynomgrad zu erh\"{o}hen. Dies gilt nicht nur hier, sondern f\"{u}r alle Ph\"{a}nomene, wo durch {\em internal constraints\/} die Freiwerte der Ans\"{a}tze dazu gebraucht werden, die {\em constraints\/} zu erf\"{u}llen und dann keine Freiwerte mehr vorhanden sind, um die Bewegungen zu beschreiben.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Schubweiche Plattenelemente}}}\label{Schubweiche Plattenelemente}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Es gibt eine Vielzahl von Plattenelementen, die auf der Reissner-Mindlin-Theorie beruhen. Wir erw\"{a}hnen hier nur drei Elemente, das {\em Bathe-Dvorkin-Element\/}, das {\em DKT-Element\/} und das {\em DST-Element\/}, weil sie am popul\"{a}rsten sind.
+%--------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/DKT}
+\caption{Schubweiche Elemente {\bf a)} Bathe-Dvorkin-Element {\bf b)} DKT-Element. An
+den Knoten ist beim DKT-Element die Gleitung null, $\theta_{xi}$ $= - \partial w/\partial
+x_i$, $\theta_{yi} = - \partial w/\partial y_i$} \label{DKT}
+\end{figure}%%
+%--------------------------------------------------------------------------
+
+{\textcolor{sectionTitleBlue}{\subsection{Das Bathe-Dvorkin-Element}}}\index{Bathe-Dvorkin-Element}
+Dieses Element, s. Abb. \ref{DKT} a, wurde von {\em Hughes\/} und {\em Tezduyar\/} \cite{Hughes2} her\-geleitet und von
+{\em Bathe\/} und {\em Dvorkin\/} \cite{Bathe2} dann auf Schalen erweitert.
+
+Das Element ist ein isoparametrisches Vier-Knoten-Element mit bilinearen Ans\"{a}tzen f\"{u}r die Durchbiegung $w$ und die Rotationen $\theta_x$ und $\theta_y$. Wie man an
+\begin{align}
+\gamma_x = w,_x + \, \theta_x \qquad \gamma_y = w,_y + \, \theta_y
+\end{align}
+ablesen kann, sollte der Ansatz f\"{u}r $w$ eigentlich um einen Polynomgrad h\"{o}her sein, als der f\"{u}r die Rotationen. Und so beginnt man auch: Als Ansatz f\"{u}r $w$ w\"{a}hlt man zun\"{a}chst einen neungliedrigen Lagrange Ansatz -- 4 Eckknoten + 4 Knoten in den Seitenmitten + 1 Knoten in der Elementmitte -- und passend dazu einen bilinearen Ansatz f\"{u}r die Rotationen. Die Idee ist es nun, die Schubverformungen $\gamma_x$ und $\gamma_y$ unabh\"{a}ngig von der Durchbiegung in der Elementmitte und den Durchbiegungen der Seitenmitten zu berechnen. Damit gehen in die Berechnung der Steifigkeitsmatrix nur die Durchbiegungen $w$ in den vier Ecken ein, und somit reichen bilineare Ans\"{a}tze f\"{u}r $w$ aus. Diese Vereinfachung beruht auf der Beobachtung, dass die Schubverformungen parallel zu den Elementseiten in den Seitenmitten unabh\"{a}ngig von den Durchbiegungen in den Seitenmitten und der Elementmitte sind.
+
+Was das Element vor allem auszeichnet ist, dass es keine Schwierigkeiten mit dem \"{U}bergang zu d\"{u}nnen Platten hat und somit universell einsetzbar ist. \"{A}hnlich wie bei dem bilinearen Scheibenelement verl\"{a}uft das Moment $m_{xx}$ in der Tragrichtung -- hier sei das die $x$-Achse -- konstant und das Moment $m_{yy}$ quer dazu linear. Die Querkr\"{a}fte $q_x$ und $q_y$ sind nat\"{u}rlich konstant.
+
+Die Idee liegt nahe, dass man so wie beim Wilson-Element in der Scheibenstatik, aus dem Q4-Element ein Q4+2 Element macht, indem man quadratische Ans\"{a}tze dazu addiert. Dann verlaufen auch die Momente in Tragrichtung linear. Dieses verbesserte Element wird als Plattenelement in den SOFiSTiK-Programmen benutzt.
+
+{\textcolor{sectionTitleBlue}{\subsection{Das DKT-Element}}}\index{DKT-Element}
+
+Zur Herleitung des DKT-Elements geht man von einer Reissner-Mindlin-Platte aus und nimmt aber an, dass die Gleitungen null sind, die Platte sich also schubstarr verh\"{a}lt, \cite{Batoz1}. Damit reduziert sich die Wechselwirkungsenergie auf die \"{U}berlagerung der Biegemomente mit den Kr\"{u}mmungen
+\begin{align}
+a(\vek u, \vek \delta \vek u) = \int_\Omega [m_{xx}\, \delta \theta_{x,_x} + m_{xy}\, \delta\theta_{x,_y} +
+m_{yx} \,\delta \theta_{y,_x} + m_{yy}\, \delta \theta_{y,_y}] \,d\Omega \,.
+\end{align}
+Die Ans\"{a}tze, mit denen man in dieses Modell praktisch hineingeht, erf\"{u}llen die Annahme $\gamma_x = \gamma_y = 0$ aber nur in diskreten Punkten, n\"{a}mlich den  Ecken der (dreiecksf\"{o}rmigen) Elemente und in den Mitten der Kanten. Deswegen spricht man von einem {\em discrete Kirchhoff triangle}.
+
+Das DKT-Element ist sehr popul\"{a}r und wird sehr gerne eingesetzt, weil man mit geringem Aufwand -- $C^0$-Ans\"{a}tze reichen ja aus -- ein Dreieckselement mit den Knotenfreiheitsgraden $w, w,_x, w,_y$ erh\"{a}lt. Praktisch handelt es sich aber auch um ein nichtkonformes Plattenelement.
+
+{\textcolor{sectionTitleBlue}{\subsection{Das DST-Element}}}\label{DST-Element}\index{DST-Element}
+Das DST-Element ist formal eng verwandt mit dem DKT-Element, \cite{Batoz3}. Das S steht f\"{u}r Schub, f\"{u}r schubweich, denn anders als beim DKT-Element ist die Gleitung $\gamma$ in den Knoten nicht null. Der Ausgangspunkt ist eine schwache Formulierung der Reissner-Mindlin Gleichungen im Sinne eines Hellinger-Reissner-Funktionals mit $w, \varphi_x, \varphi_y, \gamma_x, \gamma_y, q_x, q_y$ als unabh\"{a}ngigen Variablen. Durch entsprechende schwache Kopplungen der Terme ($L_2$-Orthogonalit\"{a}t) gelingt es, ein dreiecksf\"{o}rmiges Element mit drei Knoten und pro Knoten drei Knotenvariablen $w, \varphi_x, \varphi_y$ herzuleiten. Die Bezeichnung {\em discrete\/} r\"{u}hrt daher, dass \"{a}hnlich wie beim DKT-Element die Gleitungen $\gamma_x$ und $\gamma_y$ nur in drei Punkten, den Seitenmitten, an die \"{u}brigen Freiheitsgraden $w, \varphi_x,\varphi_y$ gekoppelt werden.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Lager}\label{Lager}\index{Lager}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/VERGLEICHLAGER}
+\caption{Lagerkr\"{a}fte einer Wohnhausdecke {\bf a)} Lagerung auf starren W\"{a}nden {\bf b)} Lagerung auf
+Mauerwerk. Die Schwankungen links sind korrekt: Die Einflussfunktion f\"{u}r die Lagerkraft an der Spitze ist eine relativ gro{\ss}e Delle vor der Wand, w\"{a}hrend eine Absenkung des Punktes dahinter (= Einflussfunktion) die Decke vor der Wand anhebt, und so wird der Wert negativ }\label{VergleichLager}
+\end{figure}%%
+%----------------------------------------------------------------------------------
+Nach M\"{o}glichkeit sollte man elastisch rechnen, sollten also die Lagerkraft $r$ und das Einspannmoment $m_n$ an die Lagerbewegungen -- nach Ma{\ss}gabe der Lagersteifigkeit $k$ und $k_\Np$ -- gekoppelt sein
+\begin{alignat}{2}
+&\mbox{gelenkige Lagerung} &\qquad &  w \cdot k + r = 0, m_n = 0 \nn \\
+&\mbox{eingespannter Rand} &\qquad & w \cdot k + r = 0, w_n \cdot k_\Np + m_n = 0\,,
+\end{alignat}
+denn die Verteilung der Schnittkr\"{a}fte h\"{a}ngt ganz wesentlich von den Steifig\-keiten der Subkonstruktionen ab, s. Abb. \ref{VergleichLager}.
+
+Je weicher man die Lager macht, um so \glq sch\"{o}ner\grq\ werden zudem die Ergebnisse, weil der Platte so die M\"{o}glichkeit gegeben wird, Zw\"{a}ngungen abzubauen, die sonst leicht zu Singularit\"{a}ten f\"{u}hren.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+{\textcolor{sectionTitleBlue}{\subsection{T\"{u}r- und Fenster\"{o}ffnungen}}}\index{T\"{u}r\"{o}ffnungen}\index{Fenster\"{o}ffnungen}
+Hier kann man sich auf Heft 240 Abschnitt 2.4 berufen und bei Verh\"{a}ltnissen $l/h \leq 7$ mit $l = $ L\"{a}nge der fehlenden Unterst\"{u}tzung, $h =$ Plattendicke, die St\"{u}tzung im FE-Modell gegebenenfalls durchgehen lassen und die \"{O}ffnungen konstruktiv bewehren. Erst ab Verh\"{a}ltnissen $h/l > 7$ muss man die fehlende Unterst\"{u}tzung auch im FE-Modell ber\"{u}cksichtigen.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+{\textcolor{sectionTitleBlue}{\subsection{Deckengleiche Unterz\"{u}ge}}}\index{deckengleiche Unterz\"{u}ge}
+Die Wirkung von deckengleichen Unterz\"{u}gen auf das Tragverhalten einer Platte wird oft \"{u}bersch\"{a}tzt. Die Erh\"{o}hung der Steifigkeit durch die zus\"{a}tzliche Bewehrung ist zu gering, als dass sich eine starre St\"{u}tzung erg\"{a}be. \glqq {\em Der deckengleiche Unterzug ist ein typisches Beispiel f\"{u}r ein \glq Ingenieurmodell\grq, bei dem die Realit\"{a}t nicht abgebildet wird, sondern nach Erfahrung der Machbarkeit ersetzt wird\/}\grqq, \cite{Schroeter}.
+
+{\textcolor{sectionTitleBlue}{\subsection{W\"{a}nde}}}\index{W\"{a}nde}
+Auch W\"{a}nde sollten nachgiebig gerechnet werden. F\"{u}r die Modellierung des Wandauflagers eine eigene, schmale Reihe von Plattenelementen vorzusehen, ist bei den \"{u}blichen Wandabmessungen nicht notwendig und irritiert eher, als dass es einen Gewinn an Genauigkeit darstellen w\"{u}rde.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\subsection{St\"{u}tzen}\label{Stuetzen}}}\index{St\"{u}tzen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+St\"{u}tzen sollten elastisch, $k = EA/h$, gerechnet werden, und wenn m\"{o}glich und konstruktiv gerechtfertigt, sollten auch die Drehsteifigkeiten des St\"{u}tzenkopfes um die beiden Achsen
+\begin{align}
+k_\Np &= \frac{3\,EI}{h}\qquad \mbox{gelenkige Lagerung des Fu{\ss}punktes} \\
+k_\Np &= \frac{4\,EI}{h}\qquad \mbox{eingespannter Fu{\ss}punkt}
+\end{align}
+ber\"{u}cksichtigt werden, denn in eine St\"{u}tze, die Kopfmomente \"{u}bertragen kann, flie{\ss}en gr\"{o}{\ss}ere Lagerkr\"{a}fte als in eine St\"{u}tze mit gelenkigem Anschluss, weil ja die Einflussfl\"{a}che f\"{u}r die St\"{u}tzenkraft runder und v\"{o}lliger wird.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/U507}
+\caption{Platte mit \"{O}ffnung und Innenst\"{u}tze, \textbf{ a)} Momente im LF $g$ in zwei Schnitten, \textbf{ b)}  Einflussfunktion f\"{u}r das Moment $m_{xx}$ \"{u}ber der St\"{u}tze. Die \glq Delle\grq{} entsteht, weil Kr\"{a}fte \"{u}ber der St\"{u}tze direkt in die St\"{u}tze wandern, wie auch in der n\"{a}chsten Abb. \ref{1GreenF73} } \label{U507}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+Das eigentliche Problem ist jedoch die Ermittlung der St\"{u}tzenanschnittsmomente \index{St\"{u}tzenanschnittsmomente}, denn die Einflussfunktionen f\"{u}r die Momente haben steile Flanken, s. Abb. \ref{U507}. Die Ermittlung des Anschnittsmoments $m_{xx}$ aus einer Einzelkraft in der N\"{a}he der St\"{u}tze d\"{u}rfte Geduld erfordern.
+
+%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.99\textwidth]{\Fpath/1GREENF73D}
+\caption{Wie die Einflussfunktion f\"{u}r das Biegemoment \"{u}ber den Tr\"{a}ger wandert und dabei im Grunde immer gleich bleibt, \cite{Ha6}.}
+\label{1GreenF73}%
+\end{figure}%%
+%----------------------------------------------------------
+%---------------------------------------------------------------------------------
+\begin{figure}
+\centering
+\if \bild 2 \sidecaption[t] \fi
+{\includegraphics[width=0.8\textwidth]{\Fpath/U350}}
+\caption{Einflussfunktion f\"{u}r das Biegemoment $m_{xx}$ in einer Platte ohne und mit Innenst\"{u}tze \textbf{ a)} {\em EF\/} ohne St\"{u}tze in Plattenmitte  und  \textbf{ b)} Aufpunkt neben der St\"{u}tze (Anschnittsmoment)}
+\label{U350}%
+\end{figure}%
+%---------------------------------------------------------------------------------
+
+Das die Situation kritisch ist, ahnt man, wenn man sich anschaut, s. Abb. \ref{1GreenF73}, wie die Einflussfunktion f\"{u}r das Moment in einem Durchlauftr\"{a}ger \"{u}ber den Tr\"{a}ger wandert  und sich dabei im Grunde immer gleich bleibt. Wenn die Einflussfunktion \"{u}ber der Innenst\"{u}tze angekommen ist, dann w\"{o}lbt sie sich maximal auf. Sie reagiert hier am empfindlichsten auf eine Verschiebung des Aufpunktes, $x \pm \Delta x$, wie man an dem steilen Anstieg des Biegemomentes \"{u}ber der St\"{u}tze sieht, w\"{a}hrend eine Lagever\"{a}nderung $\Delta x$ des Aufpunkts im Feld sich viel weniger auswirkt.
+
+\"{A}hnliches passiert bei Platten, s. Abb. \ref{U350} a. Zwar wird die Einflussfunktion f\"{u}r Momente $m_{xx}$ im Aufpunkt singul\"{a}r, aber wenn man mit einer Fl\"{a}chenlast dar\"{u}ber hinweg integriert, dann ist das Moment endlich und die Unterschiede in den Einflussfunktionen benachbarter Punkte, $\vek x \pm \vek \Delta \vek x$, sind proportional zu der Schrittweite $\vek \Delta \vek x$. Mit St\"{u}tze und nahe der St\"{u}tze, s. Abb.  \ref{U350} b ist das anders. Die St\"{u}tze zwingt die Einflussfunktion nach oben und zwar ungleich, denn links geschieht der Anstieg rascher als rechts und dieses unterschiedliche Tempo macht, dass das Anschnittsmoment zum einen viel gr\"{o}{\ss}er wird als $m_{xx}$ im Feld und zum andern viel sensitiver auf \"{A}nderungen $\vek x \pm \vek \Delta \vek x$ in der Lage des Aufpunkts reagiert.
+%-------------------------------------------------------------------------%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.4\textwidth]{\Fpath/STKOPF}
+\caption{Modellierung durch Aufweitung der Elemente \"{u}ber dem St\"{u}tzenkopf}\label{StKopf}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+Da die Singul\"{a}rfunktionen nicht in die FE-Programme eingebaut sind, so muss man versuchen, durch
+eine angepasste Modellierung die Situation zu entsch\"{a}rfen.
+\begin{itemize}
+\item Wenn keine speziellen Koppelelemente\index{Koppelelemente} im Bereich der St\"{u}tzen eingebaut werden, s. den n\"{a}chsten Abschnitt, dann sollte die Elementl\"{a}nge zur St\"{u}tze hin in etwa zwei
+Schritten, $1\, \rightarrow \,1/2 \,\rightarrow \, 1/4$ verfeinert werden.
+\item Gut bew\"{a}hrt hat sich auch die Technik, den St\"{u}tzenquerschnitt in vier Elemente zu unterteilen,
+deren St\"{a}rke vom Rand hin zur St\"{u}tzenmitte mit einer Neigung von 1:3 zunimmt, und die
+Platte im zentralen Knoten (elastisch) zu lagern, s. Abb. \ref{StKopf}.
+\item Wenn m\"{o}glich, sollten a) die Elementmitten mit den Ecken oder den Seitenmitten der St\"{u}tze zusammenfallen
+oder b) die St\"{u}tze sollte durch ein Element oder vier Elemente (s.o.) dargestellt
+werden, so dass die Anschnittsmomente die Momente in den Seitenmitten sind.
+\item Es reicht, wenn ein Knoten, der Mittelpunkt der St\"{u}tze, festgehalten wird. Das Mehrknotenmodell
+bringt keinen Gewinn an Genauigkeit. Insbesondere stellt sich beim Mehrknotenmodell bei
+einseitiger Belastung leicht eine ungewollte Einspannung ein. Auf keinen Fall sollte ein starres Mehrknotenmodell benutzt werden.
+\end{itemize}
+
+\vspace{-0.7cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textcolor{sectionTitleBlue}{\section{\"{A}quivalente Spannungs Transformation}}
+Mittels der {\em \"{A}quivalenten Spannungs Tranformation\/} von {\em Werkle\/} kann man spezielle Koppelelemente herleiten, die das Problem wesentlich entsch\"{a}rfen, \cite{Werkle}.  Das Vorgehen ist sinngem\"{a}{\ss} dasselbe wie in Kapitel 4 bei der Kopplung von Balken und Scheiben.
+
+Aus den Schnittkr\"{a}ften $\vek f_S = \{N, M_x, M_y\}^T$ in der St\"{u}tze werden zun\"{a}chst die Spannungen
+\begin{align}
+\sigma(x,y) = \frac{N}{A} + \frac{M_x}{I_x}\,y - \frac{M_y}{I_x}\,x
+\end{align}
+in der Koppelfuge ermittelt. Da die Spannungsverteilung linear ist, kann sie durch die Elementansatzfunktionen $\Np_i^e$ in der Koppelfuge wiedergegeben werden.  Nennen wir die Koeffizienten der Darstellung $p_i$, dann kann die Beziehung $\vek f_S \to \vek p$ mit einer Matrix beschrieben werden, die wir wieder $\vek P$ (wie Polynome) nennen
+\begin{align}
+\vek p_{(n)} = \vek P_{(n \times 3)}\,\vek f_{S@ (3)} \qquad n = \text{Zahl der Knoten}\,.
+\end{align}
+Die Ermittlung der \"{a}quivalenten Knotenkr\"{a}fte aus den als Fl\"{a}chenlast aufgefassten Spannungen kann ebenfalls durch eine Matrix $\vek Q$ (wie Quadratur) beschrieben werden,
+\begin{align}
+\vek f_{P@ (n)} = \vek Q_{(n \times n)}\,\vek p_{(n)}\,.
+\end{align}
+Koppelt man die beiden Gleichungen, dann entsteht so die gesuchte Beziehung zwischen den Kraftgr\"{o}{\ss}en der beiden Seiten
+\begin{align}
+\vek f_{P@ (n)} = \vek Q_{(n \times n)}\,\vek P_{(n \times 3)}\,\vek f_{S@ (3)} = \vek A^T_{(n \times 3)}\,\vek f_{S@ (3)}
+\end{align}
+und damit im Umkehrschluss die Beziehung
+\begin{align} \label{Eq99}
+\vek u_{S@ (3)} = \vek A_{(3 \times n)}\,\vek u_{P@ (n)} \qquad \vek A_{(3 \times n)} = \vek P^T_{(3 \times n)}\,\vek Q^T_{(n \times n)}
+\end{align}
+zwischen den Weggr\"{o}{\ss}en $\vek u_S = \{u, \tan\,\Np_x,\tan\,\Np_y\}^T$ auf der Seite der St\"{u}tze und den Weggr\"{o}{\ss}en $\vek u_P $ auf der Seite der Platte.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.5\textwidth]{\Fpath/U387}
+\caption{Koppelfuge zwischen Platte und St\"{u}tze, \cite{Werkle}} \label{U387}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+ Bei der Koppelfuge in Abb. \ref{U387} z.B. lautet die Kopplungsmatrix $\vek A$ zwischen den Durchbiegungen $\vek w_{Pl} = \{w_1, w_2, \ldots , w_9\}^T$ der $n = 9$ Plattenknoten  und den drei Freiheitsgraden der St\"{u}tze
+\begin{align}
+\vek A = \left[\barr{c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} c @{\hspace{2mm}} r} \displaystyle{ \frac{1}{16}} & \displaystyle{\frac{1}{8}} & \displaystyle{\frac{1}{16}}& \displaystyle{\frac{1}{8} } & \displaystyle{\frac{1}{4} }& \displaystyle{\frac{1}{8}} & \displaystyle{\frac{1}{16}}& \displaystyle{\frac{1}{8}} & \displaystyle{\frac{1}{16}} \vspace{0.3cm}\\
+\displaystyle{\frac{1}{4 \cdot d_x}} & \displaystyle{0 } &\displaystyle{\frac{-1}{4 \cdot d_x}} & \displaystyle{\frac{1}{2 \cdot d_x}} & \displaystyle{0} & \displaystyle{\frac{-1}{2 \cdot d_x} } &\displaystyle{\frac{1}{4 \cdot d_x} }& \displaystyle{0} &\displaystyle{\frac{-1}{4 \cdot d_x}}
+\vspace{0.3cm}\\
+\displaystyle{\frac{1}{4 \cdot d_y}} & \displaystyle{\frac{1}{2 \cdot d_y}} & \displaystyle{\frac{1}{4 \cdot d_y}} & \displaystyle{0} &\displaystyle{0} & \displaystyle{0 } &\displaystyle{\frac{-1}{4 \cdot d_y}} & \displaystyle{\frac{-1}{2 \cdot d_y}} & \displaystyle{\frac{-1}{4 \cdot d_y}}
+\earr\right]\,.
+\end{align}
+F\"{u}r die Normalkraft in der St\"{u}tze ergibt das z.B. die folgende Gewichtsverteilung
+\begin{align}
+N = \frac{1}{16}\,w_1 + \frac{1}{8}\,w_2 + \frac{1}{16}\,w_3 + \underbrace{\frac{1}{8}\,w_4 + \frac{1}{4}\,w_5 + \frac{1}{8}\,w_6}_{innen} + \frac{1}{16}\,w_7 + \frac{1}{8}\,w_8 + \frac{1}{16}\,w_9\,.
+\end{align}
+Die Knoten in der inneren Reihe haben also einen gr\"{o}{\ss}eren Einfluss auf $N$ als die Knoten in den beiden \"{a}u{\ss}eren Reihen und den gr\"{o}{\ss}ten Einfluss hat der zentrale Knoten 5.
+
+Die eigentliche Koppelmatrix erh\"{a}lt man wieder so wie in Kapitel 4 beschrieben, s. (\ref{Eq30}) und folgende, so dass wir hier diese Schritte nicht wiederholen m\"{u}ssen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Warum Lagerkr\"{a}fte relativ genau sind}}} \label{Lagerkraefte}\index{Lagerkr\"{a}fte}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Bei Vergleichsrechnungen stellt man immer wieder fest, dass die Lagerkr\"{a}fte schon fr\"{u}h auskonvergiert sind und Netzverfeinerungen nicht mehr viel daran \"{a}ndern.
+
+
+Dies liegt daran, dass die Einflussfunktionen f\"{u}r Lagerkr\"{a}fte schon auf einfachen Netzen gut reproduzierbar sind, denn die Einflussfunktionen entstehen ja einfach dadurch, dass man die Wand oder die St\"{u}tze als Ganzes um einen Meter (rein rechnerisch nat\"{u}rlich) absenkt.
+
+Senkt sich eine St\"{u}tze ab, so entsteht eine Delle in der Platte und bei frei stehenden W\"{a}nde bildet sich ein l\"{a}nglicher Trog aus, der die Einflussfl\"{a}che f\"{u}r die resultierende Lagerkraft in der Wand ist.
+
+Komplizierter ist es, wenn die Wand nicht frei steht, sondern im Verbund mit anderen W\"{a}nden steht. Wenn jetzt die Wand um 1 m nach unten geht, dann rei{\ss}t die Platte theoretisch an den \"{U}berg\"{a}ngen zu den Nachbarw\"{a}nden ab. Praktisch wird es nat\"{u}rlich so sein, dass die Nachbarw\"{a}nde dem Druck nachgeben, und so der Sprung von null auf Eins gemildert wird, was aber auch bedeutet, dass die Gestalt und Gr\"{o}{\ss}e der Einflussfl\"{a}che von den Steifigkeiten der Nachbarw\"{a}nde beeinflusst wird.
+
+Einen Sonderfall stellen die Punktlager bei schubweichen Platten (wie auch bei Scheiben) dar, denn die Platte bzw. die Scheibe rutscht an dem Lager einfach vorbei, s. Abb. \ref{Einfluss4C14}. Ebenso kann man eine Platte nicht in einem Punkt einspannen.
+%----------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/EINFLUSS4C}
+\caption{Balken als Scheibe, {\bf a)} Die exakte Einflussfl\"{a}che f\"{u}r die Lagerkraft $B$ ist null, weil
+man das Lager (= ein Punkt der Scheibe) ohne Kraftaufwand um die Strecke Eins verschieben kann {\bf b)}
+Die FE-L\"{o}sung f\"{u}r die Einflussfl\"{a}che folgt dagegen ziemlich genau
+der Balkenl\"{o}sung, und deswegen ist die FE-Lagerkraft $B$ f\"{u}r praktisch alle F\"{a}lle mit
+der Lagerkraft des Balkens identisch} \label{Einfluss4C14}
+\end{figure}%%
+%----------------------------------------------------------------------
+
+Wir k\"{o}nnen die Sache aber retten, wenn wir die Idee mit dem punktf\"{o}rmigen, mathematischen Lager aufgeben und statt dessen von einem realen Lager mit einer gewissen L\"{a}nge $b$ und einer gewissen Tiefe $d$ ausgehen. Dann wird die St\"{u}tzenkraft als Fl\"{a}chenlast eingetragen, und wir d\"{u}rfen annehmen, dass die Einflussfl\"{a}che f\"{u}r ein solches Lager so \"{a}hnlich aussieht wie die Biegefl\"{a}che, die entsteht wenn man einen oder mehrere Knoten absenkt.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Querkr\"{a}fte}}}\label{Querkraefte}\index{Querkr\"{a}fte}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/U492}
+\caption{Querkr\"{a}fte $q_x$ und $q_y$ in einer Deckenplatte} \label{U492}
+\end{figure}%%
+%-------------------------------------------------------------------------
+Die Querkr\"{a}fte geh\"{o}ren nicht zu den Gr\"{o}{\ss}en, die man gerne vorzeigt, weil sie am ehesten
+zu Spr\"{u}ngen und erratischem Verhalten neigen, s. Abb. \ref{U492}.
+
+In einem Weggr\"{o}{\ss}enansatz f\"{u}r eine Kirchhoffplatte sind die Querkr\"{a}fte die dritten Ableitungen der Einheitsverformungen, wie aus
+\begin{align}
+q_x = - K(w,_{xxx} + w,_{yyx})\,, \qquad q_y = - K(w,_{xxy} + w,_{yyy})
+\end{align}
+folgt. Rechnet man gemischt, dann sind die Querkr\"{a}fte die ersten Ableitungen der
+Biegemomente
+\begin{align}
+q_x = m_{xx},_x + m_{xy},_y  \qquad q_y = m_{yy},_y + m_{yx},_x
+\end{align}
+und damit meist konstant, weil in der Regel bei gemischten Methoden (die Durchbiegung $w$ und die Momente werden getrennt voneinander approximiert) lineare Ans\"{a}tze f\"{u}r die Biegemomente $m_{xx}, m_{xy}, m_{yy}$ benutzt werden.
+
+Bei einer schubweichen Platte sind die Querkr\"{a}fte proportional zu den Gleitungen $\gamma_x$ und $\gamma_y$ und damit proportional zu den Verdrehungen $\theta_x, \theta_y$ und den Ableitungen von $w$
+\begin{align}
+q_x = K \,\frac{1 - \nu}{2}\, \bar{\lambda}^2\, (\theta_x + w,_x) \qquad q_y = K\,
+\frac{1 - \nu}{2}\, \bar{\lambda}^2\, (\theta_y + w,_y) \,.
+\end{align}
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/STANZ5D}
+\caption{Durchstanznachweis am Wandende} \label{Stanz5}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/SOFISTIK1}
+\caption{In einem FE-Programm wird heute routinem\"{a}{\ss}ig an jeder Wandecke ein
+Durchstanznachweis gef\"{u}hrt. Die Kreise deuten die Gr\"{o}{\ss}e der Durchstanzkegel an }
+\label{Sofistik1}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+W\"{a}hlt man bilineare Ans\"{a}tze f\"{u}r $w$ und $\theta_x$ und $\theta_y$, so sind theoretisch auch die Querkr\"{a}fte bilinear. Bei dem {\em Bathe-Dvorkin-Element\/} ist es jedoch so, dass die Querkraft in Tragrichtung konstant und nur quer dazu linear ver\"{a}nderlich ist. Das liegt an den Modifikationen, die an diesen Elementen vorgenommen werden.
+
+Dem erratischen Verhalten der Querkr\"{a}fte an den Wandenden und in den Ecken kann man nur so begegnen, dass man zu einer \glq ganzheitlichen\grq{} Betrachtung wechselt und in solchen Punkten einen Durchstanznachweis f\"{u}hrt, wie z.B. bei der dreiseitig gelagerten Deckenplatte in Abb. \ref{Stanz5}.
+
+Die Auflagerkr\"{a}fte wurden hier \"{u}ber die doppelte L\"{a}nge (= $2 \cdot 0.2$ m) der Wandst\"{a}rke integriert, um etwaige Oszillationen auszugleichen, s. Abb. \ref{Stanz5} b und mit dieser Resultierenden $R$ wurde dann am Wandende ein Durchstanznachweis f\"{u}r eine St\"{u}tze 20 cm $\times $ 20 cm mit $V_R = 0.5 \cdot R$ gef\"{u}hrt.\\
+
+{\small Heute wird in FE-Programmen routinem\"{a}{\ss}ig an jeder Wandecke ein Durchstanznachweis gef\"{u}hrt, s. Abb. \ref{Sofistik1}. Als wirksame Lager-Wandfl\"{a}che verwendet ein FE-Programm, \cite{Sofistik}, in der Voreinstellung eine Wanddicke $d$ von 24 cm sowie eine zugeh\"{o}rige Auflagerbreite $b$ von $1.5 \cdot 24 = 36$ cm. Aus den Auflagerreaktionen addiert das Programm im Umkreis $d_r = c + h_m$ um den Eckpunkt herum alle Auflagerkr\"{a}fte (kN/m) und f\"{u}hrt daf\"{u}r mit den Abmessungen $d, b$ einen Durchstanznachweis. Falls die Einzelknotenkraft des zugeh\"{o}rigen Randknotens gr\"{o}{\ss}er ist, wird diese verwendet. Der Rundschnitt wird wie beim St\"{u}tzen-Durchstanznachweis aus der Geometrie selbst gesucht und kann bei Wandenden und Wandecken innerhalb einer Platte den vollen Umfang wie bei einer Einzelst\"{u}tze ausnutzen. Daf\"{u}r wird wegen nicht-rotationssymmetrischer Beanspruchung die Schubspannung $\tau_R$ immer um 40 \% erh\"{o}ht. Liegen zwei Wandenden direkt nebeneinander, wird $U$ auf $0.6 \cdot U_0$ begrenzt, um eine \"{U}berschneidung der Rundschnitte zu verhindern. Die 0.5 \% obere Mindestbewehrung (St\"{u}tzen) wird bei Wandenden und Wandecken nicht angesetzt. Das Bemessungsmoment wird ausgerundet, eine Erh\"{o}hung der Plattendicke im zentralen Knoten erfolgt allerdings nicht, da in der Regel auf eine Mauerwerkswand aufgelagert wird. }  % ENDE SMALL
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Unterschiedliche Plattenst\"{a}rken}}}\index{unterschiedliche Plattenst\"{a}rken}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Bei einer an der Oberseite glatten, durchgehenden Deckenplatte, deren St\"{a}rke sich feldweise \"{a}ndert, sind die Mittelebenen der einzelnen Felder gegeneinander versetzt, s. Abb. \ref{Zweifeld} a. Will man dies auch so in einem FE-Programm modellieren, so muss man Elemente benutzen, bei denen ein Versatz der Elementebene m\"{o}glich ist. Mit normalen Plattenelementen rechnet man  mit einer durchgehenden Mittelebene, s. Abb. \ref{Zweifeld} e.
+
+Wenn die St\"{a}rke der Platte sich \"{a}ndert, dann gibt es teilweise Spr\"{u}nge im Schnittkraftverlauf, s. Abb. \ref{Zweifeld}. Bei dieser Platte betr\"{a}gt die St\"{a}rke im linken Teil $h = 20$ cm und im rechten Teil $h = 40$ cm.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.99\textwidth]{\Fpath/ZWEIFELDB}
+\caption{Verkehrslast $p = 20$ kN/m$^2$ auf gelenkig gelagerter Einfeldplatte mit
+unterschiedlicher Plattenst\"{a}rke {\bf a)} Schnitt durch die Platte {\bf b)} Hauptmomente {\bf c)} Momente $m_{xx}$ und $m_{yy}$ im L\"{a}ngsschnitt {\bf c)} die 3D-Ansicht der verformten Platte zeigt, dass die Platte zentrisch gerechnet wurde}
+\label{Zweifeld}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+An der \"{U}bergangsstelle m\"{u}ssen das Moment $m_{xx}$ und die Kr\"{u}mmung $\kappa_{yy} = w,_{yy}$ auf beiden Seiten gleich gro{\ss} sein
+\begin{align}
+m_{xx}^L = - K^L(w^L,_{xx} + \nu\,w,_{yy}) = - K^R(w^R,_{xx} + \nu\,w,_{yy}) =
+m_{xx}^R\,,
+\end{align}
+w\"{a}hrend das Moment $m_{yy}$ springt.
+
+F\"{u}r das Verh\"{a}ltnis der beiden Momente $m_{yy}$ vor und hinter der Kante ergibt sich n\"{a}herungsweise, wenn wir $\nu = 0$ setzen,
+\begin{align}
+\frac{m_{yy}^L}{m_{yy}^R} = \frac{K^L}{K^R} \frac{(w,_{yy} + \nu\,w^L,_{xx})}{(w,_{yy} +
+\nu\,w^R,_{xx})} \simeq \frac{K^L}{K^R} = \frac{h_L^3}{h_R^3} = \frac{0.2^3}{0.4^3} =
+\frac{1}{8}\,.
+\end{align}
+Die doppelte H\"{o}he bedeutet wegen $h^3$ ein achtfach gr\"{o}{\ss}eres Moment. Statisch ist es so, dass sich die d\"{u}nnere Platte bei der st\"{a}rken Platte einh\"{a}ngt.
+
+Insbesondere an St\"{u}tzenkopfverst\"{a}rkungen erreichen die Momente ihr maximales Niveau eher und auf eine gr\"{o}{\ss}ere L\"{a}nge, wie man an Abb. \ref{Kopfmomente} sieht.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.8\textwidth]{\Fpath/KOPFMOMENTED}
+\caption{Innenst\"{u}tze einer gelenkig gelagerten Platte mit St\"{u}tzenkopfverst\"{a}rkung {\bf
+a)} Momente $m_{xx}$ und {\bf b)} Momente $m_{yy}$ in einem horizontalen Schnitt. In
+einem vertikalen Schnitt w\"{a}re $m_{yy}$ stetig und $m_{xx}$ w\"{u}rde springen}
+\label{Kopfmomente}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+In Abb. \ref{UE324} a sind die Hauptmomente einer Platte mit unterschiedlichen Deckenst\"{a}rken unter Gleichlast dargestellt und in Abb. \ref{UE324} b und c zum Vergleich die Einflussfunktionen f\"{u}r das Moment $m_{xx}$ in dem normalen Bereich ($h$ = 40 cm) und daneben f\"{u}r $m_{xx}$ im abgeminderten Bereich. Man sieht deutlich, dass die zweite Einflussfunktion nicht weit ausstrahlt.
+
+Bei Kragplatten hingegen, wo sich ja Einflussfunktionen ungehindert ausbreiten k\"{o}nnen, fehlt die die f\"{u}r Deckenplatten so typische D\"{a}mpfung, s. Abb. \ref{U498}.
+%----------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\includegraphics[width=0.8\textwidth]{\Fpath/U495}}
+  \caption{Hochbauplatte mit zwei abgeminderten Bereichen, 20 cm statt 40 cm im LF $g$, {\bf a)} Hauptmomente, {\bf b)} Einflussfunktion f\"{u}r $m_{xx}$ im Aufpunkt 1 und {\bf c)} im Aufpunkt 2 } \label{UE324}
+\end{figure}
+%----------------------------------------------------------------------------
+
+%-------------%----------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.99\textwidth]{\Fpath/U498}
+\caption{Einflussfunktionen bei Kragplatten klingen nicht ab, ja sie k\"{o}nnen sogar umso weiter ausschwingen, je weiter sie sich vom Aufpunkt entfernen \textbf{ a)} Einflussfunktion f\"{u}r ein Moment $m_{xx}$, \textbf{ b)} f\"{u}r eine Querkraft $q_x$,  \textbf{ c)} diese Einflussfunktion bleibt auf konstantem Niveau}\label{U498}%
+\end{figure}%%
+%------------------------------------------------------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Punktgest\"{u}tzte Platten}}}\index{punktgest\"{u}tzte Platten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Berechnung von punktgest\"{u}tzten Platten von Hand geschieht gerne in Anlehnung an Heft 240 \cite{Grasser}. Die Platte wird gedanklich in {\em Gurt- und Feldstreifen\/} unterteilt, und die Grenzwerte der Momente
+\begin{subequations}
+\begin{align}
+m_{ss} &= \mbox{St\"{u}tzmomente}\\
+m_{sf} &= \mbox{negative St\"{u}tzmomente des Feldstreifens}\\
+m_{fg} &= \mbox{Feldmoment des Gurtstreifens}\\
+m_{ff} &= \mbox{Feldmoment des Feldstreifens}
+\end{align}
+\end{subequations}
+gem\"{a}{\ss} den Tabellenwerten von Heft 240 ermittelt.
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/PUNKTPLATTEN}
+\caption{Punktgest\"{u}tzte Platte im LF $g$, Vergleich mit Heft 240} \label{PunktPlatten}
+\end{figure}%
+%---------------------------------------------------------------------------------
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/U497}
+\caption{Die Einflussfunktionen best\"{a}tigen, was man ahnt: Die Momente und Querkr\"{a}fte \glq im Feld\grq\ der punktgest\"{u}tzten Platte werden nur von Lasten im Nahbereich des Aufpunkts beeinflusst, dagegen schwingt die Einflussfunktion f\"{u}r das St\"{u}tzmoment in (1) weiter aus. Die Spitzen treten im Feld, ungef\"{a}hr im Abstand $l/4$ vom Aufpunkt (1), auf} \label{U497}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+Abb. \ref{PunktPlatten} zeigt einen Vergleich zwischen den Grenzwerten nach Heft 240 und einer FE-Berechnung f\"{u}r den LF $g$. Die \"{U}bereinstimmung ist wie immer gut.
+
+Gerade beim Studium von punktgest\"{u}tzten Platten k\"{o}nnen Einflussfl\"{a}chen, s. Abb. \ref{U497}, gute Dienste leisten. So erkennt man, dass f\"{u}r ein St\"{u}tzenmoment die vier Felder direkt um die St\"{u}tze belastet werden m\"{u}ssen.
+
+Unter Vollast werden die St\"{u}tzenmomente geringf\"{u}gig kleiner als bei feldweiser Anordnung, wie man an den kleinen Dellen in Abb. \ref{U497} b sieht.
+
+\pagebreak
+%----------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Sonderf\"{a}lle}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wir wollen hier kurz auf orthotrope Platten und Balkenmodelle f\"{u}r Platten eingehen.
+
+{\textcolor{sectionTitleBlue}{\subsection{Orthotrope Platten}}}\index{orthotrope Platten}
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.5\textwidth]{\Fpath/BECHERT}
+\caption{Halbfertigteildecke} \label{Bechert}
+\end{figure}%%
+%-------------------------------------------------------------------------
+Die Erweiterung auf orthotrope Platten, bei denen die Othotropieachsen mit den Koordinatenachsen zusammenfallen, ist, wenn wir uns hier auf die Kirchhoffsche Plattentheorie beschr\"{a}nken, formal sehr einfach, \cite{Altenbach}. Entsprechend der modifizierten Plattengleichung
+\begin{align}
+D_{11}\,w,_{xxxx} + 2\,(D_{12} + 2\,D_{44})\,w,_{xxyy} + D_{22}\,w,_{yyyy} = p
+\end{align}
+erscheinen in der Matrix $\vek D$ jetzt Steifigkeiten $D_{ij}$
+\begin{align}
+\left[\barr {c} m_{xx} \\  m_{yy} \\  m_{xy} \earr\right] = \underbrace{\left [\barr {c
+c c}
+D_{11} & D_{12} & 0 \\
+D_{21} & D_{22} & 0 \\ 0 & 0 & D_{44} \earr \right]}_{\vek D} \left[\barr {c} \kappa_{xx} \\
+\kappa_{yy} \\  2\,\kappa_{xy} \earr\right] \,,
+\end{align}
+die von den Steifigkeiten der beiden Richtungen abh\"{a}ngen, wie etwa z.B.
+\begin{align}
+D_{11} = \frac{EI_1}{1 - \nu_{12}\,\nu_{21}}\,.
+\end{align}
+Orthotropie tritt in der Praxis vorwiegend in der Form von Rippendecken auf. Seltener sind die Bewehrungsquerschnitte so stark unterschiedlich, dass eine Berechnung als orthotrope Platte sinnvoll erscheint. F\"{u}r beide F\"{a}lle findet man in \cite{Altenbach} Gleichungen f\"{u}r die Steifigkeiten $D_{ij}$.
+
+{\textcolor{sectionTitleBlue}{\subsection{Elementdecken}}}\index{Elementdecken}
+Halbfertigteildecken werden meist auf der Grundlage einer Ortbetonkonstruktion bemessen. Werden die Verbundbeanspruchungen zwischen Fertigteil und Ortbeton sicher \"{u}bertragen, bleibt nur die Sto{\ss}fuge zwischen den Elementen als St\"{o}rzone. Nach {\em Bechert\/} und {\em Furche\/} \cite{Bechert} betr\"{a}gt die Gr\"{o}{\ss}e dieser St\"{o}rzone etwa das dreifache der Fugenh\"{o}he $d_2 - d_1$, s. Abb. \ref{Bechert}. In der Fuge steht \"{o}rtlich \"{u}ber die gesamte Breite eine geringere Querschnittsh\"{o}he zur Verf\"{u}gung, und auch die Drillsteifigkeit ist geschw\"{a}cht. {\em Bechert\/} und {\em Furche\/} haben solche Elementdecken mit finiten Elementen unter Ber\"{u}cksichtigung des Steifigkeitsverlustes in den Fugen untersucht und kommen zu dem Schluss, dass die St\"{o}rzonen nur einen geringen Einfluss auf die maximalen Schnittgr\"{o}{\ss}en haben. Wird die Platte homogen gerechnet, also ohne  Fugen, so empfehlen die Autoren die Feldbewehrung um 5 \% zu erh\"{o}hen.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Balkenmodelle}}}\label{Balkenmodelle}\index{Balkenmodelle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Balkenmodelle eignen sich gut dazu, das Tragverhalten von Platten nachzubilden und FE-Berech\-nungen zu kontrollieren. Man muss dabei jedoch vorsichtig sein. Die Decke in Abb. \ref{3DKragarmmomente} wurde f\"{u}r den LF $g = 9.5$ kN/m$^2$ plus einer Verkehrslast von $p = 5$ kN/m$^2$ auf dem Balkon berechnet. F\"{u}r das Kragmoment des Balkons erh\"{a}lt man nach der Balkentheorie den Wert $m_{xx} = -p\,l^2/2 = -14.5 \cdot 1.5^2/2 = -16.3$ kNm/m w\"{a}hrend die FE-L\"{o}sung in der Mitte des \"{U}bergangs Balkon-Platte den scheinbar viel zu kleinen Wert $m_{xx} \simeq 0.0$ kNm/m liefert.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/3DKRAGMOMENTD}
+\caption{Wohnhausdecke mit Balkon LF $g + p$ (Balkon) {\bf a)} System, {\bf b)} Momente
+$m_{xx}$ in verschiedenen Schnitten, {\bf c)} 3D-Darstellung der Biegefl\"{a}che {\bf d)}
+Kragarmmomente bei St\"{u}tzung durch Innenwand} \label{3DKragarmmomente}
+\end{figure}%%
+%-------------------------------------------------------------------------
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/U545}
+\caption{Kragplatte mit Einzelkraft und Schnittmomente $m_{xx}$} \label{U545}
+\end{figure}%%
+%-------------------------------------------------------------------------
+Dies liegt jedoch an der Nachgiebigkeit der Platte, wie man in der 3D-Darstellung der Verformungen, Abb. \ref{3DKragarmmomente} c, erkennt. Der Vergleich mit der Balkenl\"{o}sung ist hier nicht statthaft. Nur in den Viertelspunkten trifft die Balkenl\"{o}sung in etwa die wahren Verh\"{a}ltnisse.
+
+Umgekehrt werden die Kragarmmomente $m_{xx}$ der FE-L\"{o}sung zu den festen Lagern hin, oben (- 56.6 kNm/m) und unten (- 44.1 kNm/m), deutlich {\em gr\"{o}{\ss}er\/} als nach der Balkentheorie. Das Integral der Biegemomente im Schnitt muss ja gleich dem Kragarmmoment sein
+\begin{align}
+M = \int_0^{\,b} m_{xx}\,dy = \frac{(g + p)\,b\,l^2}{2}\,, \qquad b = \mbox{Breite des
+Balkons}
+\end{align}
+und das geht nur, wenn die Momente $m_{xx}$ zu den Seiten hin ansteigen.
+
+Wenn man dagegen die Balkonplatte im Anschnitt unterst\"{u}tzt, s. Abb. \ref{3DKragarmmomente} d, werden die Momente im Anschnitt gr\"{o}{\ss}er (!) als nach Balkentheorie und zu den R\"{a}ndern hin fallen sie ab.
+
+Instruktiv mag auch die Abb. \ref{U545} sein, wo eine Einzelkraft die Vorderkante  des Balkons nach unten dr\"{u}ckt. Der Verteilungseffekt macht, dass das Schnittmoment $m_{xx} = -2.86$ kNm \"{u}ber der Innenwand -- der Einzelkraft direkt gegen\"{u}ber -- nur rund 1/6 des Balkenmoments $M = - 20$ kNm ist. Um die -20 kNm wiederzufinden, muss man das Schnittmoment $m_{xx}$ l\"{a}ngs der Innenwand aufintegrieren.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Kreisplatten}}}\label{Kreisplatten}\index{Kreisplatten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Unterteilt man eine Kreisplatte in dreieckige oder auch viereckige Elemente, so wird aus dem Rand ein Vieleck in dessen Ecken sich, bei einer ansonsten gelenkigen Lagerung des Randes, eine gewisse Einspannung einstellt, die zu ganz erheblichen Abweichungen bei der Durchbiegung in Plattenmitte und den Schnittkr\"{a}ften f\"{u}hren kann, s. Abb. \ref{Kreisplatte}. Die Platte wird durch die Ecken sozusagen zus\"{a}tzlich ausgesteift und senkt sich nicht so stark durch, denn dort, wo zwei schiefe, gelenkig gelagerte Plattenr\"{a}nder zusammensto{\ss}en, ist nicht nur die Durchbiegung $w = 0$, sondern sind es auch die Verdrehung $w,_x = w,_y = 0$. Das Paradoxe ist: Je mehr Ecken man einbaut, je besser das Vieleck also den Kreis beschreibt, um so mehr weicht die Lagerung von einer gelenkigen Lagerung ab, {\em Babu\v{s}kas Paradoxon} \cite{babpit}.
+%-------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.9\textwidth]{\Fpath/KREISPLATTE}
+\caption{Gelenkig gelagerte Kreisplatte, Momente in zwei Schnitten} \label{Kreisplatte}
+\end{figure}%%
+%-------------------------------------------------------------------------
+
+Man kann das Problem etwas abmildern, indem man in den Ecken die Einspannung $w = w,_x = w,_y = 0$ durch einen {\em soft support\/} $w = 0$ ersetzt, indem man also die Verdrehungen in den Ecken freigibt. Programme, die schubweich rechnen, haben in der Regel diese Probleme nicht, weil sie von Hause aus meist gelenkige Lager als {\em soft support\/} modellieren, also nur die Durchbiegung $w = 0$ sperren, aber die Verdrehung $w,_t$ l\"{a}ngs des Randes frei geben.
+%----------------BILD---------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.99\textwidth]{\Fpath/U500}
+\caption{Deckenplatte auf Unterz\"{u}gen}
+\label{U500}
+\end{figure}%%
+%----------------BILD---------------------------------------------------------
+
+Eine solche ungewollte Einspannung liegt im \"{u}brigen auch vor, wenn man Ecken in einen eigentlich geraden, gelenkig gelagerten Plattenrand einbaut. Das war das Problem in Abb. \ref{Richtlinie16}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Plattenbalken}}}\label{Plattenbalken}\index{Plattenbalken}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Kaum ein anderes Thema st\"{o}{\ss}t auf soviel Interesse, wie das Thema Plattenbalken, s. Abb. \ref{U500}, und die damit zusammenh\"{a}ngenden Fragen, \cite{Katz1}, \cite{Werkle}, \cite{Wu1}. Wenn man es intensiver studiert, so erkennt man, dass es sich um ein ausgesprochen komplexes, dreidimensionales Problem handelt. Die Ingenieure haben sich jedoch schon immer mit vereinfachten Vorstellungen wie z.B. der mitwirkenden Breite oder anderen N\"{a}herungsans\"{a}tzen an die Realit\"{a}t herangetastet. Je nachdem, an welchem Ergebnis man interessiert ist, ergeben sich andere Vorgehensweisen. Auch wenn die Rechner immer leistungsf\"{a}higer werden, so ist die komplette 3D-L\"{o}sung einerseits immer noch viel zu aufwendig, andererseits hilft eine exakte Ermittlung der Spannungen f\"{u}r die Wahl der erforderlichen Bewehrung noch nicht allzu viel. Es gibt deshalb eine Vielfalt von m\"{o}glichen Ans\"{a}tze, die unterschiedliche Genauigkeiten aufweisen und deshalb immer wieder diskutiert werden:\\
+
+\begin{itemize}
+\item Platte und Balken als Faltwerk\index{Faltwerk} (auch Schalenmodell genannt)
+\item Platte als Faltwerk, Unterzug als exzentrischer Balken oder Platte
+\item Platte als Platte und Unterzug als exzentrischen Balken (mit Normalkraft)
+\item Platte als Platte und Unterzug mit Schwereachse in der Plattenmittelebene
+\end{itemize}
+Die Tatsache, dass manche Ingenieure Unterz\"{u}ge grunds\"{a}tzlich unendlich steif ($EI = \infty$) rechnen, mag ein Hinweis darauf sein, wieviel \glq Luft\grq\ die Modellierung von Unterz\"{u}gen, zumindest im Hochbau, enth\"{a}lt. F\"{u}r einen Nachweis der Tragf\"{a}higkeit ist dies auch noch akzeptierbar, bei erh\"{o}hten Anforderungen an die Wirtschaftlichkeit oder f\"{u}r Nachweise der Verformungen ist dies aber nicht mehr so ohne weiteres vertretbar.
+
+Im ersten Schritt wollen wir uns darauf beschr\"{a}nken, die Spannungen bzw. Kr\"{a}fte im System richtig zu erfassen. Wenn man einmal von der echten 3D-L\"{o}sung absieht, die h\"{o}chstens im Bereich von Lasteinleitungen erforderlich werden kann, so unterscheiden sich die ersten beiden L\"{o}sungen in der Ber\"{u}cksichtigung des Steges. Im ersten Modell wirkt der Steg als Scheibe, d.h. die Normalspannungen haben keinen linearen Verlauf \"{u}ber die H\"{o}he. Beim zweiten Modell hingegen wird die Bernoulli-Hypothese vom Ebenbleiben der Querschnitte aktiviert, und man hat die klassische lineare Verteilung der Biegespannungen.
+
+Beide Modelle k\"{o}nnen die Ausbreitung der Normalspannungen \"{u}ber die Breite sehr genau erfassen, die mitwirkende Breite ist sozusagen das Ergebnis der Berechnung.  Bei diesen Modellen sieht man am Bildschirm dann tats\"{a}chlich, wie sich die mitwirkende Plattenbreite $b_m$ zum Feld hin aufweitet und zu den Lagern hin wieder einschn\"{u}rt.
+
+Bei allen anderen Modellen handelt es sich um die Ankopplung eines Balkens an ein Fl\"{a}chentragwerk (die Platte), s. Abb. \ref{Koppelbalken}, wobei die Platte entweder als Faltwerk ($m_{\,ij},q_i,n_{\,ij}$) behandelt wird oder eben einfach \glq nur\grq\ als Platte ($m_{\,ij},q_i$).
+
+%------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/KOPPELBALKEND}
+\caption{Die Unterzugsknoten und Plattenknoten liegen \"{u}bereinander.} \label{Koppelbalken}
+\end{figure}%%
+%------------------------------------------------------------------------
+
+Die Ankopplung im Sinne der finiten Elemente bedeutet, dass die Bewegungen des Balkens und die Bewegungen der Platte in den Knoten gleichgeschaltet sind. Es ist also eine {\em punktweise geometrische\/} (= gleiche Verformungen in den Knoten) und {\em energetische\/} Kopplung (= gleiche Arbeiten der Schnittkr\"{a}fte in der Schnittfuge von Balken und Platte).
+
+Seien $u, w$ und $\Np$ (= Verdrehung) die entsprechenden Freiheitsgrade von Platte, $P$, und Balken, $B$, dann bedeutet dies  also
+\begin{align}
+w_B = w_P \qquad u_B = u_P + \Np_P\,e \qquad \Np_B = \Np_P\,,
+\end{align}
+oder, wenn wir die Platte dehnsteif rechnen, f\"{u}r die L\"{a}ngsverformung $u_B$ noch einfacher $u_B = \Np_P \cdot e$. Hierbei ist $e$ der Abstand der Schwereachse des Balkens von der Plattenmittelfl\"{a}che. In Gedanken sind Platte und Balken also durch einen starren Stab der L\"{a}nge $e$ verbunden, so dass Rotationen in der Platte zu L\"{a}ngsdehnungen im Balken f\"{u}hren.
+
+Je nachdem, ob man diese Ausmitte $e$ ber\"{u}cksichtigt oder nicht, spricht man von einem {\em zentrisch\/} oder einem {\em exzentrisch\/} angeschlossenen Balken. Die Modelle unterscheiden sich dann bez\"{u}glich der Art und Weise wie die Normalkr\"{a}fte aus dieser Exzentrizit\"{a}t in die Rechnung eingef\"{u}hrt werden.
+
+Durch die Kopplung der Elemente entstehen eine ganze Reihe von Inkompatibilit\"{a}ten bzw. Fehlern. Wir erinnern uns daran, dass das Schnittprinzip bei der FE-Kopplung {\em unterschiedlicher\/} Bauteile nicht mehr gilt, s. S. \pageref{Schnittprinzip}. Nur die {\em virtuellen Arbeiten\/} der Schnittkr\"{a}fte sind gleich. Dazu kommt noch, dass Balken und Platte sich unterschiedlich durchbiegen, denn die Biegelinie $w$ des Balkens wird in der Regel nicht mit der Biegefl\"{a}che $w(x,y)$ der Platte in der Balkenachse \"{u}bereinstimmen. Oft hat man eine Reissner-Mindlin-Platte mit Schubverformungen, die an einen Balken ohne diese angekoppelt werden. Jeder Gedanke an eine reale Einleitung der Balkenkr\"{a}fte in das Plattensystem f\"{u}hrt in die Irre, hier kann man nur in energetisch gleichwertigen Knotenkr\"{a}ften denken.
+
+Zum anderen hat man auch einen Fehler bei der Schub\"{u}bertragung\index{Schub\"{u}bertragung}, denn der Anteil der L\"{a}ngsverformung aus der Exzentrizit\"{a}t ist zumindest bei der Kirchhoffplatte von quadratischem Ansatz, w\"{a}hrend die Normalkraftverformungen normalerweise nur linear sind. Dieser Fehler sinkt zwar mit der Netzverdichtung quadratisch ab, jedoch erfordert er eine Unterteilung der Feldweite in mehrere Elemente und macht sich bei der Auswertung durch einen stufenf\"{o}rmigen Verlauf der Normalkraft bemerkbar.
+
+Auch wenn die Steifigkeiten also real nur in den diskreten Knoten addiert werden, so ist es doch zumindest hilfreich, in Biegesteifigkeiten des Gesamtsystems zu denken. Die Biegesteifigkeit der Platte erh\"{o}ht sich um die entsprechenden Anteile aus den Balkenelementen
+\begin{align}
+k_w = b_m \cdot \frac{Et^3}{12(1-\mu^2)} + {EI} + {EA} \cdot e^2\,,
+\end{align}
+wie man auch an der modifizierten Steifigkeitsmatrix des Balkens abliest
+\begin{eqnarray*}
+\vek K= \left[\begin{array}{c c c c} 12EI/l^3 &
+-6EI/l^2 & -12EI/l^3 & 6EI/l^2\\[0.2cm] .
+& 4EI/l+ EA/l \cdot e^2 & 6EI/l^2 &
+2EI /l- EA/l \cdot e^2\\[0.2cm] . & . &
+12EI/l^3 & 6EI/l^2\\[0.2cm] \mbox{sym.} & . & . &
+4EI/l + EA/l \cdot e^2
+\end{array}\right]\,.
+\end{eqnarray*}
+
+Soweit die technische Seite. Entscheidend ist nun, neben der Wahl der Ausmitte $e$, welchen Wert man f\"{u}r das Tr\"{a}gheitsmoment $I$ des Unterzuges ansetzt, welche Fl\"{a}chen man also dem Unterzug zurechnet, s. Abb. \ref{PWB}.
+%-------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.6\textwidth]{\Fpath/PBW}
+\caption{Lage des Unterzuges zur Platte} \label{PWB}
+\end{figure}%%
+%-------------------------------------------------------------
+
+L\"{a}sst man den Unterzug bis zur Oberkante der Platte durchgehen, Abb. \ref{PWB}b, so wird
+in \cite{Wu1} gesetzt
+\begin{align}
+A_B = b_U \,d_0 \qquad e = \frac{d_0 - d}{2} \qquad I_B =
+\frac{b_U \,d_0^3}{12}- \frac{b_U\,d^3}{12}\,.
+\end{align}
+Setzt man f\"{u}r den Unterzug die
+Steifigkeit des Plattenbalkens (T-Querschnitt) in Rechnung, so erh\"{a}lt man
+\begin{align}
+A_B &=
+b_U\,d_U + b_m\,d \qquad e = \frac{b_U\,d_U}{b_U\,d_U +
+b_m\,d}\,\frac{d_0}{2} \\
+I_B &=\frac{b_U \,d_U^3}{12}- \frac{b_U\,d_U\,b_m\,d}{b_U\,d_U +
+b_m\,d}\,\frac{d_0^2}{4}\,.
+\end{align}
+Setzt man f\"{u}r den Unterzug nur die Fl\"{a}che des Stegs in
+Rechnung, s. Abb. \ref{PWB} a, so folgt
+\begin{align}
+I_B =\frac{b_U \,d_U^3}{12} + b_U\,d_U \,\frac{d_0^2}{4}\,.
+\end{align}
+
+Bevor wir nun diskutieren, welchen Ansatz man w\"{a}hlen sollte, wollen wir uns in Erinnerung rufen, wie \glq virtuell\grq\ die ganze Kopplung doch eigentlich ist, denn weder sind die Schnittkr\"{a}fte zwischen Balken und Platte gleich, noch sind die Verformungen -- von den Knoten abgesehen -- gleich, es handelt sich hier um eine hochgradig nichtkonforme Angelegenheit, man muss also, s.o., in \"{a}quivalenten Knotenkr\"{a}ften denken. Dann aber sind die Auswirkungen der Fehler in den Kopplungen gar nicht mehr so gravierend und Untersuchungen von {\em Ramm\/} \cite{Ramm4} haben ergeben, dass z.B. bei der Kopplung von Faltwerken in einem Knick die einfachste Kopplung die besten Ergebnisse erbringt.
+
+So gesehen sollte man das Modellieren von Unterzug und Platte durch ausgefuchste Koppelmodelle nicht \"{u}bertreiben. Die M\"{u}he, die sich der Ingenieur macht, wird im Grunde vom FE-Programm nicht honoriert. Ob man nun den {\em Steinerschen Anteil\/}\index{Steinersche Anteil} mitnimmt oder nicht, ob man Fl\"{a}chen doppelt z\"{a}hlt, ob die Tr\"{a}gerachse in der Plattenmittelebene oder unterhalb der Ebene verl\"{a}uft, ist nur insofern wichtig, wie man dadurch die Biegesteifigkeit $EI$ und damit die Dreh- und Senksteifigkeit des Unterzugs, also den Widerstand des Unterzugs gegen Knotenverformungen in der Platte, besser erfasst, s. Abb. \ref{UntersichtPB}.
+
+Wir meinen, dass es am sinnvollsten ist, wenn man es so einrichtet, dass die Summe der Steifigkeiten der echten L\"{o}sung entspricht. Wenn man also eine mitwirkende Breite gew\"{a}hlt hat, so hat das Gesamtsystem Plattenbalken eine Steifigkeit bezogen auf den gemeinsamen Schwerpunkt, die nach Abzug der Plattensteifigkeit an sich und der Wahl einer Exzentrizit\"{a}t die Reststeifigkeit des Balkens zwangsweise ergibt. Tats\"{a}chlich hat die Wahl der mitwirkenden Breite\index{mitwirkende Breite} einen geringen Einfluss auf die Ergebnisse, die Wahl von $l_0$/3 ist in den meisten F\"{a}llen v\"{o}llig ausreichend,
+\cite{Katz1}.
+%------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.8\textwidth]{\Fpath/UNTERSICHTPB}
+\caption{Verformungen des Systems Platte und Unterzug - stark \"{u}berh\"{o}ht}
+\label{UntersichtPB}
+\end{figure}%%
+%------------------------------------------------------------------------
+
+
+Der Vollst\"{a}ndigkeit halber sei noch erw\"{a}hnt, dass man einen Unterzug nicht einfach dadurch modellieren sollte, dass man die Plattenelemente in der Achse des Unterzugs um die Stegh\"{o}he dicker macht. Formal w\"{a}re das eine Modellierung mit der Ausmitte $e = 0$, weil die Elemente um die halbe Stegh\"{o}he nach unten und oben aus der Platte ragen w\"{u}rden. Wenn man diesen Weg gehen will, muss man die Elemente insgesamt exzentrisch nach unten anordnen, was nur ganz wenige Programme vorsehen. Dann wird es aber auch erforderlich, bei der Auswertung der Ergebnisse insbesondere in den Knoten, die Unstetigkeit der Dicke entsprechend zu ber\"{u}cksichtigen.
+
+Bei der BEM werden die Plattenbalken wie \glq R\"{u}sttr\"{a}ger\grq\ modelliert, d.h. die Platte liegt auf den Tr\"{a}gern auf, und die St\"{u}tzkr\"{a}fte werden -- wie beim Kraftgr\"{o}{\ss}enverfahren -- so bestimmt, dass die Durchbiegung der Platte gleich der Durchbiegung der Tr\"{a}ger ist. Die Plattenbalken werden dann f\"{u}r diese Linienlasten (= St\"{u}tzkr\"{a}fte) bemessen.
+
+Ein Vergleich verschiedener FE-Modelle, \cite{Werkle}, {\em A\/} = Unterzug als zentrischer Balken, {\em B\/} = UZ als zentrischer Balken, $b_m = \infty$, {\em C\/} = UZ als exzentrischer Balken, {\em D\/} = UZ als starres Lager, zeigt, dass die Ergebnisse trotz zum Teil unterschiedlicher Modellierung dicht beieinander liegen.\\
+
+\begin{tabular}{lrrrr}
+\noalign{\hrule\smallskip}
+    Modell &   M Balken & $m_{yy}$ [kNm/m] & $m_{xx}$ [kNm/m] &     f [mm] \\
+\noalign{\hrule\smallskip}
+  {\em   FEM A\/} &        481 &        4.7 &        -30 &        1.8 \\
+  {\em    FEM B\/} &        493 &        4.5 &      -31.2 &        1.5 \\
+  {\em    FEM C\/} &        490 &        4.3 &      -30.9 &        1.6 \\
+  {\em    FEM D\/} &          - &          0 &      -36.4 &          0 \\
+  {\em    BEM \/}&        485 &        5.3 &     -31.4 &       1.7
+\end{tabular}\\
+
+Eine \"{a}hnliche \"{U}bereinstimmung der Resultate wurde in \cite{Wu1} beobachtet. Bedenkt man, mit wieviel Unsicherheiten eine Stahlbetonberechnung behaftet ist, so erscheint die Wahl des Modells nicht so entscheidend zu sein. F\"{u}r ein Programm m\"{u}ssen jedoch auch noch Grenzf\"{a}lle der Abmessungen zu vern\"{u}nftigen Ergebnissen f\"{u}hren, und hier k\"{o}nnen bei der systematischen Vernachl\"{a}ssigung von Effekten wie z.B. der Normalkraftverformungen der Platte oder der Forderung nach einer konsistenten Gesamtsteifigkeit entsprechend deutliche Abweichungen bei den Ergebnissen entstehen.
+\vspace{-0.5cm}
+{\textcolor{sectionTitleBlue}{\subsection{Empfehlung}}} Wir empfehlen deshalb das Modell
+{\em exzentrischer Balken\/} am Faltwerk zu w\"{a}hlen, also die Steifigkeit des Unterzugs um den Anteil aus der gesamten Ausmitte $e$ zu erh\"{o}hen und dabei die Normalkraftverformungen in der Platte \"{u}ber einen FE-Scheibenansatz zu ber\"{u}cksichtigen. F\"{u}r viele praktische F\"{a}lle ist jedoch auch das Modell des zentrischen Plattenbalkens ausreichend. Dabei sollte man dann ein Ersatztr\"{a}gheitsmoment $\tilde I$ so w\"{a}hlen, dass die Summe der Biegesteifigkeiten die des vollen Plattenbalkens erreicht
+\begin{align}
+EI_{tot} &= b_m \cdot \frac{E \cdot d^3}{12(1-\nu^2)} + \frac{b_0\cdot{d_u}^3}{12} + E
+\cdot b_m \cdot d \cdot e_p^2 + E \cdot b_0 \cdot d_u \cdot e_b^2\,,\\
+EI_{tot} &=
+b_m \cdot \frac{E \cdot d^3}{12(1-\nu^2)} + E \tilde I\,.
+\end{align}
+Hierbei sind $e_p$ und $e_b$ die Abst\"{a}nde der Platten- bzw. Balkenmitte zum Gesamtschwerpunkt. Daraus ergibt sich $\tilde I$ als das Tr\"{a}gheitsmoment des gesamten Plattenbalkenquerschnitts abz\"{u}glich der Steifigkeit der Platte selbst.
+
+Wir empfehlen dar\"{u}ber hinaus jedem Anwender, das von ihm gew\"{a}hlte Verfahren bez\"{u}glich der Grenzwerte praktisch auszutesten.
+
+{\textcolor{sectionTitleBlue}{\subsection{Schnittkr\"{a}fte}}}
+Sind dann die Knotenverformungen bekannt, so kann man die Schnittkr\"{a}fte $m_{\,ij},q_i,n_{\,ij}$ in der Platte und im Balken, $M_B, V_B, N_B$, berechnen. Die Krux beginnt nun damit, dass viele Anwender bzw. Programme diese Schnittgr\"{o}{\ss}en v\"{o}llig getrennt und unabh\"{a}ngig f\"{u}r die Platte und den Balken bemessen, weil es anders, d.h. richtig, halt nicht vorgesehen ist. Wenn man aus diesem Dilemma dadurch herauszukommen versucht, dass man an den Steifigkeiten dreht, so treibt man letztendlich den Teufel mit dem Belzebub aus. Das Ergebnis sind Bewehrungspl\"{a}ne, bei denen die Zugbewehrung in der Druckzone der Platte liegt oder einfach unter den Tisch gefallen lassen wurde, was entweder zu unsicheren oder zu unwirtschaftlichen Konstruktionen f\"{u}hrt.
+
+Richtig kann nur eine Bemessung auf den Gesamtquerschnitt sein, dessen Schwereachse unterhalb der Plattenmittelebene verl\"{a}uft. Dazu ben\"{o}tigt man zuerst das Moment im Plattenbalkenquerschnitt ($PB$) sowie die Querkraft im Querschnitt, die sich aus
+\begin{align}
+M_{PB} &= M_B + N_B \cdot e_b + \int_{P} (m_{yy}+n_{xx}\cdot
+e_p)\, dx \,,\\
+V_{PB} &= V_B + \int_P q_z\, dx \,.
+\end{align}
+ergeben. Damit erh\"{a}lt man die richtige Bewehrung im Unterzug unter Ber\"{u}cksichtigung der Druckzone
+in der Platte. F\"{u}r die Platte selbst gibt es drei M\"{o}glichkeiten:\\
+
+\begin{itemize}
+\item Platte weist als Faltwerk bereits Normalkr\"{a}fte auf.
+\item Plattenbewehrung wird in den Unterzug \"{u}ber Hebelarm umgerechnet.
+\item Eine Normalkraft wird f\"{u}r die Bemessung r\"{u}ckgerechnet.
+\end{itemize}
+F\"{u}r den letzten Punkt kann man die Herleitung der Reststeifigkeit verwenden. Da die Kr\"{u}mmung im gesamten Querschnitt konstant ist, entspricht dem Gesamtmoment die Gesamtsteifigkeit, dem Plattenmoment die Plattensteifigkeit und der Rest teilt sich auf auf die Eigensteifigkeit des Unterzuges alleine und die Steineranteile von Platte und Unterzug bezogen auf den gemeinsamen Schwerpunkt bzw. der Normalkraft multipliziert mit dem Abstand der Schwerpunkte.
+
+Bei der Bemessung wird ein Bruchzustand der gesamten Beanspruchung zugrundegelegt. Wenn man statt dessen Platte und Steg getrennt f\"{u}r ihre Beanspruchungen bemessen w\"{u}rde, oder gar die elastischen Spannungen punktweise abdecken w\"{u}rde, so ist man zumindest unwirtschaftlich; es gibt jedoch auch F\"{a}lle in denen man unsichere Konstruktionen errechnet.
+
+Bei den meisten Vergleichen, die ver\"{o}ffentlicht wurden, fehlt dieser Aspekt entweder v\"{o}llig, oder er beschr\"{a}nkt sich auf die Biegebemessung. Wenn man aber eine vern\"{u}nftige Schubbemessung abliefern will, so gibt es gar keinen anderen Weg als den \"{u}ber den Gesamtquerschnitt, denn ein Plattenbalken, bei dem der Steg im Schubbereich 3 ist, und die Platte ohne Schubbewehrung bzw. Anschlussbewehrung auskommt, sollte ernsthaft hinterfragt werden.
+
+\vspace{-0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Bodenplatten}}}\label{Bodenplatten}\index{Bodenplatten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\textcolor{sectionTitleBlue}{\subsection{Bettungsmodulverfahren}}}\index{Bettungsmodulverfahren}
+Beim Bettungsmodulverfahren wird der Boden als ein System von Einzelfedern betrachtet, die sich unabh\"{a}ngig voneinander verformen, und die mit der Kraft $c\,w$ gegen die Platte dr\"{u}cken. Dies f\"{u}hrt auf die bekannten Differentialgleichungen
+\begin{align}
+EI w^{IV} + c\, w &= p \qquad \mbox{Balken} \nn \\
+K \Delta \Delta \, w + c\, w &= p \qquad\mbox{Platte}\nn\,.
+\end{align}
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=.7\textwidth]{\Fpath/BODEN2}
+\caption{Bettungsmodulver\-fah\-ren: Lastfall Eigengewicht einer Bodenplatte}
+\label{Boden2}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+Die  zugeh\"{o}rigen Wechselwirkungsenergien lauten
+\begin{align}
+a(w,\delta w) &= \int_0^{\,l} \frac{M\, \delta M}{EI}\,dx + c\,\int_0^{\,l} w\,\delta w\,dx \\
+a(w,\delta w) &= \int_{\Omega} \vek m \dotprod \vek  \delta \vek \kappa\,d\Omega +
+c\,\int_{\Omega} w\,\delta w\,d\Omega\,,
+\end{align}
+so dass man zur Steifigkeitsmatrix $\vek K$ nur die sogenannte {\em Gramsche Matrix}
+$\vek G$, die \"{U}berlagerung der Einheitsverformungen
+\begin{align}
+g_{\,ij} = \int_\Omega \Np_i\,\Np_j\, d\Omega \,,
+\end{align}
+addieren muss
+\begin{align}
+(\vek K + c\,\vek G)\, \vek u = \vek f \,,
+\end{align}
+um auf die entsprechende Steifigkeitsmatrix zu kommen. Das Federmodell bedeutet, dass es im LF $g$ zu einer gleichm\"{a}{\ss}igen Setzung $w = G/c$ der Platte unter ihrem Eigengewicht $G$ kommt, damit also keine Momente entstehen,  s. Abb. \ref{Boden2}. Dasselbe gilt nat\"{u}rlich sinngem\"{a}{\ss}
+f\"{u}r den Lastfall Wasserdruck.
+
+In Abb. \ref{Boden2} sieht man auch gleich den wesentlichen Einwand gegen das Bettungsmodulverfahren: Weil die Federn nicht miteinander gekoppelt sind, bleibt der Boden neben der Platte einfach stehen. Oder: Wenn man den Halbraum mit der Sohlpressung $c\,w$ belastet, dann stellt sich nicht die Setzungsmulde $w$ im Bereich der Bodenplatte ein. Es passt also wenig zusammen.
+
+Der Bettungsmodul h\"{a}ngt nicht nur von dem Baugrund ab, sondern auch von der Gr\"{o}{\ss}e der Bodenplatte. Er muss theoretisch auch ver\"{a}nderlich sein, denn anders kann man z.B. die zum Rand hin stark ansteigende Sohlpressung $p$ unter einem starren Stempel (also konstante Setzung $w_0$) nicht aus dem Federgesetz $p(\vek x)  = c(\vek x) \,w_0$ ableiten, s. Abb. \ref{Pressung}.
+
+Es sind eine ganze Reihe von Verfahren ersonnen worden, um diese Defekte zu korrigieren. Meist geschieht dies iterativ indem der Bettungsmodul $c$ lokal so abge\"{a}ndert wird, dass Platte und Boden sich einander anpassen.
+
+
+{\textcolor{sectionTitleBlue}{\subsection{Erh\"{o}hung des Bettungsmoduls zum Rand}}}
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/BETTUNGS11}
+\caption{Modifiziertes Bettungsmodulverfahren Momente $m_{xx}$ in einigen Schnitten {\bf a)} System und Belastung {\bf b)}
+konstanter Bettungsmodul {\bf c)} Steifemodulverfahren {\bf d)} in einem Randstreifen von
+1 m Breite wurde der Bettungsmodul um den Faktor vier erh\"{o}ht} \label{BettungS11}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+
+Rechnet man eine Platte nach dem Steifemodulverfahren, dann steigt die Sohlspannung zum Rand hin stark an. Also m\"{u}sste der Bettungsmodul zum Rand hin gr\"{o}{\ss}er werden. Rechnet man mit konstantem Bettungsmodul, dann sinkt die Platte am Rand stark ein, wie man z.B. an Abb. \ref{BettungS11} b sieht. Es empfiehlt sich daher den Bettungsmodul in der N\"{a}he des Randes zu erh\"{o}hen. Bei der Platte in Abb. \ref{BettungS11} wurde zun\"{a}chst mit einem konstanten Bettungsmodul $c = 10\,000$ kN/m$^3$ gerechnet, Abb. \ref{BettungS11} b, und dann in einem Randstreifen von 1 m Breite der Bettungsmodul um den Faktor vier erh\"{o}ht. Die Momente $m_{xx}$ bei diesem verbesserten Modell, s. Abb. \ref{BettungS11} d, haben sehr viel mehr \"{A}hnlichkeit mit den Ergebnissen einer Berechnung nach dem Steifemodulverfahren ($E_S = 50\,000$ kN/m$^2$), Abb. \ref{BettungS11} c, als die Ergebnisse in Abb. \ref{BettungS11} b.
+
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=1.0\textwidth]{\Fpath/BODENS3D}
+\caption{Verformungen beim Bettungs- und beim Steifemodulverfahren}
+\label{BodenS3}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+
+{\textcolor{sectionTitleBlue}{\subsection{Steifemodulverfahren}}}\index{Steifemodulverfahren}
+Die technisch sauberste L\"{o}sung ist allerdings die Berechnung nach dem {\em Steifemodulverfahren}, weil hierbei der Boden, der elastische Halbraum, als gleichberechtigtes Tragglied neben die Platte tritt. Die Bodenpressung zwischen Platte und Boden wird so eingestellt, dass die Durchbiegung der Platte gleich der Durchbiegung des Bodens ist, s. Abb. \ref{BodenS3}.\\
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.7\textwidth]{\Fpath/STRICHTER}
+\caption{Konzentrierte Pressung auf eine Bodenplatte, die keine Eigensteifigkeit hat, $K
+= 0$} \label{STrichter}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+
+Das Hilfsmittel hierzu ist die {\em Boussinesq-L\"{o}sung\/}\index{Boussinesq-L\"{o}sung}, die angibt wie gro{\ss} die Durchbiegung $w$ in einem Punkt $\vek x = (x_1,x_2,x_3)$ des Halbraums ist, wenn im Punkt $\vek y = (y_1,y_2,0)$ der Oberfl\"{a}che eine vertikale Kraft $P$ auf den Boden dr\"{u}ckt, s. Abb. \ref{STrichter}
+\begin{align}\label{Boussinesq2}
+w_B(\vek x,\vek y) = \frac{1+\nu}{2\pi\,E} \left( \frac{[x_3 - y_3]^2}{r^3} +
+2\,\frac{1-\nu}{r}\right)\,P \qquad r =  |\vek x - \vek y|\,.
+\end{align}
+Die vertikale Spannung in einem abliegenden Punkt $\vek x$ betr\"{a}gt dabei
+\begin{align}
+\sigma_3(\vek x,\vek y) = \frac{3}{2\pi} \,\frac{(x_3 - y_3)^3}{r^3}\,P\,.
+\end{align}
+Man beachte, dass $\sigma_3$ unabh\"{a}ngig von dem Elastizit\"{a}tsmodul $E$ ist.
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/BETTUNGS10D}
+\caption{Bodenplatte mit gemischter Pfahl-Platten-Gr\"{u}ndung, Rechnung mit dem
+Steifemodulverfahren} \label{BettungS10}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+
+Auf der Oberfl\"{a}che des Halbraums bildet sich um die Einzelkraft $P$ ein Setzungstrichter aus, in dessen tiefstem Punkt, unendlich tief unten, $r = |\vek x - \vek y| \to 0$, die Kraft $P$ sitzt,
+\begin{align}\label{BSetzung}
+w_B(\vek x,\vek y) = \frac{1+\nu}{2\pi\,E} \left(2\,\frac{1-\nu}{r}\right)\,P\,,
+\end{align}
+denn der elastische Halbraum kann eine Punktlast nicht festhalten. Auch Linienkr\"{a}fte w\"{a}ren noch zu \glq scharf\grq. Erst Fl\"{a}chenkr\"{a}fte werden abgebremst, k\"{o}nnen nur noch \glq Dellen\grq\ im Boden verursachen.
+
+Denken wir uns die Bodenpressung $p(\vek y)$ nach Anteilen $\psi_i(\vek y)$ entwickelt
+\begin{align}
+p(\vek y) = \sum_i \psi_i(\vek y) p_{\,i}\,,
+\end{align}
+wobei die Fl\"{a}chenkr\"{a}fte $\psi_i(\vek y)$ wie kleine Pyramiden aussehen, die vom Wert 1 im gleichnamigen Knoten $i$ auf den Wert null zu den Nachbarknoten hin abfallen, so entsteht in dem Punkt $\vek x$ somit die Verformung
+\begin{align}
+w(\vek x) = \sum_i \int_{\Omega} w_B(\vek x,\vek y)\,\psi_i(\vek y) \,d\Omega_{\vek
+y}\,p_i = \sum_i \,\eta_i(\vek x) \,p_i
+\end{align}
+und die Spannung
+\begin{align}
+\sigma_z(\vek x) = \sum_i \int_{\Omega} \frac{3}{2\pi} \,\frac{(x_3 -
+y_3)^3}{r^3}\,p_i(\vek y)\,d\Omega_{\vek y}\,p_i = \sum_i \theta_i(\vek x) \,p_i\,.
+\end{align}
+Das gekoppelte Problem f\"{u}hrt damit auf das Gleichungssystem
+\begin{align}\label{BodenSystem}
+\left[ \barr {r r} \vek K_{(nn)} & \vek L_{(nm)} \\ \vek I_{(mn)}^w & -\vek J_{(mm)}
+\earr \right] \left[ \barr{c} \vek u_{(n)} \\ \vek p_{(m)} \earr \right] = \left[ \barr
+{c} \vek f_{(n)} \\ \vek 0_{(m)} \earr \right] \quad\barr {l} \mbox{\tiny FEM  mit
+Bodenpressung}\\ w_{\mbox{\tiny Platte}} - w_{\mbox{\tiny Boden}} = 0 \earr
+\end{align}
+mit
+\begin{align}
+k_{\,ij} = a(\Np_i,\Np_j) \quad l_{\,ij}= \int_{\Omega} \psi_i\,\Np_j \,d\Omega \quad
+J_{\,ij} = \eta_j(\vek x_i)
+\end{align}
+%---------------------------------------------------------------------------------
+\begin{figure}[tbp]
+\centering
+\if \bild 2 \sidecaption \fi
+\includegraphics[width=0.9\textwidth]{\Fpath/BETTUNGS12}
+\caption{Vergleich von Berechnungen mit dem Steifemodul- und Bettungsmodulverfahren {\bf c)} und {\bf d)}
+Momente $m_{xx}$}
+\label{BettungS12}
+\end{figure}%%
+%---------------------------------------------------------------------------------
+und mit $I^w$ als der von $n$ Zeilen auf $m$ Zeilen \glq zusammengestrichenen\grq\ Einheitsmatrix. In der Sohlfuge werden ja nur die Durchbiegungen gleichgesetzt, denn die Drehfreiheitsgrade in dem Vektor $\vek u$ spielen im Boden keine Rolle. Wenn man daher in der Einheitsmatrix die unterstrichenen Zeilen
+\begin{align}
+1,
+\underbar{2},\underbar{3},4,\underbar{5},\underbar{6},7,\underbar{8},\underbar{9},\ldots
+\end{align}
+streicht und den Rest zusammenschiebt, dann hat man genau die Matrix $\vek I^w$.
+
+Die Bodenpressung $p \,\downarrow$ hat auf der Unterseite der Platte das entgegengesetzte Vorzeichen, und somit lautet die um die \"{a}quivalenten Knotenkr\"{a}fte $-\vek L\,\vek p$ aus dem Bodendruck erweiterte FE-Gleichung $\vek K\vek u = \vek f - \vek L\,\vek p$ oder eben $\vek K \,\vek u + \vek L \,\vek p = \vek f$.
+
+Zur Erweiterung auf geschichtete B\"{o}den muss man die Gesamtsetzung eines Punktes $\vek x$ auf der Oberfl\"{a}che des Halbraums aus der Zusammendr\"{u}ckung $s_i$ der einzelnen Schichten, $E_i,\nu_i,h_i$, berechnen
+\begin{align}
+w_B^\Sigma(\vek x,\vek y) = \sum_i s_i(\vek x,\vek y) \,P\,,
+\end{align}
+wobei die Setzung $s_i$ einer Schicht mit (\ref{Boussinesq2}) berechnet wird
+\begin{align}
+s_i(\vek x,\vek y) = w_B(\vek x_o^i,\vek y) - w_B(\vek x_u^i,\vek y) \qquad |\vek x_o^i
+- \vek x_u^i| = h_i \quad \mbox{Schichtdicke}\,.
+\end{align}
+Die Punkte $\vek x_o^i$ und $\vek x_u^i$ sind die Punkte, in denen das Lot vom Punkt $\vek x$ nach unten die Schichtgrenzen trifft.
+
+Die {\em Boussinesq-L\"{o}sung\/} basiert auf der linearen Elastizit\"{a}tstheorie, nur wird in der Bodenmechanik statt des Elastizit\"{a}tsmoduls $E$ meist der {\em Steifemodul\/} $E_s$ benutzt,
+\begin{align}
+E_s = \frac{1-\nu}{1 - \nu -2\,\nu^2}\,E\,.
+\end{align}
+Die Querdehnung $\nu$ des Baugrunds schwankt zwischen $\nu = 0.20$ und $\nu = 0.33$,
+\cite{Kany}.
+
+\begin{table}
+{\small \caption{ Steifemodul $E_S$, Elastizit\"{a}tsmodul $E$ und Querdehnzahl $\nu$
+einiger B\"{o}den, \protect\cite{EAU}.} \label{Ziffer}
+\begin{tabular}{rrrr}
+\noalign{\hrule\smallskip}
+  Bodenart & $E_S$ MN/m$^2$ & $\nu$ & $E$ MN/m$^2$ \\
+\noalign{\hrule\smallskip}
+Sand, locker, rund &    20 - 50 &       0.33 &  13.5-33.7 \\
+Sand, locker, eckig &    40 - 80 &       0.32 & 28.0 - 55.9 \\
+Sand, mitteldicht, rund &    50 -100 &       0.32 & 34.9 - 69.9 \\
+Sand, mitteldicht, eckig &   80 - 150 &        0.3 & 59.4 - 111.4 \\
+Kies ohne Sand &  100 - 200 &       0.28 & 78.2 - 156.4 \\
+Naturschotter, scharfkantig &  150 - 300 &       0.26 & 122.6 - 245.2 \\
+Sand, dicht, eckig & 150 - 250  &       0.28 & 117.3 - 195.6 \\
+\noalign{\hrule\smallskip}
+Ton, halbfest &     5 -1 0 &       0.37 &  2.8 - 5.7 \\
+Ton, schwer knetbar,steif &    2.5 - 5 &        0.4 &  1.2 - 2.3 \\
+Ton, leicht knetbar, weich &   1 -  2.5 &       0.41 & 0.43 - 1.1 \\
+Geschiebemergel, fest &   30 - 100 &       0.33 & 20.2 - 67.5 \\
+Lehm, halbfest &      5 -20 &       0.35 & 3.1 - 12.5 \\
+Lehm, weich &      4 - 8 &       0.35 &  2.5 - 5.0 \\
+   Schluff &     3 - 10 &        0.4 & 0.93 - 2.3 \\
+\noalign{\hrule\smallskip}
+\end{tabular}
+}
+\end{table}
+
+Das Steifemodulverfahren ist also im Grunde genau so einfach handhabbar wie das Bettungsmodulverfahren. Die eigentliche Schwierigkeit ist programmtechnischer Natur: Weil das Gleichungssystem (\ref{BodenSystem}) {\em unsymmetrisch\/} ist, kann man die Standard-Gleichungsl\"{o}ser nicht mehr einsetzen.
+
+Typisch f\"{u}r das Steifemodulverfahren ist der Anstieg der Sohlpressung zu den R\"{a}ndern hin, s. Abb. \ref{BettungS10} b. Dieser  Anstieg resultiert aus der gro{\ss}en Verzerrung $\varepsilon_z = \partial w/\partial z$ des Bodens direkt neben der Sohlplatte, denn die Verzerrung ist gleich dem Tangens des B\"{o}chschungswinkels.
+
+{\textcolor{sectionTitleBlue}{\subsection{Aussteifende W\"{a}nde}}}\index{aussteifende W\"{a}nde}
+Nach M\"{o}glichkeit sollte auch die aussteifende Wirkung von Betonw\"{a}nden, die auf einer Bodenplatte stehen, in Rechnung gestellt werden, da hierdurch ein anderes Tragbild entsteht als bei einer \glq schlaffen\grq\ Bodenplatte. Solche W\"{a}nde kann man sehr leicht durch steife, deckengleiche Unterz\"{u}ge mit einer entsprechend angepassten Biegesteifigkeit $EI$ modellieren.
+
+{\textcolor{sectionTitleBlue}{\subsection{Zugausschaltung}}}\index{Zugausschaltung}
+Weil der Boden keine Zugspannungen aufnehmen kann, muss man gegebenenfalls iterativ rechnen und eine Gleichgewichtslage finden, bei der keine Zugkr\"{a}fte zwischen Platte und Boden auftreten. Die Zugausschaltung l\"{a}sst sich bei beiden Verfahren einsetzen, allerdings darf man dann die Ergebnisse der einzelnen Lastf\"{a}lle nicht mehr \"{u}berlagern, weil die Ergebnisse m\"{o}glicherweise an verschiedenen Systemen erzielt wurden.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textcolor{sectionTitleBlue}{\section{Bemessung}}}\index{Bemessung, Platten}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Berechnet man eine Platte nach {\em Pieper-Martens\/}, den {\em Czerny-Tafeln\/} oder durch eine Balkenanalogie, so wird a) die Platte in der Regel nur f\"{u}r die Feld- und die St\"{u}tzenmomente bemessen und b) nimmt man an, dass die Momente $m_{xx}$ und $m_{yy}$ im Feld oder \"{u}ber den W\"{a}nden die Hauptmomente sind, die Hauptkr\"{u}mmungsrichtungen also an den meistbeanspruchten Stellen achsenparallel verlaufen. Nur in den Ecken, wo die Hauptkr\"{u}mmungsrichtungen um $45^\circ$ gegen\"{u}ber den Achsen gedreht sind, bemisst man die Platte f\"{u}r die Drillmomente $m_{xy} = m_I = m_{II}$ (betragsm\"{a}{\ss}ig).
+
+Bei dieser Vorgehensweise, wie sie f\"{u}r den Hochbau typisch ist, wird also kein Unterschied zwischen {\em Schnittmomenten\/}, {\em Hauptmomenten\/} und {\em Bemessungsmomenten\/}\index{Bemessungsmomente} gemacht.
+
+Bei der Bemessung in FE-Programmen geht man dagegen schulm\"{a}{\ss}ig vor: Aus den Schnittmomenten $m_{xx}, m_{xy}, m_{yy}$ werden zun\"{a}chst die Hauptmomente $m_I, m_{II}$ ermittelt und ihre Lage zur $x$-Achse, die Winkel $\Np$ und $\Np + 90^\circ$, bestimmt. Die Hauptmomente beruhen auf der linearen Elastizit\"{a}tstheorie (homogenes und isotropes Material) und gelten f\"{u}r den Zustand I (ungerissener Beton). Aus diesen Hauptmomenten werden dann unter Ber\"{u}cksichtigung des Winkels $\delta$, also des Winkels, den die Bewehrung gegen\"{u}ber den Hauptachsrichtungen einschlie{\ss}t, und des Innenwinkels $\alpha$ der Bewehrung (= Winkel der Eisen untereinander)  die sogenannten {\em Bemessungsmomente\/} $m_\xi, m_\eta$ getrennt nach oberer und unterer Plattenseite ermittelt.
+
+Wie man von den Hauptmomenten zu den Bemessungsmomenten kommt, darin unterscheiden sich die verschiedenen Bemessungsverfahren nach {\em Stiglat, Wippel\/} \cite{Stiglat} und {\em Baumann\/} \cite{Leonhardt}. Die Bemessung nach {\em Baumann\/} wird auf eine Scheibenbemessung zur\"{u}ckgespielt, und daher ergeben sich sinngem\"{a}{\ss} dieselben Gleichungen wie in Kapitel 4.
+
+Bei der Bemessung nach {\em Stiglat, Wippel\/} wird die folgende Beziehung zwischen den Bemessungsmomenten und den aufnehmbaren Hauptmomenten zu Grunde gelegt
+\begin{align}\label{StiglatM}
+m_I &= m_\eta \,\cos^2\,\delta + m_\xi\,\sin^2\,\delta \\
+m_{II} &= m_\eta \,\sin^2\,\delta + m_\xi\,\cos^2\,\delta\,,
+\end{align}
+wobei $m_I > 0$ das betragsm\"{a}{\ss}ig gr\"{o}{\ss}ere der beiden Hauptmomente ist, so dass der
+Quotient
+\begin{align}
+\lambda = \frac{m_{II}}{m_I} \qquad 0 \leq \lambda \leq 1
+\end{align}
+zwischen null und Eins liegt. Das Verh\"{a}ltnis der Bemessungsmomente wird durch den
+Quotienten
+\begin{align}
+\lambda_t = \frac{m_\xi}{m_\eta} = \frac{as_\xi\,d_\xi}{as_\eta\,d_\eta} \qquad 0 \leq
+\lambda_t \leq 1
+\end{align}
+charakterisiert, wobei $d_\xi$ und $d_\eta$ die entsprechenden statischen Nutzh\"{o}hen im Querschnitt sind. Damit das nach (\ref{StiglatM}) aufnehmbare Moment $m_{II}$ gr\"{o}{\ss}er als das vorhandene Hauptmoment $m_{II}$ ist, muss der Quotient $\lambda_t$ der Ungleichung
+\begin{align}
+\lambda_t \geq \frac{\lambda - \tan^2\,\delta}{1 - \lambda\,\tan^2\,\delta}
+\end{align}
+gen\"{u}gen. Unter Beachtung dieser Restriktion kann man (\ref{StiglatM}) umformen in die
+Bemessungsgleichung
+\begin{align}
+m_\eta &= k \cdot m_I = \frac{1}{\cos^2\,\delta + \lambda_t\cdot \sin^2\,\alpha} \cdot
+m_I\\
+m_\xi &= \lambda_t\,m_\eta \,.
+\end{align}
+F\"{u}r $\delta = 0$ und $\delta = 45^\circ$ liefern beide Bemessungsverfahren \"{u}bereinstimmende Ergebnisse. Bei anderen Winkeln gibt es jedoch Unterschiede, \cite{Rombach}.\\
+
+
+
+
+

@@ -1,0 +1,67 @@
+%% Beispiel root-Datei fuer deutschsprachige Technik Monographien
+%% kompiliert die Dateien engivorg, engich1g, engich2g, engilitg, mit
+%% CL2eMONO.sty u.a.
+
+\documentclass[fleqn]{article}
+
+\usepackage{cl2emono}
+\usepackage{graphicx}
+\usepackage{cropmark}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage{german}
+\usepackage{deutengi}
+%
+\usepackage{subeqnar}
+%% allows the automatic subnumbering of equation arrays
+
+
+
+\makeindex
+
+
+
+%% Definition of the upright mu.
+\font\grg=eurm10
+\def\umu{{\hbox{\grg\char22}}}
+\font\grs=eurm10 at 9pt
+\def\smu{{\hbox{\grs\char22}}}
+% This should always be used for micro...
+%
+
+
+\begin{document}
+
+\author{Autorenname}
+\title{Buchtitel, Untertitel, Auflagennummer\\ {\small SPIN Springer
+interne Projektnummer, falls bekannt}}
+\subtitle{Technik -- Monographie (deutsch)}
+\maketitle
+
+\pagenumbering{Roman}
+\setcounter{page}{5}
+
+\include{engivorg}
+
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+\include{engich1g}
+\include{engich2g}
+\include{engilitg}
+
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Sachverzeichnis}
+
+
+\flushbottom
+\printindex
+\end{document}
+
+
+
+
+
